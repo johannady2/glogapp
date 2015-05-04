@@ -1,9 +1,7 @@
 $(document).on('navClicked',function(event,filename)
 {
 
-      
-      
-      
+
     if(filename == "test-localstorage.html")
     {
 
@@ -161,8 +159,18 @@ $(document).on('navClicked',function(event,filename)
                             });
 						});
 					});*/
-
+                
             }); 
     }
-   
+    else if(filename == "test-LS2.html")
+    {
+        
+            $("#searchForm").on('submit', function(event)
+             {
+                event.preventDefault;
+                var searchedValue = $(this).children('[name="search"]').val();
+                alert(searchedValue);
+            });
+       
+    }
 });
