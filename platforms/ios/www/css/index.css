@@ -356,6 +356,19 @@ article .entry-title
     padding-right:15px;
 }
 
+.splashscreen-logo
+{
+    color:#ffffff;
+}
+.splashscreencont
+{
+    text-align:center;
+}
+.scanbtn
+{
+    display:none;
+}
+
                             /*Masonry Stuff*/
                             #wrapper
                             {

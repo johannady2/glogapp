@@ -3,14 +3,17 @@
 
      var defaultContent = 'splash.html';
      
+     
      $(".content-cont").load(defaultContent,  null, function(event,filename)
      {
-     
+         $('body').css('background-image', 'url(' + '"img/splashbg.jpg"' + ')');
          $(".slideToUnlock").on('click',function()
          {
-            $('nav').show();
+              $('body').css('background-image', 'none');
+            $('nav , footer').show();
              $('.content-cont').empty();
              $('.scanbtn').click();
+             
          });
      });
      
