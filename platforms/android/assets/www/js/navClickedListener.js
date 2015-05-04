@@ -40,13 +40,21 @@ $(document).on('navClicked',function(event,filename)
 
     }
     else if(filename == "test-getjson.html")
-    {
+    {       
+            var SysPk_InvtyCatARR = [];
+            var Barcode_InvtyCatARR = [];
+            var SysFk_Freebies01_InvtyCatARR = [];
+            var SysFk_Freebies02_InvtyCatARR = [];
+            var SysFk_Freebies03_InvtyCatARR = [];
+            var FullDescription_InvtyCatARR = [];
+            var DisplayPrice_InvtyCatARR = [];
+            var PromoPrice_InvtyCatARR = [];
+            var PromoEndDate_InvtyCatARR = [];
+            
             $.getJSON( "http://localhost/dummyPrestashop/", function( data )
             {/*
                 {"PEOPLE":[{"PERSON":{"id":"1","name":"johanna","city":"iligan","street":"sadasdasd","homenum":"8998908","mobilenum":"989089080"}},{"PERSON":{"id":"2","name":"ong","city":"iligan","street":"kjkjljkj","homenum":"9809009","mobilenum":"9090909"}},{"PERSON":{"id":"3","name":"eu","city":"kjkjkj","street":"kjkjkjk","homenum":"909090","mobilenum":"8989"}},{"PERSON":{"id":"4","name":"james","city":"kjkjjk","street":"jkjk","homenum":"3333333","mobilenum":"444444444"}},{"PERSON":{"id":"5","name":"jerome","city":"kjkjkj","street":"kjkjkjk","homenum":"90090","mobilenum":"909090"}},{"PERSON":{"id":"6","name":"keyki","city":"jjkj","street":"kjkjk","homenum":"2147483647","mobilenum":"2147483647"}},{"PERSON":{"id":"7","name":"p-seven","city":"jhjhjhj","street":"hjh","homenum":"909090","mobilenum":"9090"}},{"PERSON":{"id":"8","name":"p-eight","city":"kjkjkjk","street":"jkjkj","homenum":"9090909","mobilenum":"90909"}}]}
             */
-
-                    var items = [];
 
                   $.each( data, function( index, value ) 
                   {//key PEOPLE/[{"PERSON":{"id":"1","name":"johanna","city":"iligan","street":"sadasdasd","homenum":"8998908","mobilenum":"989089080"}},{"PERSON":{"id":"2","name":"ong","city":"iligan","street":"kjkjljkj","homenum":"9809009","mobilenum":"9090909"}},{"PERSON":{"id":"3","name":"eu","city":"kjkjkj","street":"kjkjkjk","homenum":"909090","mobilenum":"8989"}},{"PERSON":{"id":"4","name":"james","city":"kjkjjk","street":"jkjk","homenum":"3333333","mobilenum":"444444444"}},{"PERSON":{"id":"5","name":"jerome","city":"kjkjkj","street":"kjkjkjk","homenum":"90090","mobilenum":"909090"}},{"PERSON":{"id":"6","name":"keyki","city":"jjkj","street":"kjkjk","homenum":"2147483647","mobilenum":"2147483647"}},{"PERSON":{"id":"7","name":"p-seven","city":"jhjhjhj","street":"hjh","homenum":"909090","mobilenum":"9090"}},{"PERSON":{"id":"8","name":"p-eight","city":"kjkjkjk","street":"jkjkj","homenum":"9090909","mobilenum":"90909"}}]
@@ -60,25 +68,33 @@ $(document).on('navClicked',function(event,filename)
                             $.each(valu, function(ind, val)
                             {//{"id":"1","name":"johanna","city":"iligan","street":"sadasdasd","homenum":"8998908","mobilenum":"989089080"}
 
-                                var ids = [];
-                                ids.push(val['SysPk_InvtyCat'][0]);
-
-
-
+                               
 
                                 $.each( val, function( i, v )
                                 {
 
-                                       $('.getjsontest').append(i+'_'+ val['SysPk_InvtyCat'][0]+'<br>');
+                                       //$('.getjsontest').append(i+'_'+ val['SysPk_InvtyCat']+'<br>');
+                                    
+                                        if(i == "SysPk_InvtyCat")
+                                        {
+                                             SysPk_InvtyCatARR.push(val['SysPk_InvtyCat']);
+                                            alert(val['SysPk_InvtyCat'] + " inserted to array SysPk_InvtyCatARR");
+                                        }
+                                        else if(i == "Barcode_InvtyCat")
+                                        {
+                                            Barcode_InvtyCatARR.push(val['Barcode_InvtyCat']);
+                                            alert(val['Barcode_InvtyCat'] + " inserted to array Barcode_InvtyCatARR");
+                                        }
 
-                                        
-
+                                      
                                 });	
 
                             });	
+                            
                         });
                   });
 
+                    alert("there are " + SysPk_InvtyCatARR.length + " promo sets");
 
             }); 
     }
