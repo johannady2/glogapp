@@ -168,12 +168,12 @@ $(document).on('navClicked',function(event,filename)
             $("#searchForm").on('submit', function(event)
              {
                 
-                  var searchedValue = $(this).children('[name="search"]').val();
-                alert(searchedValue);
-                
+                //var searchedValue = $(this).children('[name="search"]').val();
+                /////alert(searchedValue);
+                window.localStorage['searchedValueStorage'] = $(this).children('[name="search"]').val();
               
-      
-
+                $('.lastsearched').append(window.localStorage['searchedValueStorage']);
+                alert( window.localStorage['searchedValueStorage']);
  
                 return false;
             });
