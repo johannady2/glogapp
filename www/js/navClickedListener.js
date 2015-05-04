@@ -135,6 +135,7 @@ $(document).on('navClicked',function(event,filename)
                     $('.getjsontest').append("there are " + SysPk_InvtyCatARR.length + " promo sets<br><hr><br>");
                 
                 
+            
                 
                 
                 

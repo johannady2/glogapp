@@ -55,7 +55,7 @@ $(document).on('navClicked',function(event,filename)
             {/*
                 {"PEOPLE":[{"PERSON":{"id":"1","name":"johanna","city":"iligan","street":"sadasdasd","homenum":"8998908","mobilenum":"989089080"}},{"PERSON":{"id":"2","name":"ong","city":"iligan","street":"kjkjljkj","homenum":"9809009","mobilenum":"9090909"}},{"PERSON":{"id":"3","name":"eu","city":"kjkjkj","street":"kjkjkjk","homenum":"909090","mobilenum":"8989"}},{"PERSON":{"id":"4","name":"james","city":"kjkjjk","street":"jkjk","homenum":"3333333","mobilenum":"444444444"}},{"PERSON":{"id":"5","name":"jerome","city":"kjkjkj","street":"kjkjkjk","homenum":"90090","mobilenum":"909090"}},{"PERSON":{"id":"6","name":"keyki","city":"jjkj","street":"kjkjk","homenum":"2147483647","mobilenum":"2147483647"}},{"PERSON":{"id":"7","name":"p-seven","city":"jhjhjhj","street":"hjh","homenum":"909090","mobilenum":"9090"}},{"PERSON":{"id":"8","name":"p-eight","city":"kjkjkjk","street":"jkjkj","homenum":"9090909","mobilenum":"90909"}}]}
             */
-
+                
                   $.each( data, function( index, value ) 
                   {//key PEOPLE/[{"PERSON":{"id":"1","name":"johanna","city":"iligan","street":"sadasdasd","homenum":"8998908","mobilenum":"989089080"}},{"PERSON":{"id":"2","name":"ong","city":"iligan","street":"kjkjljkj","homenum":"9809009","mobilenum":"9090909"}},{"PERSON":{"id":"3","name":"eu","city":"kjkjkj","street":"kjkjkjk","homenum":"909090","mobilenum":"8989"}},{"PERSON":{"id":"4","name":"james","city":"kjkjjk","street":"jkjk","homenum":"3333333","mobilenum":"444444444"}},{"PERSON":{"id":"5","name":"jerome","city":"kjkjkj","street":"kjkjkjk","homenum":"90090","mobilenum":"909090"}},{"PERSON":{"id":"6","name":"keyki","city":"jjkj","street":"kjkjk","homenum":"2147483647","mobilenum":"2147483647"}},{"PERSON":{"id":"7","name":"p-seven","city":"jhjhjhj","street":"hjh","homenum":"909090","mobilenum":"9090"}},{"PERSON":{"id":"8","name":"p-eight","city":"kjkjkjk","street":"jkjkj","homenum":"9090909","mobilenum":"90909"}}]
 
@@ -78,12 +78,50 @@ $(document).on('navClicked',function(event,filename)
                                         if(i == "SysPk_InvtyCat")
                                         {
                                              SysPk_InvtyCatARR.push(val['SysPk_InvtyCat']);
-                                            alert(val['SysPk_InvtyCat'] + " inserted to array SysPk_InvtyCatARR");
+                                            $('.getjsontest').append(val['SysPk_InvtyCat'] + " inserted to array SysPk_InvtyCatARR<br>");
                                         }
                                         else if(i == "Barcode_InvtyCat")
                                         {
                                             Barcode_InvtyCatARR.push(val['Barcode_InvtyCat']);
-                                            alert(val['Barcode_InvtyCat'] + " inserted to array Barcode_InvtyCatARR");
+                                            $('.getjsontest').append(val['Barcode_InvtyCat'] + " inserted to array Barcode_InvtyCatARR<br>");
+                                        }
+                                        else if(i == "SysFk_Freebies01_InvtyCat")
+                                        {
+                                            SysFk_Freebies01_InvtyCatARR.push(val['SysFk_Freebies01_InvtyCat']);
+                                            $('.getjsontest').append(val['SysFk_Freebies01_InvtyCat'] + " inserted to array SysFk_Freebies01_InvtyCatARR<br>");
+                                            
+                                        }                                       
+                                        else if(i == "SysFk_Freebies02_InvtyCat")
+                                        {
+                                            SysFk_Freebies02_InvtyCatARR.push(val['SysFk_Freebies02_InvtyCat']);
+                                            $('.getjsontest').append(val['SysFk_Freebies02_InvtyCat'] + " inserted to array SysFk_Freebies02_InvtyCatARR<br>");
+                                           
+                                        }                                       
+                                        else if(i == "SysFk_Freebies03_InvtyCat")
+                                        {
+                                            SysFk_Freebies03_InvtyCatARR.push(val['SysFk_Freebies03_InvtyCat']);
+                                            $('.getjsontest').append(val['SysFk_Freebies03_InvtyCat'] + " inserted to array SysFk_Freebies03_InvtyCatARR<br>");
+                                           
+                                        }
+                                        else if(i == "FullDescription_InvtyCat")
+                                        {
+                                            FullDescription_InvtyCatARR.push(val['FullDescription_InvtyCat']);
+                                            $('.getjsontest').append(val['FullDescription_InvtyCat'] + " inserted to array FullDescription_InvtyCatARR<br>");
+                                        }
+                                        else if(i == "DisplayPrice_InvtyCat")
+                                        {
+                                            DisplayPrice_InvtyCatARR.push(val['DisplayPrice_InvtyCat']);
+                                            $('.getjsontest').append(val['DisplayPrice_InvtyCat'] + " inserted to array DisplayPrice_InvtyCatARR<br>");
+                                        }
+                                        else if(i == "PromoPrice_InvtyCat")
+                                        {
+                                            PromoPrice_InvtyCatARR.push(val['PromoPrice_InvtyCat']);
+                                            $('.getjsontest').append(val['PromoPrice_InvtyCat'] + " inserted to array PromoPrice_InvtyCatARR<br>");
+                                        }
+                                        else if(i == "PromoEndDate_InvtyCat")
+                                        {
+                                            PromoEndDate_InvtyCatARR.push(val['PromoEndDate_InvtyCat']);
+                                            $('.getjsontest').append(val['PromoEndDate_InvtyCat'] + " inserted to array PromoEndDate_InvtyCatARR<br>");
                                         }
 
                                       
@@ -94,7 +132,35 @@ $(document).on('navClicked',function(event,filename)
                         });
                   });
 
-                    alert("there are " + SysPk_InvtyCatARR.length + " promo sets");
+                    $('.getjsontest').append("there are " + SysPk_InvtyCatARR.length + " promo sets<br><hr><br>");
+                
+                
+            
+                
+                
+                
+                /*
+                    //OTHER WAY
+                	for(aPromoSet in data)
+					{
+                        
+						var promoSet = data[aPromoSet];
+						
+						
+						console.log(promoSet.DisplayPrice_InvtyCat);
+					}
+					
+					$.each( data[aPromoSet], function( key, value )
+					{
+                        
+						$.each( value, function( ke, valu )
+						{
+                            $.each( valu, function( k, val )
+                            {
+                                    alert( k + ": " + val );
+                            });
+						});
+					});*/
 
             }); 
     }
