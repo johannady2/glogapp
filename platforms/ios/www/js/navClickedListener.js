@@ -167,9 +167,15 @@ $(document).on('navClicked',function(event,filename)
         
             $("#searchForm").on('submit', function(event)
              {
-                event.preventDefault;
-                var searchedValue = $(this).children('[name="search"]').val();
+                
+                  var searchedValue = $(this).children('[name="search"]').val();
                 alert(searchedValue);
+                
+              
+      
+
+ 
+                return false;
             });
        
     }
