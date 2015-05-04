@@ -39,6 +39,24 @@
 		7E7966E61810823500FA85AD /* icon-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966DC1810823500FA85AD /* icon-small.png */; };
 		7E7966E71810823500FA85AD /* icon-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966DD1810823500FA85AD /* icon-small@2x.png */; };
 		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
+		297A576635314826A3565F7F /* CDVNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8D0D76508E4EAA9389D118 /* CDVNotification.m */; };
+		99270C48170E4DE2941034C9 /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444FB712A63541868CD79144 /* CDVNotification.bundle */; };
+		4C9E44B8EFAF4031981D7168 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2831EDBC9838417E9832A4FA /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		18FEB4A7568C49ADBDC602CD /* CDVDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = B26923DCD59144EA9D4284F5 /* CDVDevice.m */; };
+		A9868E6927BB439892D2D3ED /* CDVMWBarcodeScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = ADC4482A3EB24FAEA9FEE285 /* CDVMWBarcodeScanner.m */; };
+		A2588D40C9B1455FA062CF5C /* MWScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C185772F3A834C338B2E59EC /* MWScannerViewController.m */; };
+		64917CA6664C4D039E6F2120 /* MWOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCE8E5436AB4F27B0EB827D /* MWOverlay.m */; };
+		7A18DA8AEF364876BC87F92C /* MWResult.m in Sources */ = {isa = PBXBuildFile; fileRef = E34EC89937494C45BED83AF8 /* MWResult.m */; };
+		C65965BA17EA4C82BC813A8E /* MWScannerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1E44B582EAEB42FE95E47663 /* MWScannerViewController.xib */; };
+		13D4C7D8E19041F5A28E8105 /* libBarcodeScanner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C0D34DFEF144DDB9237FD7 /* libBarcodeScanner.a */; };
+		ED07CD4F4CA84B048AA62CED /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 555233C317854B2F865F7D0A /* close_button.png */; };
+		220F393626944F05B4598927 /* flashbuttonon.png in Resources */ = {isa = PBXBuildFile; fileRef = 869146E1F7574AD3BB269087 /* flashbuttonon.png */; };
+		AE5E3CB2D45049089DF2D4D5 /* flashbuttonoff.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E8F6F81BDE4770A09924FA /* flashbuttonoff.png */; };
+		B95F4478E35E43C38E5ECB9C /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = ABAA0FC75D3E491DA33FB93B /* overlay.png */; };
+		6BDCB38683E143A6B12C0B79 /* overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FBC5138A529442A97FD3116 /* overlay@2x.png */; };
+		0BD708256943419F8122F24A /* zoom.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEEE8313684EC2BDF4C641 /* zoom.png */; };
+		A4A5542F0FA943DB9DB40BF2 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2065016CCB3143D89FD8554D /* CoreVideo.framework */; };
+		9C74F851497E4346A1D11F37 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF103733BF2241FDBEDD7535 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +122,31 @@
 		EB87FDF31871DA8E0020F90C /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../../www; sourceTree = "<group>"; };
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = "glogapp/config.xml"; sourceTree = "<group>"; };
+		CD8D0D76508E4EAA9389D118 /* CDVNotification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVNotification.m"; path = "org.apache.cordova.dialogs/CDVNotification.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		78842FAF4D08473E9D41D250 /* CDVNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVNotification.h"; path = "org.apache.cordova.dialogs/CDVNotification.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		444FB712A63541868CD79144 /* CDVNotification.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "CDVNotification.bundle"; path = "Resources\CDVNotification.bundle"; sourceTree = "<group>"; };
+		2831EDBC9838417E9832A4FA /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "AudioToolbox.framework"; path = "System/Library/Frameworks/AudioToolbox.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
+		B26923DCD59144EA9D4284F5 /* CDVDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVDevice.m"; path = "org.apache.cordova.device/CDVDevice.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		9DAE86A391BE4B18BEDDCEA5 /* CDVDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVDevice.h"; path = "org.apache.cordova.device/CDVDevice.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		ADC4482A3EB24FAEA9FEE285 /* CDVMWBarcodeScanner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVMWBarcodeScanner.m"; path = "com.manateeworks.barcodescanner/MWBarcodeScanner/CDVMWBarcodeScanner.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		C185772F3A834C338B2E59EC /* MWScannerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "MWScannerViewController.m"; path = "com.manateeworks.barcodescanner/MWBarcodeScanner/MWScannerViewController.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		0CCE8E5436AB4F27B0EB827D /* MWOverlay.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "MWOverlay.m"; path = "com.manateeworks.barcodescanner/MWBarcodeScanner/MWOverlay.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		E34EC89937494C45BED83AF8 /* MWResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "MWResult.m"; path = "com.manateeworks.barcodescanner/MWBarcodeScanner/MWResult.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		1E44B582EAEB42FE95E47663 /* MWScannerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MWScannerViewController.xib"; path = "com.manateeworks.barcodescanner/MWBarcodeScanner/MWScannerViewController.xib"; sourceTree = "<group>"; fileEncoding = 4; };
+		E6C0D34DFEF144DDB9237FD7 /* libBarcodeScanner.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libBarcodeScanner.a"; path = "glogapp\Plugins\com.manateeworks.barcodescanner\MWBarcodeScanner\libBarcodeScanner.a"; sourceTree = "<group>"; fileEncoding = 4; };
+		E6300C8A842B43218A6936DD /* CDVMWBarcodeScanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVMWBarcodeScanner.h"; path = "com.manateeworks.barcodescanner/MWBarcodeScanner/CDVMWBarcodeScanner.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		89BC8754B5FB4B50B87E6EF0 /* BarcodeScanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BarcodeScanner.h"; path = "com.manateeworks.barcodescanner/MWBarcodeScanner/BarcodeScanner.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		6D95BC750EC24220BC7A4E6E /* MWScannerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MWScannerViewController.h"; path = "com.manateeworks.barcodescanner/MWBarcodeScanner/MWScannerViewController.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		84DAB643CF1C4CABAC418054 /* MWOverlay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MWOverlay.h"; path = "com.manateeworks.barcodescanner/MWBarcodeScanner/MWOverlay.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		CA5CC0F198F14D40BCCD8088 /* MWResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MWResult.h"; path = "com.manateeworks.barcodescanner/MWBarcodeScanner/MWResult.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		555233C317854B2F865F7D0A /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "close_button.png"; path = "Resources\close_button.png"; sourceTree = "<group>"; fileEncoding = 4; };
+		869146E1F7574AD3BB269087 /* flashbuttonon.png */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "flashbuttonon.png"; path = "Resources\flashbuttonon.png"; sourceTree = "<group>"; fileEncoding = 4; };
+		72E8F6F81BDE4770A09924FA /* flashbuttonoff.png */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "flashbuttonoff.png"; path = "Resources\flashbuttonoff.png"; sourceTree = "<group>"; fileEncoding = 4; };
+		ABAA0FC75D3E491DA33FB93B /* overlay.png */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "overlay.png"; path = "Resources\overlay.png"; sourceTree = "<group>"; fileEncoding = 4; };
+		5FBC5138A529442A97FD3116 /* overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "overlay@2x.png"; path = "Resources\overlay@2x.png"; sourceTree = "<group>"; fileEncoding = 4; };
+		64DEEE8313684EC2BDF4C641 /* zoom.png */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "zoom.png"; path = "Resources\zoom.png"; sourceTree = "<group>"; fileEncoding = 4; };
+		2065016CCB3143D89FD8554D /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "CoreVideo.framework"; path = "System/Library/Frameworks/CoreVideo.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
+		DF103733BF2241FDBEDD7535 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "QuartzCore.framework"; path = "System/Library/Frameworks/QuartzCore.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +158,10 @@
 				301BF552109A68D80062928A /* libCordova.a in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				305D5FD1115AB8F900A74A75 /* MobileCoreServices.framework in Frameworks */,
+				4C9E44B8EFAF4031981D7168 /* AudioToolbox.framework in Frameworks */,
+				13D4C7D8E19041F5A28E8105 /* libBarcodeScanner.a in Frameworks */,
+				A4A5542F0FA943DB9DB40BF2 /* CoreVideo.framework in Frameworks */,
+				9C74F851497E4346A1D11F37 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +223,13 @@
 				308D052D1370CCF300D202BF /* icons */,
 				308D05311370CCF300D202BF /* splash */,
 				8D1107310486CEB800E47090 /* glogapp-Info.plist */,
+				444FB712A63541868CD79144 /* CDVNotification.bundle */,
+				555233C317854B2F865F7D0A /* close_button.png */,
+				869146E1F7574AD3BB269087 /* flashbuttonon.png */,
+				72E8F6F81BDE4770A09924FA /* flashbuttonoff.png */,
+				ABAA0FC75D3E491DA33FB93B /* overlay.png */,
+				5FBC5138A529442A97FD3116 /* overlay@2x.png */,
+				64DEEE8313684EC2BDF4C641 /* zoom.png */,
 			);
 			name = Resources;
 			path = "glogapp/Resources";
@@ -187,6 +241,10 @@
 				5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */,
+				2831EDBC9838417E9832A4FA /* AudioToolbox.framework */,
+				E6C0D34DFEF144DDB9237FD7 /* libBarcodeScanner.a */,
+				2065016CCB3143D89FD8554D /* CoreVideo.framework */,
+				DF103733BF2241FDBEDD7535 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -202,6 +260,20 @@
 		307C750510C5A3420062BCA9 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				CD8D0D76508E4EAA9389D118 /* CDVNotification.m */,
+				78842FAF4D08473E9D41D250 /* CDVNotification.h */,
+				B26923DCD59144EA9D4284F5 /* CDVDevice.m */,
+				9DAE86A391BE4B18BEDDCEA5 /* CDVDevice.h */,
+				ADC4482A3EB24FAEA9FEE285 /* CDVMWBarcodeScanner.m */,
+				C185772F3A834C338B2E59EC /* MWScannerViewController.m */,
+				0CCE8E5436AB4F27B0EB827D /* MWOverlay.m */,
+				E34EC89937494C45BED83AF8 /* MWResult.m */,
+				1E44B582EAEB42FE95E47663 /* MWScannerViewController.xib */,
+				E6300C8A842B43218A6936DD /* CDVMWBarcodeScanner.h */,
+				89BC8754B5FB4B50B87E6EF0 /* BarcodeScanner.h */,
+				6D95BC750EC24220BC7A4E6E /* MWScannerViewController.h */,
+				84DAB643CF1C4CABAC418054 /* MWOverlay.h */,
+				CA5CC0F198F14D40BCCD8088 /* MWResult.h */,
 			);
 			name = Plugins;
 			path = "glogapp/Plugins";
@@ -355,6 +427,13 @@
 				7E7966E11810823500FA85AD /* icon-50@2x.png in Resources */,
 				7E7966E51810823500FA85AD /* icon-76@2x.png in Resources */,
 				30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */,
+				99270C48170E4DE2941034C9 /* CDVNotification.bundle in Resources */,
+				ED07CD4F4CA84B048AA62CED /* close_button.png in Resources */,
+				220F393626944F05B4598927 /* flashbuttonon.png in Resources */,
+				AE5E3CB2D45049089DF2D4D5 /* flashbuttonoff.png in Resources */,
+				B95F4478E35E43C38E5ECB9C /* overlay.png in Resources */,
+				6BDCB38683E143A6B12C0B79 /* overlay@2x.png in Resources */,
+				0BD708256943419F8122F24A /* zoom.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,6 +465,13 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
+				297A576635314826A3565F7F /* CDVNotification.m in Sources */,
+				18FEB4A7568C49ADBDC602CD /* CDVDevice.m in Sources */,
+				A9868E6927BB439892D2D3ED /* CDVMWBarcodeScanner.m in Sources */,
+				A2588D40C9B1455FA062CF5C /* MWScannerViewController.m in Sources */,
+				64917CA6664C4D039E6F2120 /* MWOverlay.m in Sources */,
+				7A18DA8AEF364876BC87F92C /* MWResult.m in Sources */,
+				C65965BA17EA4C82BC813A8E /* MWScannerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +514,10 @@
 				);
 				PRODUCT_NAME = "glogapp";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/glogapp/Plugins/com.manateeworks.barcodescanner/MWBarcodeScanner\"",
+				);
 			};
 			name = Debug;
 		};
@@ -457,6 +547,10 @@
 				);
 				PRODUCT_NAME = "glogapp";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/glogapp/Plugins/com.manateeworks.barcodescanner/MWBarcodeScanner\"",
+				);
 			};
 			name = Release;
 		};

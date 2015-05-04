@@ -11,6 +11,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:configChanges="orientation|keyboardHidden" android:name="com.manateeworks.ScannerActivity" android:screenOrientation="landscape" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
     </application>
     <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="22" />
+    <uses-permission android:name="android.permission.CAMERA" />
 </manifest>
