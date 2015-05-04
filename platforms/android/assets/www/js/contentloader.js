@@ -1,14 +1,21 @@
  $(document).ready(function()
 {
 
+     var defaultContent = 'splash.html';
      
-     var defaultContent = 'scan.html';
-      $(".content-cont").load(defaultContent);/* default content*/
+     $(".content-cont").load(defaultContent,  null, function(event,filename)
+     {
+     
+         $(".slideToUnlock").on('click',function()
+         {
+            $('nav').show();
+             $('.content-cont').empty();
+             $('.scanbtn').click();
+         });
+     });
+     
      
      $('.navbar-nav > li > a[href="'+defaultContent+'"]').parent().addClass('active');
-     
-
-      
      $('.navbar-nav > li > a , .navbar-brand').on( "click", function(e) 
         {
             e.preventDefault();
@@ -37,9 +44,12 @@
          
             //$(".content-cont").load(loadThisContent);
            $(".content-cont").load(loadThisContent,  null, function(event,filename) {
+               
+             if(filename != "scan.html")
+            {
             var filename = loadThisContent;
             navClickedAndContentContReady(event,filename);//trigger is in callback of .content-cont to ensure that this div is loaded first, before the data is appended.
-               
+            }
             
            });
           
