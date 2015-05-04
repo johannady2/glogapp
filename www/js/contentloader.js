@@ -8,14 +8,14 @@
              $('body').css('background-image', 'url(' + '"img/splashbg.jpg"' + ')');
              $(".slideToUnlock").on('click',function()
              {
-                  $('body').css('background-image', 'none');
+                $('body').css('background-image', 'none');
                 $('nav , footer').show();
                  $('.content-cont').empty();
                  
                  if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
                 {
-                 $('.scanbtn').click();
-                   }
+                    $('.scanbtn').click();
+                }
                  else
                  {
                      $('.webdefault').click();

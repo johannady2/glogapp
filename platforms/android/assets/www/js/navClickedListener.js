@@ -159,7 +159,7 @@ $(document).on('navClicked',function(event,filename)
                             });
 						});
 					});*/
-
+                
             }); 
     }
     else if(filename == "test-LS2.html")
@@ -167,21 +167,9 @@ $(document).on('navClicked',function(event,filename)
         
             $("#searchForm").on('submit', function(event)
              {
-
-                var wlocation = window.location.toString();
-
-      
-
-                $.ajax({
-                    type: "POST",
-                    url:  wlocation,
-                    data: $("#searchForm").serialize(),
-                    success: function(data){
-                        alert(data);
-                      
-                    }
-                });
-                return false;
+                event.preventDefault;
+                var searchedValue = $(this).children('[name="search"]').val();
+                alert(searchedValue);
             });
        
     }

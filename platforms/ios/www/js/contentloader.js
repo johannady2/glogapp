@@ -1,21 +1,33 @@
  $(document).ready(function()
-{
-
-     var defaultContent = 'splash.html';
-     
-     
-     $(".content-cont").load(defaultContent,  null, function(event,filename)
-     {
-         $('body').css('background-image', 'url(' + '"img/splashbg.jpg"' + ')');
-         $(".slideToUnlock").on('click',function()
+{ 
+      
+    
+       var defaultContent = 'splash.html';     
+         $(".content-cont").load(defaultContent,  null, function(event,filename)
          {
-              $('body').css('background-image', 'none');
-            $('nav , footer').show();
-             $('.content-cont').empty();
-             $('.scanbtn').click();
-             
+             $('body').css('background-image', 'url(' + '"img/splashbg.jpg"' + ')');
+             $(".slideToUnlock").on('click',function()
+             {
+                  $('body').css('background-image', 'none');
+                $('nav , footer').show();
+                 $('.content-cont').empty();
+                 
+                 if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
+                {
+                 $('.scanbtn').click();
+                   }
+                 else
+                 {
+                     $('.webdefault').click();
+
+                 }   
+                    
+
+             });
          });
-     });
+  
+
+     
      
      
      $('.navbar-nav > li > a[href="'+defaultContent+'"]').parent().addClass('active');
