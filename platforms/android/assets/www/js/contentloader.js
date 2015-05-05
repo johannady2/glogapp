@@ -36,7 +36,7 @@
      
      
      
-     $('.navbar-nav > li > a , .navbar-brand ').on( "click", function(e) 
+     $('.navbar-nav > li > a').on( "click", function(e) 
         {
             e.preventDefault();
          
@@ -69,8 +69,8 @@
                
              if(filename != "scan.html")
             {
-            var filename = loadThisContent;
-            navClickedAndContentContReady(event,filename);//trigger is in callback of .content-cont to ensure that this div is loaded first, before the data is appended.
+                var filename = loadThisContent;
+                navClickedAndContentContReady(event,filename);//trigger is in callback of .content-cont to ensure that this div is loaded first, before the data is appended.
             }
             
                

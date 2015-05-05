@@ -4,7 +4,9 @@
 
 document.addEventListener("deviceready",onDeviceReady,false);
 
-var db;//GLOBAL VARIABLE
+//GLOBAL VARIABLES
+var db;
+var idForSinglePage;
 
 function onDeviceReady()
 {
@@ -83,10 +85,16 @@ function navClickedAndContentContReady(event,filename)
 }
 
 
+function viewItemClickedContentReady(event,idForSinglePage)
+{
+    $(document).trigger('viewItemClicked',[idForSinglePage]);
+}
 
 /*----------------------------------------------------------------------*/
 /*-------------------//custom events-------------------------------*/
 /*----------------------------------------------------------------------*/
+
+
 
 
 
@@ -127,6 +135,7 @@ function renderCatalogueItems(tx,results)
             htmlstringCatalaogue += '</div></div></article></div></div></div>';
 
         }
+    
     
         $('#list').append(htmlstringCatalaogue);
     
@@ -349,28 +358,20 @@ function testgetjson()
             }); 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*----------------------------------------------------------------------*/
+/*-------------------//navClickedListener.js-------------------------------*/
+/*----------------------------------------------------------------------*/
 
 
 
 
 /*----------------------------------------------------------------------*/
-/*-------------------//navClickedListener.js-------------------------------*/
+/*-------------------viewItemClicked.js-------------------------------*/
+/*----------------------------------------------------------------------*/
+
+
+
+
+/*----------------------------------------------------------------------*/
+/*-------------------//viewItemClicked.js-------------------------------*/
 /*----------------------------------------------------------------------*/

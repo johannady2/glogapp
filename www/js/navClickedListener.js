@@ -7,24 +7,18 @@ $(document).on('navClicked',function(event,filename)
         { 
             db.transaction(queryCatalogueItems, errorCB);
             
-            
 
-            
-          
-       
-                 $('.content-cont').on("click",".viewItem", function(e) 
+                //off click is fix for event trigger multiple times.There are many other solutions if needed to change this in the future.
+                 $('body').off('click', '.viewItem').on("click",".viewItem", function(event,idForSinglePage) 
                  {
-                      var openThisItem = $(this).data('itemid');
-                     alert(openThisItem);
+                    idForSinglePage = $(this).data('itemid');
+
+                    viewItemClickedContentReady(event,idForSinglePage);
+                
                  });
-       
-            
-            
-            
-            
         }
         
-       //just for testing $('.content-cont').append('<button class="btn btn-success btn-large viewItem" data-itemid="testing">View</button>');
+
     }
     else if(filename == "search.html")
     {
