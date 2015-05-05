@@ -10,7 +10,7 @@ var idForSinglePage;
 
 function onDeviceReady()
 {
-    alert('device is ready');
+    
     db = window.openDatabase("Database","1.0","Cordova Demo", 2*1024*1024);
     db.transaction(createDB, errorCB, successCB);
    
@@ -27,7 +27,7 @@ function createDB(tx)
         tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat, title , image , description,displayPrice)',[],populateInventoryMasterCatalogue,errorCB);
     
     
-    alert('Table created');
+    
 }
 
 function errorCB(err)
@@ -37,13 +37,13 @@ function errorCB(err)
 
 function successCB()
 {
-    alert('successful');
+    //alert('successful');
 
 }
 
 function populateInventoryMasterCatalogue(tx)
 {
-    alert('inserting');
+ 
 
    
     var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(Barcode_InvtyCat,title,image,description,displayPrice) VALUES(?,?,?,?,?)';
@@ -59,7 +59,7 @@ function populateInventoryMasterCatalogue(tx)
     tx.executeSql(sqlInsert,["11223344","Maxx","img/item9.jpg","Mentos","232.00"],null,errorCB);
 
 
-    alert('inserted');
+    
 
 }
 
@@ -147,7 +147,7 @@ function renderCatalogueItems(tx,results)
 
 function queryForSearch(tx)
 {
-    alert("oh yeah!!!! successqueryForSearch");
+   
     var enteredBarcode = $('#searchForm').children('[name="search"]').val();
     
     tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat = "' + enteredBarcode +'"' , [], renderSearchResults, errorCB);
@@ -157,9 +157,6 @@ function renderSearchResults(tx,results)
 {
     var htmlstring = "";
     var len = results.rows.length;
-    
-    alert('length ' + len);
-    
     
   
     for(var ind=0; ind < len; ind++)
@@ -377,7 +374,7 @@ function queryItemDetails(tx,idForSinglePage)
 function renderSinglePage(tx,results)
 {//results.rows.item(ind).title
     
-    alert('rendering Single Page');
+    
     var htmlstringSingle ='';
     htmlstringSingle += '<div class="row single-cont"><div class="col-md-6 col-sm-12 col-xs-12"><div class="img-container">';   
     htmlstringSingle += '<img src="'+ results.rows.item(0).image +'" class="responsiveImage">';
@@ -400,11 +397,11 @@ function renderSinglePage(tx,results)
     htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder">Place Order</a>';
     htmlstringSingle += '</div></div></div></div>';
 
-    alert(htmlstringSingle);
+   
     $('.content-cont').empty();
-    alert('content-cont emptied');
+   
     $('.content-cont').append(htmlstringSingle);    
-    alert('htmlstring appended');
+    
 }
 /*----------------------------------------------------------------------*/
 /*-------------------//viewItemClicked.js-------------------------------*/
