@@ -1,6 +1,6 @@
 /*-----------------------------------------------------------------*/
 /*------------------------Database-----------------------------------*/
-/*------------------------------------------------------------------*/
+/*------------------------------------------------------------------
 
 document.addEventListener("deviceready",onDeviceReady,false);
 
@@ -64,7 +64,7 @@ function renderList(tx,results)
 
 
 
-/*-----------------------------------------------------------------*/
+-----------------------------------------------------------------*/
 /*------------------------//Database-----------------------------------*/
 /*------------------------------------------------------------------*/
 
@@ -259,10 +259,10 @@ function testLS2()
     
     $("#searchForm").on('submit', function()
     {
-       if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
+       /*if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
         { 
             db.transaction(insertDB, errorCB);
-        }
+        }*/
         
         var searchedValue = $(this).children('[name="search"]').val();
 

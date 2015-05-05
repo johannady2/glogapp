@@ -2,6 +2,12 @@ $(document).on('navClicked',function(event,filename)
 {
 
 
+   
+
+
+   
+
+    
     if(filename == "test-localstorage.html")
     {
 
