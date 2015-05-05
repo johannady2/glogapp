@@ -356,14 +356,15 @@ article .entry-title
 }
 
 
-.viewItem
+.viewItem , .placeOrder
 {
     width:100%;
     min-height:60px;
     font-size:30px;
 }
 
-.viewItem:visited
+.viewItem:visited,
+.placeOrder:visited
 {
     color:#ffffff;
 }
@@ -386,7 +387,10 @@ article .entry-title
     display:none;
 }
 
-
+.totalcounter
+{
+    width:100%;
+}
 
                             /*Masonry Stuff*/
                             #wrapper

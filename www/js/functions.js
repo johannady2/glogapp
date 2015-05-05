@@ -87,6 +87,9 @@ function navClickedAndContentContReady(event,filename)
 
 
 
+
+
+
 /*----------------------------------------------------------------------*/
 /*-------------------navClickedListener.js-------------------------------*/
 /*----------------------------------------------------------------------*/
@@ -116,7 +119,7 @@ function renderCatalogueItems(tx,results)
             htmlstringCatalaogue += '<p>'+ results.rows.item(ind).description +'</p>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '<div class="col-md-12 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem">View</a>';
+            htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).id +'">View</a>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '</div></div></article></div></div></div>';
 
@@ -148,7 +151,7 @@ function renderSearchResults(tx,results)
     for(var ind=0; ind < len; ind++)
     {
         
-        htmlstring += '<li>'+ results.rows.item(ind).title+'<br><img src="'+ results.rows.item(ind).image +'">'+'</li>';
+        htmlstring += '<li>'+ results.rows.item(ind).title+'<br><img src="'+ results.rows.item(ind).image +'"><br><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).id +'">View</a></li>';
    
         $('#itemsList').append(htmlstring);
          

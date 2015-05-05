@@ -36,7 +36,7 @@
      
      
      
-     $('.navbar-nav > li > a , .navbar-brand').on( "click", function(e) 
+     $('.navbar-nav > li > a , .navbar-brand ').on( "click", function(e) 
         {
             e.preventDefault();
          
@@ -76,6 +76,13 @@
            });
           
 
+        });
+     
+     
+        $('.viewItem').on( "click", function(e) 
+        {
+            var openThisItem = $(this).data('itemid');
+            alert(openThisItem);
         });
 
      
