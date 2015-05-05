@@ -368,10 +368,44 @@ function testgetjson()
 /*----------------------------------------------------------------------*/
 /*-------------------viewItemClicked.js-------------------------------*/
 /*----------------------------------------------------------------------*/
+function queryItemDetails(tx,idForSinglePage)
+{
+    
+  tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE id=' + idForSinglePage , [], renderSinglePage, errorCB);  
+}
 
+function renderSinglePage(tx,results)
+{//results.rows.item(ind).title
+    
+    alert('rendering Single Page');
+    var htmlstringSingle ='';
+    htmlstringSingle += '<div class="row single-cont"><div class="col-md-6 col-sm-12 col-xs-12"><div class="img-container">';   
+    htmlstringSingle += '<img src="'+ results.rows.item(0).image +'" class="responsiveImage">';
+    htmlstringSingle += '</div></div>';
+    htmlstringSingle += '<div class="col-md-6 col-sm-12 col-xs-12"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
+    htmlstringSingle += '<h1>'+ results.rows.item(0).title +'</h1>';
+    htmlstringSingle += '<p>'+ results.rows.item(0).description +'</p>';
+    htmlstringSingle += '<h3 class="pull-right">$'+ results.rows.item(0).displayPrice +'</h3>';
+    htmlstringSingle += '</div> </div>';
+    htmlstringSingle += '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
+    htmlstringSingle += '<table class="totalcounter"><tr><td>';
+    htmlstringSingle += '<label for="quantity">Quantity</label>';
+    htmlstringSingle += '</td><td class="pull-right">';
+    htmlstringSingle += '<input type="text" name="quantity" id="quatity" value="1">';
+    htmlstringSingle += '</td></tr><tr><td>';
+    htmlstringSingle += '<label for="quantity">Subtotal</label>';
+    htmlstringSingle += '</td><td class="pull-right"><div>';
+    htmlstringSingle += '<p><span>$</span>2233333.22</p></div>';
+    htmlstringSingle += '</td></tr></table>';
+    htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder">Place Order</a>';
+    htmlstringSingle += '</div></div></div></div>';
 
-
-
+    alert(htmlstringSingle);
+    $('.content-cont').empty();
+    alert('content-cont emptied');
+    $('.content-cont').append(htmlstringSingle);    
+    alert('htmlstring appended');
+}
 /*----------------------------------------------------------------------*/
 /*-------------------//viewItemClicked.js-------------------------------*/
 /*----------------------------------------------------------------------*/

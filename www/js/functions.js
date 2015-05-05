@@ -10,7 +10,7 @@ var idForSinglePage;
 
 function onDeviceReady()
 {
-    alert('device is ready');
+    
     db = window.openDatabase("Database","1.0","Cordova Demo", 2*1024*1024);
     db.transaction(createDB, errorCB, successCB);
    
@@ -27,7 +27,7 @@ function createDB(tx)
         tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat, title , image , description,displayPrice)',[],populateInventoryMasterCatalogue,errorCB);
     
     
-    alert('Table created');
+    
 }
 
 function errorCB(err)
@@ -37,13 +37,13 @@ function errorCB(err)
 
 function successCB()
 {
-    alert('successful');
+    //alert('successful');
 
 }
 
 function populateInventoryMasterCatalogue(tx)
 {
-    alert('inserting');
+ 
 
    
     var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(Barcode_InvtyCat,title,image,description,displayPrice) VALUES(?,?,?,?,?)';
@@ -59,7 +59,7 @@ function populateInventoryMasterCatalogue(tx)
     tx.executeSql(sqlInsert,["11223344","Maxx","img/item9.jpg","Mentos","232.00"],null,errorCB);
 
 
-    alert('inserted');
+    
 
 }
 
@@ -147,7 +147,7 @@ function renderCatalogueItems(tx,results)
 
 function queryForSearch(tx)
 {
-    alert("oh yeah!!!! successqueryForSearch");
+   
     var enteredBarcode = $('#searchForm').children('[name="search"]').val();
     
     tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat = "' + enteredBarcode +'"' , [], renderSearchResults, errorCB);
@@ -157,9 +157,6 @@ function renderSearchResults(tx,results)
 {
     var htmlstring = "";
     var len = results.rows.length;
-    
-    alert('length ' + len);
-    
     
   
     for(var ind=0; ind < len; ind++)
@@ -368,10 +365,44 @@ function testgetjson()
 /*----------------------------------------------------------------------*/
 /*-------------------viewItemClicked.js-------------------------------*/
 /*----------------------------------------------------------------------*/
+function queryItemDetails(tx,idForSinglePage)
+{
+    
+  tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE id=' + idForSinglePage , [], renderSinglePage, errorCB);  
+}
 
+function renderSinglePage(tx,results)
+{//results.rows.item(ind).title
+    
+    
+    var htmlstringSingle ='';
+    htmlstringSingle += '<div class="row single-cont"><div class="col-md-6 col-sm-12 col-xs-12"><div class="img-container">';   
+    htmlstringSingle += '<img src="'+ results.rows.item(0).image +'" class="responsiveImage">';
+    htmlstringSingle += '</div></div>';
+    htmlstringSingle += '<div class="col-md-6 col-sm-12 col-xs-12"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
+    htmlstringSingle += '<h1>'+ results.rows.item(0).title +'</h1>';
+    htmlstringSingle += '<p>'+ results.rows.item(0).description +'</p>';
+    htmlstringSingle += '<h3 class="pull-right">$'+ results.rows.item(0).displayPrice +'</h3>';
+    htmlstringSingle += '</div> </div>';
+    htmlstringSingle += '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
+    htmlstringSingle += '<table class="totalcounter"><tr><td>';
+    htmlstringSingle += '<label for="quantity">Quantity</label>';
+    htmlstringSingle += '</td><td class="pull-right">';
+    htmlstringSingle += '<input type="text" name="quantity" id="quatity" value="1">';
+    htmlstringSingle += '</td></tr><tr><td>';
+    htmlstringSingle += '<label for="quantity">Subtotal</label>';
+    htmlstringSingle += '</td><td class="pull-right"><div>';
+    htmlstringSingle += '<p><span>$</span>2233333.22</p></div>';
+    htmlstringSingle += '</td></tr></table>';
+    htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder">Place Order</a>';
+    htmlstringSingle += '</div></div></div></div>';
 
-
-
+   
+    $('.content-cont').empty();
+   
+    $('.content-cont').append(htmlstringSingle);    
+    
+}
 /*----------------------------------------------------------------------*/
 /*-------------------//viewItemClicked.js-------------------------------*/
 /*----------------------------------------------------------------------*/
