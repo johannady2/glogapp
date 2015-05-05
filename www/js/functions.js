@@ -1,3 +1,80 @@
+/*-----------------------------------------------------------------*/
+/*------------------------Database-----------------------------------*/
+/*------------------------------------------------------------------*/
+
+document.addEventListener("deviceready",onDeviceReady,false);
+
+var db;//GLOBAL VARIABLE
+
+function onDeviceReady()
+{
+    db = window.openDatabase("Database","1.0","Cordova Demo", 2*1024*1024);
+    db.transaction(createDB, errorCB, successCB);
+}
+
+
+function createDB(tx)
+{
+    tx.executeSql('DROP TABLE IF EXISTS DEMO');
+    tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO(id unique,title,image,description)');
+}
+
+function errorCB(err)
+{
+    alert("Error processing SQL: " + err.code);
+}
+
+function successCB()
+{
+    alert("oh yeah!!!! successCB");
+
+}
+
+function insertDB()
+{
+    alert('inserting');
+    var _title = "Cookies";
+    var _image = "img/item.png";
+    var _description = "with free milk";
+    var sql ="INSERT INTO DEMO (title,image,description) VALUES(?,?,?)";
+    tx.executeSql(sql,[_title,_image,_description],successQueryDB,errorCB);
+}
+
+function successQueryDB()
+{
+    alert("oh yeah!!!! successQueryDB");
+    tx.executeSql('SELECT * FROM DEMO',[],renderList,errorCB);
+}
+
+function renderList(tx,results)
+{
+    var htmlstring = "";
+    var len = results.rows.length;
+    
+    
+    $('#listview').empty();
+    
+    for(var ind=0; ind<len; ind++)
+    {
+        
+        htmlstring += '<li>'+ results.rows.item(ind).title+'<br><img src="'+ results.row.item(ind).image +'">'+'</li>';
+        $('#listview').append(htmlstring);
+    }
+}
+
+
+
+/*-----------------------------------------------------------------*/
+/*------------------------//Database-----------------------------------*/
+/*------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
 /*----------------------------------------------------------------------*/
 /*-------------------contentloader.js-------------------------------*/
 /*----------------------------------------------------------------------*/
@@ -16,6 +93,8 @@ function navClickedAndContentContReady(event,filename)
 /*----------------------------------------------------------------------*/
 /*-------------------navClickedListener.js-------------------------------*/
 /*----------------------------------------------------------------------*/
+
+
 function testlocalstorage()
 {
             
@@ -178,16 +257,20 @@ function testgetjson()
 function testLS2()
 {
     
-             $("#searchForm").on('submit', function(event)
-            {
-                 
-                var searchedValue = $(this).children('[name="search"]').val();
+    $("#searchForm").on('submit', function()
+    {
+       if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
+        { 
+            db.transaction(insertDB, errorCB);
+        }
+        
+        var searchedValue = $(this).children('[name="search"]').val();
 
-               localStorage.searchedValueStorage = searchedValue;
-               $('.lastsearched').empty().append(localStorage.searchedValueStorage);
-           
-               return false;
-            });
+        localStorage.searchedValueStorage = searchedValue;
+        $('.lastsearched').empty().append(localStorage.searchedValueStorage);
+
+        return false;
+    });
         
         
              $('.lastsearched').append(localStorage.searchedValueStorage);
