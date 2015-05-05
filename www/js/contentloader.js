@@ -14,11 +14,12 @@
                  
                  if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
                 {
-                    $('.scanbtn').click();
+                    $('.scanbtn').click();//default page after splashscreen will be scan.html on mobile devices
                 }
                  else
                  {
-                     $('.webdefault').click();
+                     $('.webdefault').click();//default page after splash screen will navigatioon with this class
+                     $('.scanbtn').hide()//navigation to scan navigation is hidden on PC
 
                  }   
                     
@@ -75,13 +76,6 @@
      
  });
 
-function navClickedAndContentContReady(event,filename)
-{//e.stopPropagation();//dunno what this is for but tutorial used this and he said it's better not to use this
-
-    $(document).trigger('navClicked',[filename]);/* add parameter by ('navclick',e.target.id);*/
-    
-    
-}
 
  
          
