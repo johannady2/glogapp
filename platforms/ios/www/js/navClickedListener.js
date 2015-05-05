@@ -1,14 +1,19 @@
 $(document).on('navClicked',function(event,filename)
 {
 
-
-   
-
-
-   
-
-    
-    if(filename == "test-localstorage.html")
+    if(filename == "catalogue.html")
+    {
+        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
+        { 
+            db.transaction(queryCatalogueItems, errorCB);
+        }
+    }
+    else if(filename == "search.html")
+    {
+          startSearch();
+       
+    }
+    else if(filename == "test-localstorage.html")
     {
 
         testlocalstorage();
@@ -18,11 +23,7 @@ $(document).on('navClicked',function(event,filename)
     {       
           testgetjson(); 
     }
-    else if(filename == "test-LS2.html")
-    {
-          testLS2();
-       
-    }
+
 });
 
 
