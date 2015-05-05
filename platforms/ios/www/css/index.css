@@ -339,6 +339,23 @@ article .entry-title
 
 }
 
+
+
+.img-container
+{
+    background-image: url("../img/default-product-image.jpg");
+    background-repeat: no-repeat;
+    min-width: 100%;
+    min-height: 363px;
+    background-size: 100% auto;
+}
+
+.responsiveImage
+{
+    width:100%;
+}
+
+
 .addToCart
 {
     width:100%;
@@ -368,6 +385,8 @@ article .entry-title
 {
     display:none;
 }
+
+
 
                             /*Masonry Stuff*/
                             #wrapper

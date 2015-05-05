@@ -20,38 +20,50 @@ function createDB(tx)
     
    
     tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
-    alert('INVENTORY_MASTER_CATALOGUE dropped');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id unique,title,image,description)');
-    alert('Table DEMO created');
+    
+    
+        tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id unique ,Barcode_InvtyCat, title , image , description)',[],populateInventoryMasterCatalogue,errorCB);
+    
+    
+    alert('Table created');
 }
 
 function errorCB(err)
 {
-    alert("Error processing SQL: " + err.code);
+    alert("Error processing SQL: " + err.message);
 }
 
 function successCB()
 {
-    alert('Database Created');
+    alert('successful');
 
 }
 
-function populateDB(tx)
+function populateInventoryMasterCatalogue(tx)
 {
     alert('inserting');
-    var sql ="INSERT INTO INVENTORY_MASTER_CATALOGUE(title,image,description) VALUES(?,?,?)";
+
+    
+
    
-    tx.executeSql(sql,["Cookies","img/item.png","with free milk"],successQueryDB,errorCB);
-     //alternative insert(i think) tx.executeSql('INSERT INTO INVENTORY_MASTER_CATALOGUE(title,image,description) VALUES("cake","img/item.png","with drinks")');
-alert('inserted');
+    var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(Barcode_InvtyCat,title,image,description) VALUES(?,?,?,?)';
+   
+    tx.executeSql(sqlInsert,["4801010127215","Johnson\'s Baby Cologne","img/item1.jpg","with free milk"],null,errorCB);
+    tx.executeSql(sqlInsert,["8999999003395","Pond\'s Pure White","img/item2.gif","with free candy"],null,errorCB);
+    tx.executeSql(sqlInsert,["4807788058850","Iron Supplement","img/item3.jpg","with free facial chocolate"],null,errorCB);
+    tx.executeSql(sqlInsert,["795144075167","Iron Supplement","img/item5.jpg","with free facial pencil"],null,errorCB);
+    tx.executeSql(sqlInsert,["400541548218","Faber Castell TextLiner 48","img/item6.jpg","with free facial baby poweder"],null,errorCB);
+
+    alert('inserted');
 
 }
 
-function successQueryDB(tx)
+function queryDB(tx)
 {
     alert("oh yeah!!!! successQueryDB");
+    var enteredBarcode = $('#searchForm').children('[name="search"]').val();
     
-    tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE', [], renderList, errorCB);
+    tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat = "' + enteredBarcode +'"' , [], renderList, errorCB);
 }
 
 function renderList(tx,results)
@@ -61,7 +73,7 @@ function renderList(tx,results)
     
     alert('length ' + len);
     
-    $('#itemsList').empty();
+    
   
     for(var ind=0; ind < len; ind++)
     {
@@ -270,10 +282,10 @@ function testLS2()
 {
     
     $("#searchForm").on('submit', function()
-    {
+    {   $('#itemsList').empty();
         if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
         { 
-            db.transaction(populateDB, errorCB);
+            db.transaction(queryDB, errorCB);
         }
         
         var searchedValue = $(this).children('[name="search"]').val();

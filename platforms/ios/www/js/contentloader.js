@@ -16,7 +16,8 @@
                 {
                     scanner.startScanning();
                     $('.scanbtn').parent().addClass('active');
-
+                    
+                    //on manatee close $('.webdefault').click();
                    
                 }
                  else
