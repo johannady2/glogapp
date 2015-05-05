@@ -17,7 +17,7 @@
                     scanner.startScanning();
                     $('.scanbtn').parent().addClass('active');
                     
-                    //on manatee close $('.webdefault').click();
+                    //on manatee close $(".content-cont").empty(); $('.webdefault').click();
                    
                 }
                  else
@@ -73,16 +73,11 @@
             navClickedAndContentContReady(event,filename);//trigger is in callback of .content-cont to ensure that this div is loaded first, before the data is appended.
             }
             
+               
+               
            });
           
 
-        });
-     
-     
-        $('.viewItem').on( "click", function(e) 
-        {
-            var openThisItem = $(this).data('itemid');
-            alert(openThisItem);
         });
 
      

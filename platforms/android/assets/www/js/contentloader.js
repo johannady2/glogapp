@@ -17,7 +17,7 @@
                     scanner.startScanning();
                     $('.scanbtn').parent().addClass('active');
                     
-                    //on manatee close $('.webdefault').click();
+                    //on manatee close $(".content-cont").empty(); $('.webdefault').click();
                    
                 }
                  else
@@ -36,7 +36,7 @@
      
      
      
-     $('.navbar-nav > li > a , .navbar-brand').on( "click", function(e) 
+     $('.navbar-nav > li > a , .navbar-brand ').on( "click", function(e) 
         {
             e.preventDefault();
          
@@ -73,6 +73,8 @@
             navClickedAndContentContReady(event,filename);//trigger is in callback of .content-cont to ensure that this div is loaded first, before the data is appended.
             }
             
+               
+               
            });
           
 

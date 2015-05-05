@@ -22,7 +22,7 @@ function createDB(tx)
     tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
     
     
-        tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id unique ,Barcode_InvtyCat, title , image , description,displayPrice)',[],populateInventoryMasterCatalogue,errorCB);
+        tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat, title , image , description,displayPrice)',[],populateInventoryMasterCatalogue,errorCB);
     
     
     alert('Table created');
@@ -73,7 +73,7 @@ function populateInventoryMasterCatalogue(tx)
 
 
 /*----------------------------------------------------------------------*/
-/*-------------------contentloader.js-------------------------------*/
+/*-------------------custom events-------------------------------*/
 /*----------------------------------------------------------------------*/
 function navClickedAndContentContReady(event,filename)
 {//e.stopPropagation();//dunno what this is for but tutorial used this and he said it's better not to use this
@@ -81,8 +81,11 @@ function navClickedAndContentContReady(event,filename)
     $(document).trigger('navClicked',[filename]);
 
 }
+
+
+
 /*----------------------------------------------------------------------*/
-/*-------------------//contentloader.js-------------------------------*/
+/*-------------------//custom events-------------------------------*/
 /*----------------------------------------------------------------------*/
 
 
@@ -126,6 +129,8 @@ function renderCatalogueItems(tx,results)
         }
     
         $('#list').append(htmlstringCatalaogue);
+    
+        
 }
 
 

@@ -22,7 +22,7 @@ function createDB(tx)
     tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
     
     
-        tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id unique ,Barcode_InvtyCat, title , image , description,displayPrice)',[],populateInventoryMasterCatalogue,errorCB);
+        tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat, title , image , description,displayPrice)',[],populateInventoryMasterCatalogue,errorCB);
     
     
     alert('Table created');
@@ -73,7 +73,7 @@ function populateInventoryMasterCatalogue(tx)
 
 
 /*----------------------------------------------------------------------*/
-/*-------------------contentloader.js-------------------------------*/
+/*-------------------custom events-------------------------------*/
 /*----------------------------------------------------------------------*/
 function navClickedAndContentContReady(event,filename)
 {//e.stopPropagation();//dunno what this is for but tutorial used this and he said it's better not to use this
@@ -81,9 +81,15 @@ function navClickedAndContentContReady(event,filename)
     $(document).trigger('navClicked',[filename]);
 
 }
+
+
+
 /*----------------------------------------------------------------------*/
-/*-------------------//contentloader.js-------------------------------*/
+/*-------------------//custom events-------------------------------*/
 /*----------------------------------------------------------------------*/
+
+
+
 
 
 
@@ -116,13 +122,15 @@ function renderCatalogueItems(tx,results)
             htmlstringCatalaogue += '<p>'+ results.rows.item(ind).description +'</p>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '<div class="col-md-12 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem">View</a>';
+            htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).id +'">View</a>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '</div></div></article></div></div></div>';
 
         }
     
         $('#list').append(htmlstringCatalaogue);
+    
+        
 }
 
 
@@ -148,7 +156,7 @@ function renderSearchResults(tx,results)
     for(var ind=0; ind < len; ind++)
     {
         
-        htmlstring += '<li>'+ results.rows.item(ind).title+'<br><img src="'+ results.rows.item(ind).image +'">'+'</li>';
+        htmlstring += '<li>'+ results.rows.item(ind).title+'<br><img src="'+ results.rows.item(ind).image +'"><br><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).id +'">View</a></li>';
    
         $('#itemsList').append(htmlstring);
          
