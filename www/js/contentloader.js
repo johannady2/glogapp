@@ -8,13 +8,17 @@
              $('body').css('background-image', 'url(' + '"img/splashbg.jpg"' + ')');
              $(".slideToUnlock").on('click',function()
              {
-                  $('body').css('background-image', 'none');
-                $('nav , footer').show();
-                 $('.content-cont').empty();
+                 $('body').css('background-image', 'none');
+                 $('nav , footer').show();
+                 $('.splashscreencont').remove();
                  
                  if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
                 {
-                    $('.scanbtn').click();//default page after splashscreen will be scan.html on mobile devices
+                    scanner.startScanning();
+                    $('.scanbtn').parent().addClass('active');
+                    
+                    //on manatee close $('.webdefault').click();
+                   
                 }
                  else
                  {
@@ -31,10 +35,12 @@
      
      
      
-     $('.navbar-nav > li > a[href="'+defaultContent+'"]').parent().addClass('active');
+     
      $('.navbar-nav > li > a , .navbar-brand').on( "click", function(e) 
         {
             e.preventDefault();
+         
+     
 
           $('.active').removeClass('active');
          
