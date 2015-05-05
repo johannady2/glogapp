@@ -116,7 +116,7 @@ function renderCatalogueItems(tx,results)
             htmlstringCatalaogue += '<p>'+ results.rows.item(ind).description +'</p>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '<div class="col-md-12 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<a href="#" class="btn btn-primary btn-large viewItem">View</a>';
+            htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem">View</a>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '</div></div></article></div></div></div>';
 
