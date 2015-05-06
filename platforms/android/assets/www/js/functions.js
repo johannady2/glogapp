@@ -9,6 +9,7 @@ var db;
 var idForSinglePage;
 var scanResult;
 
+
 function onDeviceReady()
 {
     
@@ -386,7 +387,7 @@ function queryItemDetails(tx,idForSinglePage)
 function renderSinglePage(tx,results)
 {//results.rows.item(ind).title
     
-    eraseNoneNumeric();
+
     
     var doesThisExist = results.rows.length;
     
@@ -451,48 +452,83 @@ function queryItemDetailsByBarcode(tx,scanResult)
 
 
 /*-----------------other---------------------*/
-function eraseNoneNumeric()
-{
-    alert('prevent none numeric loaded');
 
-    $(document).on('input','#glogquantity',function (e)
+   
+    
+    $(document).on('input','#glogquantity',function ()
     {
         /*keycodes undefined are undefined so i did this instead*/
-        var glogprice = $('.glogprice').html();
-        var currentvalue = $('#glogquantity').val();
-        
-        
-        
-        if(currentvalue <= 0)
-        {
-          $('#glogquantity').val(1);  
-        }
-        else if(currentvalue == null)
-        {
-             currentvalue = 1;//won't change display but computed value will be 1
-        }
-        else if(currentvalue == '' )
-        {
-            currentvalue = 1;//won't change display but computed value will be 1
-        }
-        
-        var newvalue = currentvalue.replace(/[^0-9\.]+/g, "");
-        $('#glogquantity').val(newvalue);
-        
-        var glogtotal = glogprice * newvalue;
-        
-        
-        $('.glogtotal').html(glogtotal);
-        
 
+        
+        var glogprice = $('.glogprice').html(); 
+        
+         var currentvalue = $('#glogquantity').val();
+         var glogqlen = $.trim($('#glogquantity').val());
+        
+        alert('glogqlen ='+glogqlen);
+        
+        if(glogqlen.length>0 && currentvalue != 0 && currentvalue !='0' && testinput(/[^0-9.]/, currentvalue)==0)//if not empty && not zero && (does not contain any none numeric && glogqlen == 1)
+        {
+          alert('in if');
+            alert('currentvalue =' + currentvalue);
+            
+            var newvalue = currentvalue.toString().replace(/[^0-9\.]+/g, '');
+            $('#glogquantity').val(newvalue);
+            var qval = $('#glogquantity').val();
+            
+            
+        }
+        else
+        {
+            
+          alert('in else');
+            currentvalue = 1;
+            alert('currentvalue =' + currentvalue);
+            
+            var newvalue = currentvalue.toString().replace(/[^0-9\.]+/g, '');
+            $('#glogquantity').val('');
+            var qval = 1;
+
+        }
+        
+        
+        alert('after if else');
+             
+            
+           
+            parseInt(qval);
+                
+            alert(qval);
+            var glogtotal = qval *  glogprice;   
+            alert('glogtotal =' + glogtotal);
+            $('.glogtotal').empty();
+            $('.glogtotal').append(glogtotal);
+           
+    
+    
+       
+      
     });
     
     
     //use later on another function.
     //$(document).on('click','.placeOrder', function(){alert('test');});
 
+function testinput(re, str)
+{
+  
+    
+    if (re.test(str) && (str.length == 1))
+    {
+        alert('contains none numeric and string length == 1');
+        return 1;
+    } 
+    else
+    {
+        alert('does not contain none numeric || or contains but length > 1');
+        return 0;
+    }
+  
 }
-
-
 
 /*----------------//other-------------------*/
