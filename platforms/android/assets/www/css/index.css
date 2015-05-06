@@ -388,10 +388,14 @@ article .entry-title
 }
 
 .totalcounter
-{
+{ 
     width:100%;
 }
 
+.forsingleonly
+{
+    display:none;
+}
                             /*Masonry Stuff*/
                             #wrapper
                             {

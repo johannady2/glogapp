@@ -22,11 +22,7 @@ function createDB(tx)
     
    
     tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
-    
-    
-        tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat, title , image , description,displayPrice)',[],populateInventoryMasterCatalogue,errorCB);
-    
-    
+    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat, title , image , description,displayPrice)',[],populateInventoryMasterCatalogue,errorCB);
     
 }
 
@@ -90,6 +86,9 @@ function viewItemClickedContentReady(event,idForSinglePage)
     $(document).trigger('viewItemClicked',[idForSinglePage]);
 }
 
+
+
+
 /*----------------------------------------------------------------------*/
 /*-------------------//custom events-------------------------------*/
 /*----------------------------------------------------------------------*/
@@ -104,6 +103,11 @@ function viewItemClickedContentReady(event,idForSinglePage)
 /*----------------------------------------------------------------------*/
 /*-------------------navClickedListener.js-------------------------------*/
 /*----------------------------------------------------------------------*/
+
+
+
+
+
 function queryCatalogueItems(tx)
 {
    tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE' , [], renderCatalogueItems, errorCB);  
