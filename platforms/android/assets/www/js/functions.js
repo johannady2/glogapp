@@ -88,7 +88,10 @@ function viewItemClickedContentReady(event,idForSinglePage)
 }
 
 
-
+function doneScanning(event,scanResult)
+{
+    $(document).trigger('itemScanned',[scanResult]);
+}
 
 /*----------------------------------------------------------------------*/
 /*-------------------//custom events-------------------------------*/
@@ -412,3 +415,17 @@ function renderSinglePage(tx,results)
 /*-------------------//viewItemClicked.js-------------------------------*/
 /*----------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------*/
+/*-------------------itemScannedListener.js-------------------------------*/
+/*----------------------------------------------------------------------*/
+function queryItemDetailsByBarcode(tx,scanResult)
+{
+    
+  tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat=' + scanResult, [], renderSinglePage, errorCB);  
+}
+
+//renderSinglePage already created for viewItemClicked.js
+
+/*----------------------------------------------------------------------*/
+/*-------------------//itemScannedListener.js-------------------------------*/
+/*----------------------------------------------------------------------*/
