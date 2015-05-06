@@ -407,7 +407,8 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '<table class="totalcounter"><tr><td>';
         htmlstringSingle += '<label for="quantity">Quantity</label>';
         htmlstringSingle += '</td><td class="pull-right">';
-        htmlstringSingle += '<input type="text" name="glogquantity" id="glogquatity" value="1">';
+        htmlstringSingle += '<input type="text" name="glogquantity" id="glogquantity" value="1">';
+        htmlstringSingle += '<input type="hidden" name="hiddenglogquantity" id="hiddenglogquantity" value="">';
         htmlstringSingle += '</td></tr><tr><td>';
         htmlstringSingle += '<label for="quantity">Subtotal</label>';
         htmlstringSingle += '</td><td class="pull-right"><div>';
@@ -455,9 +456,14 @@ function preventNoneNumeric()
 {
     alert('prevent none numeric loaded');
 
-    $(document).on('keydown','#glogquatity',function (e) {
+    $(document).on('keyup','#glogquantity',function (e)
+    {
         
-        alert(e.keycode);
+        var currentvalue = $('#glogquantity').val();
+        alert(currentvalue);
+        
+        
+        /*keycodes undefined on mobile T_T*/
         // Allow: backspace, delete, tab, escape, enter and .
         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
              // Allow: Ctrl+A, Command+A
