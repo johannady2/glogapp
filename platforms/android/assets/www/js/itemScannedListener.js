@@ -11,6 +11,6 @@ $(document).on('itemScanned',function(event,scanResult)
         var scannedItemSinglePageBackButton =  $('.webdefault').attr('href');
         $('.forsingleonly a').attr('href',scannedItemSinglePageBackButton);
         
-        alert('itemScanned Listener done');
+       // alert('itemScanned Listener done');
     }
 });

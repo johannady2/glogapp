@@ -64,7 +64,7 @@
             
             
             $('.forsingleonly a').attr('href',loadThisContent);
-            alert('backbutton updated');
+            //alert('backbutton updated');
          
          
             //$(".content-cont").load(loadThisContent);

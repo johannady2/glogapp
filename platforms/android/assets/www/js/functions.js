@@ -30,13 +30,13 @@ function createDB(tx)
 
 function errorCB(err)
 {
-    alert("Error processing SQL: " + err.message);
+    //alert("Error processing SQL: " + err.message);
    
 }
 
 function successCB()
 {
-    //alert('successful');
+    ////alert('successful');
 
 }
 
@@ -92,9 +92,9 @@ function viewItemClickedContentReady(event,idForSinglePage)
 
 function doneScanning(event,scanResult)
 {
-    alert('doneScanning started');
+    //alert('doneScanning started');
     $(document).trigger('itemScanned',[scanResult]);
-     alert('trigger completed');
+     //alert('trigger completed');
 }
 
 
@@ -265,7 +265,7 @@ function testgetjson()
                   {//key PEOPLE/[{"PERSON":{"id":"1","name":"johanna","city":"iligan","street":"sadasdasd","homenum":"8998908","mobilenum":"989089080"}},{"PERSON":{"id":"2","name":"ong","city":"iligan","street":"kjkjljkj","homenum":"9809009","mobilenum":"9090909"}},{"PERSON":{"id":"3","name":"eu","city":"kjkjkj","street":"kjkjkjk","homenum":"909090","mobilenum":"8989"}},{"PERSON":{"id":"4","name":"james","city":"kjkjjk","street":"jkjk","homenum":"3333333","mobilenum":"444444444"}},{"PERSON":{"id":"5","name":"jerome","city":"kjkjkj","street":"kjkjkjk","homenum":"90090","mobilenum":"909090"}},{"PERSON":{"id":"6","name":"keyki","city":"jjkj","street":"kjkjk","homenum":"2147483647","mobilenum":"2147483647"}},{"PERSON":{"id":"7","name":"p-seven","city":"jhjhjhj","street":"hjh","homenum":"909090","mobilenum":"9090"}},{"PERSON":{"id":"8","name":"p-eight","city":"kjkjkjk","street":"jkjkj","homenum":"9090909","mobilenum":"90909"}}]
 
                         /*var obj = JSON.stringify(value);
-                        alert(obj);*/
+                        //alert(obj);*/
 
                         $.each(value, function(inde, valu)
                         {
@@ -360,7 +360,7 @@ function testgetjson()
 						{
                             $.each( valu, function( k, val )
                             {
-                                    alert( k + ": " + val );
+                                    //alert( k + ": " + val );
                             });
 						});
 					});*/
@@ -438,9 +438,9 @@ function renderSinglePage(tx,results)
 /*----------------------------------------------------------------------*/
 function queryItemDetailsByBarcode(tx,scanResult)
 {
-  alert('queryItemDetailsByBarcode started');
+  //alert('queryItemDetailsByBarcode started');
   tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat=' + scanResult, [], renderSinglePage, errorCB); 
-  alert('queryItemDetailsByBarcode done');
+  //alert('queryItemDetailsByBarcode done');
 }
 
 //renderSinglePage already created for viewItemClicked.js
@@ -465,12 +465,12 @@ function queryItemDetailsByBarcode(tx,scanResult)
          var currentvalue = $('#glogquantity').val();
          var glogqlen = $.trim($('#glogquantity').val());
         
-        alert('glogqlen ='+glogqlen);
+        //alert('glogqlen ='+glogqlen);
         
         if(glogqlen.length>0 && currentvalue != 0 && currentvalue !='0' && testinput(/[^0-9.]/, currentvalue)==0)//if not empty && not zero && (does not contain any none numeric && glogqlen == 1)
         {
-          alert('in if');
-            alert('currentvalue =' + currentvalue);
+          //alert('in if');
+            //alert('currentvalue =' + currentvalue);
             
             var newvalue = currentvalue.toString().replace(/[^0-9\.]+/g, '');
             $('#glogquantity').val(newvalue);
@@ -481,9 +481,9 @@ function queryItemDetailsByBarcode(tx,scanResult)
         else
         {
             
-          alert('in else');
+          //alert('in else');
             currentvalue = 1;
-            alert('currentvalue =' + currentvalue);
+           // //alert('currentvalue =' + currentvalue);
             
             var newvalue = currentvalue.toString().replace(/[^0-9\.]+/g, '');
             $('#glogquantity').val('');
@@ -492,15 +492,15 @@ function queryItemDetailsByBarcode(tx,scanResult)
         }
         
         
-        alert('after if else');
+        //alert('after if else');
              
             
            
             parseInt(qval);
                 
-            alert(qval);
+           // //alert(qval);
             var glogtotal = qval *  glogprice;   
-            alert('glogtotal =' + glogtotal);
+           // //alert('glogtotal =' + glogtotal);
             $('.glogtotal').empty();
             $('.glogtotal').append(glogtotal);
            
@@ -512,7 +512,7 @@ function queryItemDetailsByBarcode(tx,scanResult)
     
     
     //use later on another function.
-    //$(document).on('click','.placeOrder', function(){alert('test');});
+    //$(document).on('click','.placeOrder', function(){//alert('test');});
 
 function testinput(re, str)
 {
@@ -520,12 +520,12 @@ function testinput(re, str)
     
     if (re.test(str) && (str.length == 1))
     {
-        alert('contains none numeric and string length == 1');
+       // //alert('contains none numeric and string length == 1');
         return 1;
     } 
     else
     {
-        alert('does not contain none numeric || or contains but length > 1');
+      //  //alert('does not contain none numeric || or contains but length > 1');
         return 0;
     }
   
