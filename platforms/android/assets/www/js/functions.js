@@ -23,7 +23,7 @@ function createDB(tx)
     
    
     tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat INTEGER, title , image , description,displayPrice)',[],populateInventoryMasterCatalogue,errorCB);
+    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat INTEGER, title , image , description,displayPrice DECIMAL(9,2))',[],populateInventoryMasterCatalogue,errorCB);
     
 }
 
@@ -46,15 +46,15 @@ function populateInventoryMasterCatalogue(tx)
    
     var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(Barcode_InvtyCat,title,image,description,displayPrice) VALUES(?,?,?,?,?)';
    
-    tx.executeSql(sqlInsert,[101191,"Long Image Sample","img/item1.jpg","with free 1kg rice","63.00"],null,errorCB);
-    tx.executeSql(sqlInsert,[4801010127215,"Johnson\'s Baby Cologne","img/item2.gif","with free milk","63.00"],null,errorCB);
-    tx.executeSql(sqlInsert,[8999999003395,"Pond\'s Pure White","img/item3.jpg","with free candy","14.00"],null,errorCB);
-    tx.executeSql(sqlInsert,[4807788058850,"Iron Supplement","img/item4.gif","with free facial chocolate","99.99"],null,errorCB);
-    tx.executeSql(sqlInsert,[12345,"Pocky Cholcate","img/item5.jpg","free Soy Sauce","99.99"],null,errorCB);
-    tx.executeSql(sqlInsert,[795144075167,"Pocky Set","img/item6.jpg","BUY 1 TAKE 1","15.00"],null,errorCB);
-    tx.executeSql(sqlInsert,[4005401548218,"Faber Castell TextLiner 48","img/item7.jpg","with free facial baby poweder","232.00"],null,errorCB);
-    tx.executeSql(sqlInsert,[123,"Flour 2kg","img/item8.jpg","Free Cookies","232.00"],null,errorCB);
-    tx.executeSql(sqlInsert,[11223344,"Maxx","img/item9.jpg","Mentos","232.00"],null,errorCB);
+    tx.executeSql(sqlInsert,[101191,"Long Image Sample","img/item1.jpg","with free 1kg rice",63.00],null,errorCB);
+    tx.executeSql(sqlInsert,[4801010127215,"Johnson\'s Baby Cologne","img/item2.gif","with free milk",63.00],null,errorCB);
+    tx.executeSql(sqlInsert,[8999999003395,"Pond\'s Pure White","img/item3.jpg","with free candy",14.00],null,errorCB);
+    tx.executeSql(sqlInsert,[4807788058850,"Iron Supplement","img/item4.gif","with free facial chocolate",99.99],null,errorCB);
+    tx.executeSql(sqlInsert,[12345,"Pocky Cholcate","img/item5.jpg","free Soy Sauce",99.99],null,errorCB);
+    tx.executeSql(sqlInsert,[795144075167,"Pocky Set","img/item6.jpg","BUY 1 TAKE 1",15.00],null,errorCB);
+    tx.executeSql(sqlInsert,[4005401548218,"Faber Castell TextLiner 48","img/item7.jpg","with free facial baby poweder",232.00],null,errorCB);
+    tx.executeSql(sqlInsert,[123,"Flour 2kg","img/item8.jpg","Free Cookies",232.00],null,errorCB);
+    tx.executeSql(sqlInsert,[11223344,"Maxx","img/item9.jpg","Mentos",232.00],null,errorCB);
 
 
     

@@ -109,6 +109,7 @@ MWBSInitSpace.callback = function(result){
     //alert('Scan complete');
     if (result.type == 'Cancel'){
         //Perform some action on scanning canceled if needed
+        $('.webdefault').click();
     } 
     else
         if (result && result.code){
