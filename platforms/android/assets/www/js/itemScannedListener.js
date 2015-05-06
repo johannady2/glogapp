@@ -6,6 +6,11 @@ $(document).on('itemScanned',function(event,scanResult)
         $('.navbar-brand , .navbar-nav > li').not('.forsingleonly').hide();
         $('.forsingleonly').show();
         db.transaction(function(tx){queryItemDetailsByBarcode(tx,scanResult)},errorCB);
+        
+        
+        var scannedItemSinglePageBackButton =  $('.webdefault').attr('href');
+        $('.forsingleonly a').attr('href',scannedItemSinglePageBackButton);
+        
         alert('itemScanned Listener done');
     }
 });

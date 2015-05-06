@@ -96,6 +96,7 @@ function doneScanning(event,scanResult)
      alert('trigger completed');
 }
 
+
 /*----------------------------------------------------------------------*/
 /*-------------------//custom events-------------------------------*/
 /*----------------------------------------------------------------------*/
@@ -385,11 +386,11 @@ function queryItemDetails(tx,idForSinglePage)
 function renderSinglePage(tx,results)
 {//results.rows.item(ind).title
     
-    alert('renderingSinglePage');
+   preventNoneNumeric();
     
     var doesThisExist = results.rows.length;
     
-    alert(doesThisExist);
+    
     
     if(doesThisExist > 0)
     {
@@ -406,7 +407,7 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '<table class="totalcounter"><tr><td>';
         htmlstringSingle += '<label for="quantity">Quantity</label>';
         htmlstringSingle += '</td><td class="pull-right">';
-        htmlstringSingle += '<input type="text" name="quantity" id="quatity" value="1">';
+        htmlstringSingle += '<input type="text" name="glogquantity" id="glogquatity" value="1">';
         htmlstringSingle += '</td></tr><tr><td>';
         htmlstringSingle += '<label for="quantity">Subtotal</label>';
         htmlstringSingle += '</td><td class="pull-right"><div>';
@@ -421,10 +422,9 @@ function renderSinglePage(tx,results)
     }
 
         $('.content-cont').empty();
-
         $('.content-cont').append(htmlstringSingle);
     
-    alert('renderingSinglePage completed');
+    
     
 
 }
@@ -447,3 +447,34 @@ function queryItemDetailsByBarcode(tx,scanResult)
 /*----------------------------------------------------------------------*/
 /*-------------------//itemScannedListener.js-------------------------------*/
 /*----------------------------------------------------------------------*/
+
+
+
+/*-----------------other---------------------*/
+function preventNoneNumeric()
+{
+    alert('prevent none numeric loaded');
+
+    $(document).on('keydown','#glogquatity',function (e) {
+        
+        alert(e.keycode);
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+             // Allow: Ctrl+A, Command+A
+            (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
+             // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+    
+    
+    $(document).on('click','.placeOrder', function(){alert('test');});
+
+}
+/*----------------//other-------------------*/

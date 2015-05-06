@@ -6,6 +6,9 @@ $(document).on('viewItemClicked',function(event,idForSinglePage)
         $('.navbar-brand , .navbar-nav > li').not('.forsingleonly').hide();
         $('.forsingleonly').show();
         db.transaction(function(tx){queryItemDetails(tx,idForSinglePage)},errorCB);
+        
+
+
 
     }
 });

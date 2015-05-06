@@ -17,9 +17,9 @@
                     scanner.startScanning(MWBSInitSpace.init,MWBSInitSpace.callback);
                     
                       
-                    $('.scanbtn').parent().addClass('active');
+                    //$('.scanbtn').parent().addClass('active');
                     
-                    //on manatee close $(".content-cont").empty(); $('.webdefault').click();
+                    
                    
                 }
                  else
