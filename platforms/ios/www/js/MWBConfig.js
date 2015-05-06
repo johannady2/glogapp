@@ -117,6 +117,6 @@ MWBSInitSpace.callback = function(result){
             alert(scanResult);
             
          
-            //doneScanning(event,scanResult);
+            doneScanning(event,scanResult);
         }
 }

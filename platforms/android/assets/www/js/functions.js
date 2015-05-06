@@ -23,13 +23,14 @@ function createDB(tx)
     
    
     tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat, title , image , description,displayPrice)',[],populateInventoryMasterCatalogue,errorCB);
+    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat INTEGER, title , image , description,displayPrice)',[],populateInventoryMasterCatalogue,errorCB);
     
 }
 
 function errorCB(err)
 {
     alert("Error processing SQL: " + err.message);
+   
 }
 
 function successCB()
@@ -45,15 +46,15 @@ function populateInventoryMasterCatalogue(tx)
    
     var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(Barcode_InvtyCat,title,image,description,displayPrice) VALUES(?,?,?,?,?)';
    
-    tx.executeSql(sqlInsert,["101191","Long Image Sample","img/item1.jpg","with free 1kg rice","63.00"],null,errorCB);
-    tx.executeSql(sqlInsert,["4801010127215","Johnson\'s Baby Cologne","img/item2.gif","with free milk","63.00"],null,errorCB);
-    tx.executeSql(sqlInsert,["8999999003395","Pond\'s Pure White","img/item3.jpg","with free candy","14.00"],null,errorCB);
-    tx.executeSql(sqlInsert,["4807788058850","Iron Supplement","img/item4.gif","with free facial chocolate","99.99"],null,errorCB);
-    tx.executeSql(sqlInsert,["12345","Pocky Cholcate","img/item5.jpg","free Soy Sauce","99.99"],null,errorCB);
-    tx.executeSql(sqlInsert,["795144075167","Pocky Set","img/item6.jpg","BUY 1 TAKE 1","15.00"],null,errorCB);
-    tx.executeSql(sqlInsert,["400541548218","Faber Castell TextLiner 48","img/item7.jpg","with free facial baby poweder","232.00"],null,errorCB);
-    tx.executeSql(sqlInsert,["123","Flour 2kg","img/item8.jpg","Free Cookies","232.00"],null,errorCB);
-    tx.executeSql(sqlInsert,["11223344","Maxx","img/item9.jpg","Mentos","232.00"],null,errorCB);
+    tx.executeSql(sqlInsert,[101191,"Long Image Sample","img/item1.jpg","with free 1kg rice","63.00"],null,errorCB);
+    tx.executeSql(sqlInsert,[4801010127215,"Johnson\'s Baby Cologne","img/item2.gif","with free milk","63.00"],null,errorCB);
+    tx.executeSql(sqlInsert,[8999999003395,"Pond\'s Pure White","img/item3.jpg","with free candy","14.00"],null,errorCB);
+    tx.executeSql(sqlInsert,[4807788058850,"Iron Supplement","img/item4.gif","with free facial chocolate","99.99"],null,errorCB);
+    tx.executeSql(sqlInsert,[12345,"Pocky Cholcate","img/item5.jpg","free Soy Sauce","99.99"],null,errorCB);
+    tx.executeSql(sqlInsert,[795144075167,"Pocky Set","img/item6.jpg","BUY 1 TAKE 1","15.00"],null,errorCB);
+    tx.executeSql(sqlInsert,[4005401548218,"Faber Castell TextLiner 48","img/item7.jpg","with free facial baby poweder","232.00"],null,errorCB);
+    tx.executeSql(sqlInsert,[123,"Flour 2kg","img/item8.jpg","Free Cookies","232.00"],null,errorCB);
+    tx.executeSql(sqlInsert,[11223344,"Maxx","img/item9.jpg","Mentos","232.00"],null,errorCB);
 
 
     
@@ -90,7 +91,9 @@ function viewItemClickedContentReady(event,idForSinglePage)
 
 function doneScanning(event,scanResult)
 {
+    alert('doneScanning started');
     $(document).trigger('itemScanned',[scanResult]);
+     alert('trigger completed');
 }
 
 /*----------------------------------------------------------------------*/
@@ -382,34 +385,48 @@ function queryItemDetails(tx,idForSinglePage)
 function renderSinglePage(tx,results)
 {//results.rows.item(ind).title
     
+    alert('renderingSinglePage');
     
-    var htmlstringSingle ='';
-    htmlstringSingle += '<div class="row single-cont"><div class="col-md-6 col-sm-12 col-xs-12"><div class="img-container">';   
-    htmlstringSingle += '<img src="'+ results.rows.item(0).image +'" class="responsiveImage">';
-    htmlstringSingle += '</div></div>';
-    htmlstringSingle += '<div class="col-md-6 col-sm-12 col-xs-12"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
-    htmlstringSingle += '<h1>'+ results.rows.item(0).title +'</h1>';
-    htmlstringSingle += '<p>'+ results.rows.item(0).description +'</p>';
-    htmlstringSingle += '<h3 class="pull-right">$'+ results.rows.item(0).displayPrice +'</h3>';
-    htmlstringSingle += '</div> </div>';
-    htmlstringSingle += '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
-    htmlstringSingle += '<table class="totalcounter"><tr><td>';
-    htmlstringSingle += '<label for="quantity">Quantity</label>';
-    htmlstringSingle += '</td><td class="pull-right">';
-    htmlstringSingle += '<input type="text" name="quantity" id="quatity" value="1">';
-    htmlstringSingle += '</td></tr><tr><td>';
-    htmlstringSingle += '<label for="quantity">Subtotal</label>';
-    htmlstringSingle += '</td><td class="pull-right"><div>';
-    htmlstringSingle += '<p><span>$</span>2233333.22</p></div>';
-    htmlstringSingle += '</td></tr></table>';
-    htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder">Place Order</a>';
-    htmlstringSingle += '</div></div></div></div>';
+    var doesThisExist = results.rows.length;
+    
+    alert(doesThisExist);
+    
+    if(doesThisExist > 0)
+    {
+        var htmlstringSingle ='';
+        htmlstringSingle += '<div class="row single-cont"><div class="col-md-6 col-sm-12 col-xs-12"><div class="img-container">';   
+        htmlstringSingle += '<img src="'+ results.rows.item(0).image +'" class="responsiveImage">';
+        htmlstringSingle += '</div></div>';
+        htmlstringSingle += '<div class="col-md-6 col-sm-12 col-xs-12"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
+        htmlstringSingle += '<h1>'+ results.rows.item(0).title +'</h1>';
+        htmlstringSingle += '<p>'+ results.rows.item(0).description +'</p>';
+        htmlstringSingle += '<h3 class="pull-right">$'+ results.rows.item(0).displayPrice +'</h3>';
+        htmlstringSingle += '</div> </div>';
+        htmlstringSingle += '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
+        htmlstringSingle += '<table class="totalcounter"><tr><td>';
+        htmlstringSingle += '<label for="quantity">Quantity</label>';
+        htmlstringSingle += '</td><td class="pull-right">';
+        htmlstringSingle += '<input type="text" name="quantity" id="quatity" value="1">';
+        htmlstringSingle += '</td></tr><tr><td>';
+        htmlstringSingle += '<label for="quantity">Subtotal</label>';
+        htmlstringSingle += '</td><td class="pull-right"><div>';
+        htmlstringSingle += '<p><span>$</span>2233333.22</p></div>';
+        htmlstringSingle += '</td></tr></table>';
+        htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder">Place Order</a>';
+        htmlstringSingle += '</div></div></div></div>';
+    }
+    else
+    {
+        htmlstringSingle = 'Sorry, we do not have this item.';
+    }
 
-   
-    $('.content-cont').empty();
-   
-    $('.content-cont').append(htmlstringSingle);    
+        $('.content-cont').empty();
+
+        $('.content-cont').append(htmlstringSingle);
     
+    alert('renderingSinglePage completed');
+    
+
 }
 /*----------------------------------------------------------------------*/
 /*-------------------//viewItemClicked.js-------------------------------*/
@@ -420,8 +437,9 @@ function renderSinglePage(tx,results)
 /*----------------------------------------------------------------------*/
 function queryItemDetailsByBarcode(tx,scanResult)
 {
-    
-  tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat=' + scanResult, [], renderSinglePage, errorCB);  
+  alert('queryItemDetailsByBarcode started');
+  tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat=' + scanResult, [], renderSinglePage, errorCB); 
+  alert('queryItemDetailsByBarcode done');
 }
 
 //renderSinglePage already created for viewItemClicked.js
