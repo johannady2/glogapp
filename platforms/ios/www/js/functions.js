@@ -7,6 +7,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
 //GLOBAL VARIABLES
 var db;
 var idForSinglePage;
+var scanResult;
 
 function onDeviceReady()
 {
@@ -410,3 +411,4 @@ function renderSinglePage(tx,results)
 /*----------------------------------------------------------------------*/
 /*-------------------//viewItemClicked.js-------------------------------*/
 /*----------------------------------------------------------------------*/
+

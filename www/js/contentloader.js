@@ -14,7 +14,9 @@
                  $('.forsingleonly').hide();
                  if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
                 {
-                    scanner.startScanning();
+                    scanner.startScanning(MWBSInitSpace.init,MWBSInitSpace.callback);
+                    
+                      
                     $('.scanbtn').parent().addClass('active');
                     
                     //on manatee close $(".content-cont").empty(); $('.webdefault').click();

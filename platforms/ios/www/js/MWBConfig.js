@@ -106,13 +106,14 @@ MWBSInitSpace.callback = function(result){
      //result.type - type of barcode detected
      //result.bytes - bytes array of raw barcode result
      
-    console.log('Scan complete');
+    //alert('Scan complete');
     if (result.type == 'Cancel'){
         //Perform some action on scanning canceled if needed
     } 
     else
         if (result && result.code){
-            navigator.notification.alert(result.code, function(){}, result.type, 'Close');
-			
+            //navigator.notification.alert(result.code, function(){}, result.type, 'Close');
+			scanResult = result.code;
+            alert('nakuha' + scanResult);
         }
 }

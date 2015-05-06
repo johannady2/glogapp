@@ -14,7 +14,9 @@
                  $('.forsingleonly').hide();
                  if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
                 {
-                    scanner.startScanning();
+                    scanner.startScanning(MWBSInitSpace.init,MWBSInitSpace.callback);
+                    
+                      
                     $('.scanbtn').parent().addClass('active');
                     
                     //on manatee close $(".content-cont").empty(); $('.webdefault').click();
@@ -80,19 +82,12 @@
         $('.forsingleonly a').on('click', function(e)
         {  e.preventDefault();
             var backTo = $(this).attr('href');
-
-          
             
             $('.navbar-brand , .navbar-nav > li').not('.forsingleonly').show();
             $('.forsingleonly').hide();
-
-            
             $(".content-cont").load(backTo);
-            
-             $('.navbar-nav > li > a[href="'+ backTo +'"]').not('.forsingleonly a').click();
+            $('.navbar-nav > li > a[href="'+ backTo +'"]').not('.forsingleonly a').click();
       
-
-
         });
 
     
