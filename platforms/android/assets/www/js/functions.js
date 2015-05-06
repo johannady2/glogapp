@@ -386,7 +386,7 @@ function queryItemDetails(tx,idForSinglePage)
 function renderSinglePage(tx,results)
 {//results.rows.item(ind).title
     
-   preventNoneNumeric();
+    eraseNoneNumeric();
     
     var doesThisExist = results.rows.length;
     
@@ -401,7 +401,7 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '<div class="col-md-6 col-sm-12 col-xs-12"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
         htmlstringSingle += '<h1>'+ results.rows.item(0).title +'</h1>';
         htmlstringSingle += '<p>'+ results.rows.item(0).description +'</p>';
-        htmlstringSingle += '<h3 class="pull-right">$'+ results.rows.item(0).displayPrice +'</h3>';
+        htmlstringSingle += '<h3 class="pull-right">$<span class="glogprice">'+ results.rows.item(0).displayPrice +'</span></h3>';
         htmlstringSingle += '</div> </div>';
         htmlstringSingle += '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
         htmlstringSingle += '<table class="totalcounter"><tr><td>';
@@ -410,8 +410,8 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '<input type="text" name="glogquantity" id="glogquantity" value="1">';
         htmlstringSingle += '</td></tr><tr><td>';
         htmlstringSingle += '<label for="quantity">Subtotal</label>';
-        htmlstringSingle += '</td><td class="pull-right"><div>';
-        htmlstringSingle += '<p><span>$</span>2233333.22</p></div>';
+        htmlstringSingle += '</td><td class="pull-right">';
+        htmlstringSingle += '<div><p><span>$</span><span class="glogtotal"></span></p></div>';
         htmlstringSingle += '</td></tr></table>';
         htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder">Place Order</a>';
         htmlstringSingle += '</div></div></div></div>';
@@ -451,39 +451,48 @@ function queryItemDetailsByBarcode(tx,scanResult)
 
 
 /*-----------------other---------------------*/
-function preventNoneNumeric()
+function eraseNoneNumeric()
 {
     alert('prevent none numeric loaded');
 
     $(document).on('keyup','#glogquantity',function (e)
     {
-        
+        /*keycodes undefined are undefined so i did this instead*/
+        var glogprice = $('.glogprice').html();
         var currentvalue = $('#glogquantity').val();
-        alert(currentvalue);
+        
+        
+        
+        if(currentvalue <= 0)
+        {
+          currentvalue = 1;  
+        }
+        else if(currentvalue == null)
+        {
+             currentvalue = 1;
+        }
+        else if(currentvalue == '' )
+        {
+            currentvalue = 1;
+        }
         
         var newvalue = currentvalue.replace(/[^0-9\.]+/g, "");
-        
         $('#glogquantity').val(newvalue);
         
+        var glogtotal = glogprice * newvalue;
         
-        /*keycodes undefined on mobile T_T*/
-        // Allow: backspace, delete, tab, escape, enter and .
-        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-             // Allow: Ctrl+A, Command+A
-            (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
-             // Allow: home, end, left, right, down, up
-            (e.keyCode >= 35 && e.keyCode <= 40)) {
-                 // let it happen, don't do anything
-                 return;
-        }
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
+        
+        $('.glogtotal').html(glogtotal);
+        
+
     });
     
     
-    $(document).on('click','.placeOrder', function(){alert('test');});
+    //use later on another function.
+    //$(document).on('click','.placeOrder', function(){alert('test');});
 
 }
+
+
+
 /*----------------//other-------------------*/
