@@ -411,7 +411,7 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '</td></tr><tr><td>';
         htmlstringSingle += '<label for="quantity">Subtotal</label>';
         htmlstringSingle += '</td><td class="pull-right">';
-        htmlstringSingle += '<div><p><span>$</span><span class="glogtotal"></span></p></div>';
+        htmlstringSingle += '<div><p><span>$</span><span class="glogtotal">'+ results.rows.item(0).displayPrice +'</span></p></div>';
         htmlstringSingle += '</td></tr></table>';
         htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder">Place Order</a>';
         htmlstringSingle += '</div></div></div></div>';
@@ -455,7 +455,7 @@ function eraseNoneNumeric()
 {
     alert('prevent none numeric loaded');
 
-    $(document).on('keyup','#glogquantity',function (e)
+    $(document).on('input','#glogquantity',function (e)
     {
         /*keycodes undefined are undefined so i did this instead*/
         var glogprice = $('.glogprice').html();
@@ -465,15 +465,15 @@ function eraseNoneNumeric()
         
         if(currentvalue <= 0)
         {
-          currentvalue = 1;  
+          $('#glogquantity').val(1);  
         }
         else if(currentvalue == null)
         {
-             currentvalue = 1;
+             currentvalue = 1;//won't change display but computed value will be 1
         }
         else if(currentvalue == '' )
         {
-            currentvalue = 1;
+            currentvalue = 1;//won't change display but computed value will be 1
         }
         
         var newvalue = currentvalue.replace(/[^0-9\.]+/g, "");
