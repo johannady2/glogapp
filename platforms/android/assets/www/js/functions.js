@@ -408,7 +408,6 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '<label for="quantity">Quantity</label>';
         htmlstringSingle += '</td><td class="pull-right">';
         htmlstringSingle += '<input type="text" name="glogquantity" id="glogquantity" value="1">';
-        htmlstringSingle += '<input type="hidden" name="hiddenglogquantity" id="hiddenglogquantity" value="">';
         htmlstringSingle += '</td></tr><tr><td>';
         htmlstringSingle += '<label for="quantity">Subtotal</label>';
         htmlstringSingle += '</td><td class="pull-right"><div>';
@@ -461,6 +460,10 @@ function preventNoneNumeric()
         
         var currentvalue = $('#glogquantity').val();
         alert(currentvalue);
+        
+        var newvalue = currentvalue.replace(/[^0-9\.]+/g, "");
+        
+        $('#glogquantity').val(newvalue);
         
         
         /*keycodes undefined on mobile T_T*/
