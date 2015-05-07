@@ -175,7 +175,7 @@ function renderSearchResults(tx,results)
     for(var ind=0; ind < len; ind++)
     {
         
-        htmlstring += '<li>'+ results.rows.item(ind).title+'<br><img src="'+ results.rows.item(ind).image +'"><br><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).id +'">View</a></li>';
+        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).image +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).title+'</h1><p>'+results.rows.item(ind).description+'</p><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).id +'">View</a></div>';
    
         $('#itemsList').append(htmlstring);
          
