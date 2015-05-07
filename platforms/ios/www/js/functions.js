@@ -212,14 +212,14 @@ function startSearch()
         
         var searchedValue = $(this).children('[name="search"]').val();
 
-        localStorage.searchedValueStorage = searchedValue;
-        $('.lastsearched').empty().append(localStorage.searchedValueStorage);
+      //  localStorage.searchedValueStorage = searchedValue;
+       // $('.lastsearched').empty().append(localStorage.searchedValueStorage);
 
         return false;
     });
         
         
-             $('.lastsearched').append(localStorage.searchedValueStorage);
+            // $('.lastsearched').append(localStorage.searchedValueStorage);
 }
 
 

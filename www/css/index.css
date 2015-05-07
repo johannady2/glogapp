@@ -330,6 +330,52 @@ article .entry-title
     margin: 0px;
 }
 
+
+.navbar-default
+{
+    background-color: rgb(108, 179, 62);
+    border: 0px none;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover
+{
+    color: rgb(255, 255, 255);
+    background-color: rgb(83, 134, 49);
+}
+
+.navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover
+{
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+}
+
+.navbar-default .navbar-brand
+{
+    color: rgb(255, 255, 255);
+}
+
+.navbar-default .navbar-nav > li > a
+{
+    color: rgb(255, 255, 255);
+}
+
+.navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover
+{
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+}
+
+
+.btn-success
+{
+     background-color: rgb(108, 179, 62);
+}
+
+
+.btn-success:active
+{
+    background-color: rgb(83, 134, 49);
+}
 /*//bootstrap override*/
 
 .content-cont
@@ -483,6 +529,11 @@ article .entry-title
 
 @media screen and (max-width: 48em) {
 	/* width 768px */
+    
+    .rightmenu
+    {
+        padding-right: 0px;
+    }
 }
 
 
