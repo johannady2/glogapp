@@ -414,7 +414,7 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '</td><td class="pull-right">';
         htmlstringSingle += '<div><p><span>$</span><span class="glogtotal">'+ results.rows.item(0).displayPrice +'</span></p></div>';
         htmlstringSingle += '</td></tr></table>';
-        htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder">Place Order</a>';
+        htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-BarcodeInvtyCat="'+ results.rows.item(0).Barcode_InvtyCat +'" data-quantity="1" data-subtotal="'+ results.rows.item(0).displayPrice +'">Place Order</a>';
         htmlstringSingle += '</div></div></div></div>';
     }
     else
@@ -503,16 +503,18 @@ function queryItemDetailsByBarcode(tx,scanResult)
            // //alert('glogtotal =' + glogtotal);
             $('.glogtotal').empty();
             $('.glogtotal').append(glogtotal);
-           
+        
+          //  $('.placeOrder')data('quantity',qval);
+           // $('.placeOrder')data('subtotal',glogtotal);
     
     
-       
+
       
     });
     
     
     //use later on another function.
-    //$(document).on('click','.placeOrder', function(){//alert('test');});
+   
 
 function testinput(re, str)
 {
@@ -530,5 +532,11 @@ function testinput(re, str)
     }
   
 }
+
+$(document).on('click','.placeOrder', function()
+{
+   alert( $('.placeOrder')data('BarcodeInvtyCat') + '<br>' + $('.placeOrder')data('quantity') + '<br>' + $('.placeOrder')data('subtotal'));
+});
+
 
 /*----------------//other-------------------*/
