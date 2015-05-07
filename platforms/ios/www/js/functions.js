@@ -237,35 +237,47 @@ function renderCartList()
     
 
     
-    
     var titleForArr = localStorage.title.replace(/,\s*$/,'');
     var imageForArr = localStorage.image.replace(/,\s*$/,'');
    var descriptionForArr = localStorage.description.replace(/,\s*$/,'');
-   // var displayPriceForArr = localStorage.displayPrice.replace(/,\s*$/,'');
-    //var BarcodeInvtyCatForArr = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
-   // var quantityForArr = localStorage.quantyty.replace(/,\s*$/,'');
-   // var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
+   //var displayPriceForArr = localStorage.displayPrice.replace(/,\s*$/,'');
+    var BarcodeInvtyCatForArr = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
+    var quantityForArr = localStorage.quantity.replace(/,\s*$/,'');
+   var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
 
     
     var cartTitleArr =  titleForArr.split(',');
     var cartImageArr =  imageForArr.split(',');
     var cartDescriptionArr =  descriptionForArr.split(',');
+    //var cartdisplayPriceArr =  displayPriceForArr.split(',');
+    var cartbarcodeArr =  BarcodeInvtyCatForArr.split(',');
+    var cartQuantityArr =  quantityForArr.split(',');
+    var cartsubtotalArr = subtotalForArr.split(',');
     
-    
-    var cartLength = cartDescriptionArr.length;//changed to barcode when i get there
+    var cartLength = cartbarcodeArr.length;
 
      var htmlstringcart = '';
 
+    alert(cartLength);
+    alert(cartbarcodeArr[0]);
+    if(cartLength == 1 && !cartbarcodeArr[0])
+    {
+        alert('if');
+        htmlstringcart = '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12"><h1>No Orders</h1></div></div>';
+    }
+    else
+    {
         
      for(var ind=0; ind < cartLength; ind++)
      {
         
-        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ cartImageArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-8 col-sm-8 col-xs-12"><h2>'+ cartTitleArr[ind] + '</h2><p>'+cartDescriptionArr[ind]+'</p></div></div>' ;
+        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ cartImageArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-8 col-sm-8 col-xs-12"><h2>'+ cartTitleArr[ind] + '</h2><p>'+cartDescriptionArr[ind]+'</p></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
      }
         
+    }
         
   
-    alert(htmlstringcart);
+ 
     $('#cartListCont').append(htmlstringcart);
 }
 
