@@ -260,7 +260,7 @@ function renderCartList()
 
     if(cartLength == 1 && !cartbarcodeArr[0])
     {
-        alert('if');
+        
         htmlstringcart = '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12"><h1>No Orders</h1></div></div>';
     }
     else

@@ -33,7 +33,7 @@
      
      
      //forsingleonly AKA backbutton has seperate loader
-        $('.navbar-nav > li > a').not('.forsingleonly a').on( "click", function(e) 
+        $('.navbar-nav > li > a , .navbar-default .navbar-brand').not('.forsingleonly a').on( "click", function(e) 
         {
             e.preventDefault();
             
@@ -44,9 +44,12 @@
          
             if( currenthrefclass == 'navbar-brand')
             {
+                
+               
                 var navbarContent = $(this).attr('href');
 
-                $('.navbar-nav > li > a[href="'+navbarContent+'"]').parent().addClass('active');
+                $('.navbar-nav > li > a[href="'+navbarContent+'"]').click();
+                
             }
             else
             {
