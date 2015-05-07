@@ -9,6 +9,7 @@ var db;
 var idForSinglePage;
 var scanResult;
 
+
 function onDeviceReady()
 {
     
@@ -29,13 +30,13 @@ function createDB(tx)
 
 function errorCB(err)
 {
-    alert("Error processing SQL: " + err.message);
+    //alert("Error processing SQL: " + err.message);
    
 }
 
 function successCB()
 {
-    //alert('successful');
+    ////alert('successful');
 
 }
 
@@ -91,9 +92,9 @@ function viewItemClickedContentReady(event,idForSinglePage)
 
 function doneScanning(event,scanResult)
 {
-    alert('doneScanning started');
+    //alert('doneScanning started');
     $(document).trigger('itemScanned',[scanResult]);
-     alert('trigger completed');
+     //alert('trigger completed');
 }
 
 
@@ -264,7 +265,7 @@ function testgetjson()
                   {//key PEOPLE/[{"PERSON":{"id":"1","name":"johanna","city":"iligan","street":"sadasdasd","homenum":"8998908","mobilenum":"989089080"}},{"PERSON":{"id":"2","name":"ong","city":"iligan","street":"kjkjljkj","homenum":"9809009","mobilenum":"9090909"}},{"PERSON":{"id":"3","name":"eu","city":"kjkjkj","street":"kjkjkjk","homenum":"909090","mobilenum":"8989"}},{"PERSON":{"id":"4","name":"james","city":"kjkjjk","street":"jkjk","homenum":"3333333","mobilenum":"444444444"}},{"PERSON":{"id":"5","name":"jerome","city":"kjkjkj","street":"kjkjkjk","homenum":"90090","mobilenum":"909090"}},{"PERSON":{"id":"6","name":"keyki","city":"jjkj","street":"kjkjk","homenum":"2147483647","mobilenum":"2147483647"}},{"PERSON":{"id":"7","name":"p-seven","city":"jhjhjhj","street":"hjh","homenum":"909090","mobilenum":"9090"}},{"PERSON":{"id":"8","name":"p-eight","city":"kjkjkjk","street":"jkjkj","homenum":"9090909","mobilenum":"90909"}}]
 
                         /*var obj = JSON.stringify(value);
-                        alert(obj);*/
+                        //alert(obj);*/
 
                         $.each(value, function(inde, valu)
                         {
@@ -359,7 +360,7 @@ function testgetjson()
 						{
                             $.each( valu, function( k, val )
                             {
-                                    alert( k + ": " + val );
+                                    //alert( k + ": " + val );
                             });
 						});
 					});*/
@@ -386,7 +387,7 @@ function queryItemDetails(tx,idForSinglePage)
 function renderSinglePage(tx,results)
 {//results.rows.item(ind).title
     
-   preventNoneNumeric();
+
     
     var doesThisExist = results.rows.length;
     
@@ -401,17 +402,17 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '<div class="col-md-6 col-sm-12 col-xs-12"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
         htmlstringSingle += '<h1>'+ results.rows.item(0).title +'</h1>';
         htmlstringSingle += '<p>'+ results.rows.item(0).description +'</p>';
-        htmlstringSingle += '<h3 class="pull-right">$'+ results.rows.item(0).displayPrice +'</h3>';
+        htmlstringSingle += '<h3 class="pull-right">$<span class="glogprice">'+ results.rows.item(0).displayPrice +'</span></h3>';
         htmlstringSingle += '</div> </div>';
         htmlstringSingle += '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
         htmlstringSingle += '<table class="totalcounter"><tr><td>';
         htmlstringSingle += '<label for="quantity">Quantity</label>';
         htmlstringSingle += '</td><td class="pull-right">';
-        htmlstringSingle += '<input type="text" name="glogquantity" id="glogquatity" value="1">';
+        htmlstringSingle += '<input type="text" name="glogquantity" id="glogquantity" value="1">';
         htmlstringSingle += '</td></tr><tr><td>';
         htmlstringSingle += '<label for="quantity">Subtotal</label>';
-        htmlstringSingle += '</td><td class="pull-right"><div>';
-        htmlstringSingle += '<p><span>$</span>2233333.22</p></div>';
+        htmlstringSingle += '</td><td class="pull-right">';
+        htmlstringSingle += '<div><p><span>$</span><span class="glogtotal">'+ results.rows.item(0).displayPrice +'</span></p></div>';
         htmlstringSingle += '</td></tr></table>';
         htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder">Place Order</a>';
         htmlstringSingle += '</div></div></div></div>';
@@ -437,9 +438,9 @@ function renderSinglePage(tx,results)
 /*----------------------------------------------------------------------*/
 function queryItemDetailsByBarcode(tx,scanResult)
 {
-  alert('queryItemDetailsByBarcode started');
+  //alert('queryItemDetailsByBarcode started');
   tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat=' + scanResult, [], renderSinglePage, errorCB); 
-  alert('queryItemDetailsByBarcode done');
+  //alert('queryItemDetailsByBarcode done');
 }
 
 //renderSinglePage already created for viewItemClicked.js
@@ -451,33 +452,83 @@ function queryItemDetailsByBarcode(tx,scanResult)
 
 
 /*-----------------other---------------------*/
-function preventNoneNumeric()
-{
-    alert('prevent none numeric loaded');
 
-    $(document).on('keydown','#glogquatity',function (e) {
+   
+    
+    $(document).on('input','#glogquantity',function ()
+    {
+        /*keycodes undefined are undefined so i did this instead*/
+
         
-        alert(e.keycode);
+        var glogprice = $('.glogprice').html(); 
         
+         var currentvalue = $('#glogquantity').val();
+         var glogqlen = $.trim($('#glogquantity').val());
         
-        /*keycodes undefined on mobile T_T*/
-        // Allow: backspace, delete, tab, escape, enter and .
-        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-             // Allow: Ctrl+A, Command+A
-            (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
-             // Allow: home, end, left, right, down, up
-            (e.keyCode >= 35 && e.keyCode <= 40)) {
-                 // let it happen, don't do anything
-                 return;
+        //alert('glogqlen ='+glogqlen);
+        
+        if(glogqlen.length>0 && currentvalue != 0 && currentvalue !='0' && testinput(/[^0-9.]/, currentvalue)==0)//if not empty && not zero && (does not contain any none numeric && glogqlen == 1)
+        {
+          //alert('in if');
+            //alert('currentvalue =' + currentvalue);
+            
+            var newvalue = currentvalue.toString().replace(/[^0-9\.]+/g, '');
+            $('#glogquantity').val(newvalue);
+            var qval = $('#glogquantity').val();
+            
+            
         }
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
+        else
+        {
+            
+          //alert('in else');
+            currentvalue = 1;
+           // //alert('currentvalue =' + currentvalue);
+            
+            var newvalue = currentvalue.toString().replace(/[^0-9\.]+/g, '');
+            $('#glogquantity').val('');
+            var qval = 1;
+
         }
+        
+        
+        //alert('after if else');
+             
+            
+           
+            parseInt(qval);
+                
+           // //alert(qval);
+            var glogtotal = qval *  glogprice;   
+           // //alert('glogtotal =' + glogtotal);
+            $('.glogtotal').empty();
+            $('.glogtotal').append(glogtotal);
+           
+    
+    
+       
+      
     });
     
     
-    $(document).on('click','.placeOrder', function(){alert('test');});
+    //use later on another function.
+    //$(document).on('click','.placeOrder', function(){//alert('test');});
 
+function testinput(re, str)
+{
+  
+    
+    if (re.test(str) && (str.length == 1))
+    {
+       // //alert('contains none numeric and string length == 1');
+        return 1;
+    } 
+    else
+    {
+      //  //alert('does not contain none numeric || or contains but length > 1');
+        return 0;
+    }
+  
 }
+
 /*----------------//other-------------------*/
