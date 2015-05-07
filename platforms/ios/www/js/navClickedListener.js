@@ -24,7 +24,6 @@ $(document).on('navClicked',function(event,filename)
     else if(filename == "search.html")
     {
 
-           
             startSearch();
        
     }

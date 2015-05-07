@@ -258,8 +258,6 @@ function renderCartList()
 
      var htmlstringcart = '';
 
-    alert(cartLength);
-    alert(cartbarcodeArr[0]);
     if(cartLength == 1 && !cartbarcodeArr[0])
     {
         alert('if');
@@ -669,30 +667,9 @@ $(document).on('click','.placeOrder', function()
     localStorage.quantity += quantity.toString()+',';
     localStorage.subtotal += subtotal.toString()+',';
     
-    /*remove only right before putting it inside an array
-    localStorage.title = localStorage.title.replace(/,\s*$/,'');
-    localStorage.image = localStorage.image.replace(/,\s*$/,'');
-    localStorage.description = localStorage.description.replace(/,\s*$/,'');
-    localStorage.displayPrice = localStorage.displayPrice.replace(/,\s*$/,'');
-    localStorage.BarcodeInvtyCat = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
-    localStorage.quantity = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
-    localStorage.subtotal = localStorage.subtotal.replace(/,\s*$/,'');
-  */  
+    alert('item added to cart');
     
 
-    
-    
-    
-    //alert('Name: ' + title +'image: ' + image +'description: ' + description +'BarcodeInvtyCat: ' + BarcodeInvtyCat +  ' Quantity: ' + quantity +   ' subtotal: ' + subtotal  );
-    
-    
-    alert('CART: name: ' + localStorage.title);
-    alert('CART: image: ' + localStorage.image);
-    alert('CART: description: ' + localStorage.description);
-    alert('CART: displayPrice: ' + localStorage.displayPrice);
-    alert('CART: Barcode: ' + localStorage.BarcodeInvtyCat);
-    alert('CART: quanity: ' + localStorage.quantity);
-    alert('CART: subtotal: ' + localStorage.subtotal);
 });
 
 /*----------------//other-------------------*/
