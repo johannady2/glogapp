@@ -10,6 +10,21 @@ var idForSinglePage;
 var scanResult;
 
 
+//if variable is undefined, define.
+if(localStorage.BarcodeInvtyCat == null)
+{
+    localStorage.title = '';
+    localStorage.image = '';
+    localStorage.description = '';
+    localStorage.displayPrice = '';
+    localStorage.BarcodeInvtyCat = '';
+    localStorage.quantity = '';
+    localStorage.subtotal = '';
+}
+
+
+
+
 function onDeviceReady()
 {
     
@@ -414,7 +429,7 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '</td><td class="pull-right">';
         htmlstringSingle += '<div><p><span>$</span><span class="glogtotal">'+ results.rows.item(0).displayPrice +'</span></p></div>';
         htmlstringSingle += '</td></tr></table>';
-        htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-title="'+ results.rows.item(0).title +'" data-image="'+ results.rows.item(0).image +'" data-description="'+ results.rows.item(0).description +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).displayPrice +'">Place Order</a>';
+        htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-displayPrice="'+ results.rows.item(0).displayPrice +'" data-title="'+ results.rows.item(0).title +'" data-image="'+ results.rows.item(0).image +'" data-description="'+ results.rows.item(0).description +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).displayPrice +'">Place Order</a>';
         htmlstringSingle += '</div></div></div></div>';
     }
     else
@@ -499,7 +514,8 @@ function queryItemDetailsByBarcode(tx,scanResult)
             parseInt(qval);
                 
            // //alert(qval);
-            var glogtotal = qval *  glogprice;   
+            var glogtotaltemp = qval *  glogprice;   
+            var glogtotal = glogtotaltemp.toFixed(2);
            // //alert('glogtotal =' + glogtotal);
             $('.glogtotal').empty();
             $('.glogtotal').append(glogtotal);
@@ -531,16 +547,58 @@ function testinput(re, str)
 
 
 
-$(document).on('click','.placeOrder', function(){
+$(document).on('click','.placeOrder', function()
+{
     
     var title = $(this).attr('data-title');
     var image = $(this).attr('data-image');
     var description = $(this).attr('data-description');
+    var displayPrice = $(this).attr('data-displayPrice');
     var BarcodeInvtyCat = $(this).attr('data-BarcodeInvtyCat');
     var quantity = $(this).attr('data-quantity');
     var subtotal = $(this).attr('data-subtotal');
     
-    alert('Name: ' + title +'image: ' + image +'description: ' + description +'BarcodeInvtyCat: ' + BarcodeInvtyCat +  ' Quantity: ' + quantity +   ' subtotal: ' + subtotal  );
+    //this prevents commas from titles from being interpreted as , when localstorage string is turned into an array
+    title = title.replace(',','(xxxGLogCommaxxx)');
+    image = image.replace(',','(xxxGLogCommaxxx)');
+    description = description.replace(',','(xxxGLogCommaxxx)');
+    displayPrice = displayPrice.replace(',','(xxxGLogCommaxxx)');
+    BarcodeInvtyCat = BarcodeInvtyCat.replace(',','(xxxGLogCommaxxx)');
+    quantity = quantity.replace(',','(xxxGLogCommaxxx)');
+    subtotal = subtotal.replace(',','(xxxGLogCommaxxx)');
+
+    localStorage.title += title.toString()+',';
+    localStorage.image += image.toString()+',';
+    localStorage.description += description.toString()+',';
+    localStorage.displayPrice += displayPrice.toString()+',';
+    localStorage.BarcodeInvtyCat += BarcodeInvtyCat.toString()+',';
+    localStorage.quantity += quantity.toString()+',';
+    localStorage.subtotal += subtotal.toString()+',';
+    
+    /*remove only right before putting it inside an array
+    localStorage.title = localStorage.title.replace(/,\s*$/,'');
+    localStorage.image = localStorage.image.replace(/,\s*$/,'');
+    localStorage.description = localStorage.description.replace(/,\s*$/,'');
+    localStorage.displayPrice = localStorage.displayPrice.replace(/,\s*$/,'');
+    localStorage.BarcodeInvtyCat = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
+    localStorage.quantity = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
+    localStorage.subtotal = localStorage.subtotal.replace(/,\s*$/,'');
+  */  
+    
+
+    
+    
+    
+    //alert('Name: ' + title +'image: ' + image +'description: ' + description +'BarcodeInvtyCat: ' + BarcodeInvtyCat +  ' Quantity: ' + quantity +   ' subtotal: ' + subtotal  );
+    
+    
+    alert('CART: name: ' + localStorage.title);
+    alert('CART: image: ' + localStorage.image);
+    alert('CART: description: ' + localStorage.description);
+    alert('CART: displayPrice: ' + localStorage.displayPrice);
+    alert('CART: Barcode: ' + localStorage.BarcodeInvtyCat);
+    alert('CART: quanity: ' + localStorage.quantity);
+    alert('CART: subtotal: ' + localStorage.subtotal);
 });
 
 /*----------------//other-------------------*/

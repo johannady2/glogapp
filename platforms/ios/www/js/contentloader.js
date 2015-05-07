@@ -15,18 +15,13 @@
                  if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
                 {
                     scanner.startScanning(MWBSInitSpace.init,MWBSInitSpace.callback);
-                    
-                      
                     //$('.scanbtn').parent().addClass('active');
-                    
-                    
                    
                 }
                  else
                  {
                      $('.webdefault').click();//default page after splash screen will navigatioon with this class
                      $('.scanbtn').hide()//navigation to scan navigation is hidden on PC
-
                  }   
                     
 
