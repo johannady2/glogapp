@@ -28,6 +28,11 @@ $(document).on('navClicked',function(event,filename)
             startSearch();
        
     }
+    else if(filename == "cart.html")
+    {
+     
+        renderCartList();
+    }
     else if(filename == "test-localstorage.html")
     {
       

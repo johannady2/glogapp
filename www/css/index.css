@@ -398,6 +398,13 @@ article .entry-title
 {
     display:none;
 }
+
+.cartItemCont
+{
+    border-bottom:1px solid #a1a1a1;
+    margin-bottom:20px;
+    padding-bottom:20px;
+}
                             /*Masonry Stuff*/
                             #wrapper
                             {

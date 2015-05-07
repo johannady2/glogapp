@@ -224,6 +224,88 @@ function startSearch()
 
 
 
+
+
+
+
+
+
+
+
+function renderCartList()
+{
+    
+
+    
+    
+    var titleForArr = localStorage.title.replace(/,\s*$/,'');
+    var imageForArr = localStorage.image.replace(/,\s*$/,'');
+   var descriptionForArr = localStorage.description.replace(/,\s*$/,'');
+   // var displayPriceForArr = localStorage.displayPrice.replace(/,\s*$/,'');
+    //var BarcodeInvtyCatForArr = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
+   // var quantityForArr = localStorage.quantyty.replace(/,\s*$/,'');
+   // var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
+
+    
+    var cartTitleArr =  titleForArr.split(',');
+    var cartImageArr =  imageForArr.split(',');
+    var cartDescriptionArr =  descriptionForArr.split(',');
+    
+    
+    var cartLength = cartDescriptionArr.length;//changed to barcode when i get there
+
+     var htmlstringcart = '';
+
+        
+     for(var ind=0; ind < cartLength; ind++)
+     {
+        
+        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ cartImageArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-8 col-sm-8 col-xs-12"><h2>'+ cartTitleArr[ind] + '</h2><p>'+cartDescriptionArr[ind]+'</p></div></div>' ;
+     }
+        
+        
+  
+    alert(htmlstringcart);
+    $('#cartListCont').append(htmlstringcart);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function testlocalstorage()
 {
             
