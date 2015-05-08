@@ -13,7 +13,7 @@ var scanResult;
 //if variable is undefined, define.
 if(localStorage.BarcodeInvtyCat == null)
 {
-    localStorage.title = '';
+    localStorage.CatalogueTitle_InvtyCat = '';
     localStorage.image = '';
     localStorage.description = '';
     localStorage.displayPrice = '';
@@ -39,7 +39,9 @@ function createDB(tx)
     
    
     tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(id INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat INTEGER, title , image , description,displayPrice DECIMAL(9,2))',[],populateInventoryMasterCatalogue,errorCB);
+    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat INTEGER, CatalogueTitle_InvtyCat , image , description,displayPrice DECIMAL(9,2))',[],populateInventoryMasterCatalogue,errorCB);
+    
+
     
 }
 
@@ -60,7 +62,7 @@ function populateInventoryMasterCatalogue(tx)
  
 
    
-    var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(Barcode_InvtyCat,title,image,description,displayPrice) VALUES(?,?,?,?,?)';
+    var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(Barcode_InvtyCat,CatalogueTitle_InvtyCat,image,description,displayPrice) VALUES(?,?,?,?,?)';
    
     tx.executeSql(sqlInsert,[101191,"Yotsuba Revoltech","img/item1.jpg","with free 1kg rice",63.00],null,errorCB);
     tx.executeSql(sqlInsert,[4801010127215,"GIF sample","img/item2.gif","with free milk",63.00],null,errorCB);
@@ -147,9 +149,9 @@ function renderCatalogueItems(tx,results)
         {
 
             htmlstringCatalaogue += '<div class="item"><div class="row artcont"><div class="col-md-12 col-ms-12 col-xs-12"><article><header class="entry-header page-header"><div class="row"><div class="col-md-8 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<h1 class="entry-title">'+ results.rows.item(ind).title +'</h1>';
+            htmlstringCatalaogue += '<h1 class="entry-CatalogueTitle_InvtyCat">'+ results.rows.item(ind).CatalogueTitle_InvtyCat +'</h1>';
             htmlstringCatalaogue += '</div><div class="col-md-4 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<h3 class="entry-title">$'+ results.rows.item(ind).displayPrice +'</h1>';
+            htmlstringCatalaogue += '<h3 class="entry-CatalogueTitle_InvtyCat">$'+ results.rows.item(ind).displayPrice +'</h1>';
             htmlstringCatalaogue += '</div></div></header>';
             htmlstringCatalaogue += '<div class="entry-content"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12"><div class="img-container">';
             htmlstringCatalaogue += '<img src="'+ results.rows.item(ind).image +'" class="responsiveImage">';
@@ -158,7 +160,7 @@ function renderCatalogueItems(tx,results)
             htmlstringCatalaogue += '<p>'+ results.rows.item(ind).description +'</p>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '<div class="col-md-12 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).id +'">View</a>';
+            htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).SysPk_InvtyCat +'">View</a>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '</div></div></article></div></div></div>';
 
@@ -190,7 +192,7 @@ function renderSearchResults(tx,results)
     for(var ind=0; ind < len; ind++)
     {
         
-        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).image +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).title+'</h1><p>'+results.rows.item(ind).description+'</p><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).id +'">View</a></div>';
+        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).image +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).CatalogueTitle_InvtyCat+'</h1><p>'+results.rows.item(ind).description+'</p><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).SysPk_InvtyCat +'">View</a></div>';
    
         $('#itemsList').append(htmlstring);
          
@@ -237,7 +239,7 @@ function renderCartList()
     
 
     
-    var titleForArr = localStorage.title.replace(/,\s*$/,'');
+    var CatalogueTitle_InvtyCatForArr = localStorage.CatalogueTitle_InvtyCat.replace(/,\s*$/,'');
     var imageForArr = localStorage.image.replace(/,\s*$/,'');
    var descriptionForArr = localStorage.description.replace(/,\s*$/,'');
    //var displayPriceForArr = localStorage.displayPrice.replace(/,\s*$/,'');
@@ -246,7 +248,7 @@ function renderCartList()
    var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
 
     
-    var cartTitleArr =  titleForArr.split(',');
+    var cartCatalogueTitle_InvtyCatArr =  CatalogueTitle_InvtyCatForArr.split(',');
     var cartImageArr =  imageForArr.split(',');
     var cartDescriptionArr =  descriptionForArr.split(',');
     //var cartdisplayPriceArr =  displayPriceForArr.split(',');
@@ -269,7 +271,7 @@ function renderCartList()
      for(var ind=0; ind < cartLength; ind++)
      {
         
-        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ cartImageArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-8 col-sm-8 col-xs-12"><h2>'+ cartTitleArr[ind] + '</h2><p>'+cartDescriptionArr[ind]+'</p></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
+        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ cartImageArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-8 col-sm-8 col-xs-12"><h2>'+ cartCatalogueTitle_InvtyCatArr[ind] + '</h2><p>'+cartDescriptionArr[ind]+'</p></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
      }
         
     }
@@ -488,11 +490,11 @@ function testgetjson()
 function queryItemDetails(tx,idForSinglePage)
 {
     
-  tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE id=' + idForSinglePage , [], renderSinglePage, errorCB);  
+  tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE SysPk_InvtyCat=' + idForSinglePage , [], renderSinglePage, errorCB);  
 }
 
 function renderSinglePage(tx,results)
-{//results.rows.item(ind).title
+{//results.rows.item(ind).CatalogueTitle_InvtyCat
     
 
     
@@ -507,7 +509,7 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '<img src="'+ results.rows.item(0).image +'" class="responsiveImage">';
         htmlstringSingle += '</div></div>';
         htmlstringSingle += '<div class="col-md-6 col-sm-12 col-xs-12"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
-        htmlstringSingle += '<h1>'+ results.rows.item(0).title +'</h1>';
+        htmlstringSingle += '<h1>'+ results.rows.item(0).CatalogueTitle_InvtyCat +'</h1>';
         htmlstringSingle += '<p>'+ results.rows.item(0).description +'</p>';
         htmlstringSingle += '<h3 class="pull-right">$<span class="glogprice">'+ results.rows.item(0).displayPrice +'</span></h3>';
         htmlstringSingle += '</div> </div>';
@@ -515,13 +517,13 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '<table class="totalcounter"><tr><td>';
         htmlstringSingle += '<label for="quantity">Quantity</label>';
         htmlstringSingle += '</td><td class="pull-right">';
-        htmlstringSingle += '<input type="text" name="glogquantity" id="glogquantity" value="1">';
+        htmlstringSingle += '<input type="text" name="glogquantity" SysPk_InvtyCat="glogquantity" value="1">';
         htmlstringSingle += '</td></tr><tr><td>';
         htmlstringSingle += '<label for="quantity">Subtotal</label>';
         htmlstringSingle += '</td><td class="pull-right">';
         htmlstringSingle += '<div><p><span>$</span><span class="glogtotal">'+ results.rows.item(0).displayPrice +'</span></p></div>';
         htmlstringSingle += '</td></tr></table>';
-        htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-displayPrice="'+ results.rows.item(0).displayPrice +'" data-title="'+ results.rows.item(0).title +'" data-image="'+ results.rows.item(0).image +'" data-description="'+ results.rows.item(0).description +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).displayPrice +'">Place Order</a>';
+        htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-displayPrice="'+ results.rows.item(0).displayPrice +'" data-CatalogueTitle_InvtyCat="'+ results.rows.item(0).CatalogueTitle_InvtyCat +'" data-image="'+ results.rows.item(0).image +'" data-description="'+ results.rows.item(0).description +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).displayPrice +'">Place Order</a>';
         htmlstringSingle += '</div></div></div></div>';
     }
     else
@@ -642,7 +644,7 @@ function testinput(re, str)
 $(document).on('click','.placeOrder', function()
 {
     
-    var title = $(this).attr('data-title');
+    var CatalogueTitle_InvtyCat = $(this).attr('data-CatalogueTitle_InvtyCat');
     var image = $(this).attr('data-image');
     var description = $(this).attr('data-description');
     var displayPrice = $(this).attr('data-displayPrice');
@@ -651,7 +653,7 @@ $(document).on('click','.placeOrder', function()
     var subtotal = $(this).attr('data-subtotal');
     
     //this prevents commas from titles from being interpreted as , when localstorage string is turned into an array
-    title = title.replace(',','(xxxGLogCommaxxx)');
+    CatalogueTitle_InvtyCat = CatalogueTitle_InvtyCat.replace(',','(xxxGLogCommaxxx)');
     image = image.replace(',','(xxxGLogCommaxxx)');
     description = description.replace(',','(xxxGLogCommaxxx)');
     displayPrice = displayPrice.replace(',','(xxxGLogCommaxxx)');
@@ -659,7 +661,7 @@ $(document).on('click','.placeOrder', function()
     quantity = quantity.replace(',','(xxxGLogCommaxxx)');
     subtotal = subtotal.replace(',','(xxxGLogCommaxxx)');
 
-    localStorage.title += title.toString()+',';
+    localStorage.CatalogueTitle_InvtyCat += CatalogueTitle_InvtyCat.toString()+',';
     localStorage.image += image.toString()+',';
     localStorage.description += description.toString()+',';
     localStorage.displayPrice += displayPrice.toString()+',';
