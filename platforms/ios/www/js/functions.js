@@ -727,8 +727,3 @@ $(document).on('click','.placeOrder', function()
 
 /*----------------//single-itme.html  to cart.html-------------------*/
 
-
-function rendereditorderdetails(orderidtoedit)
-{
-    
-}
