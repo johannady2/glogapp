@@ -64,7 +64,7 @@ function createDB(tx)
    
     tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
     tx.executeSql('DROP TABLE IF EXISTS CATALOGUE_MASTER');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat INTEGER, CatalogueTitle_InvtyCat , PictureFileName_InvtyCat , FullDescription_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2))',[],populateTables,errorCB);
+    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat, CatalogueTitle_InvtyCat , PictureFileName_InvtyCat , FullDescription_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2))',[],populateTables,errorCB);
    //tx.executeSql('CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER(SysPk_CatMstr INTEGER PRIMARY KEY   AUTOINCREMENT,Description_CatMstr,Principal_CatMstr,PromoStartDate_CatMstr Date,PromoEndDate_CatMstr DATETIME)'
 }
 
@@ -87,15 +87,30 @@ function populateTables(tx)
    
     var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(Barcode_InvtyCat,CatalogueTitle_InvtyCat,PictureFileName_InvtyCat,FullDescription_InvtyCat,DisplayPrice_InvtyCat) VALUES(?,?,?,?,?)';
    
-    tx.executeSql(sqlInsert,[101191,"Yotsuba Revoltech","img/item1.jpg","with free 1kg rice",63.00],null,errorCB);
-    tx.executeSql(sqlInsert,[4801010127215,"GIF sample","img/item2.gif","with free milk",63.00],null,errorCB);
-    tx.executeSql(sqlInsert,[8999999003395,"Pond\'s Pure White","img/item3.jpg","with free candy",14.00],null,errorCB);
-    tx.executeSql(sqlInsert,[4807788058850,"Iron Supplement","img/item4.gif","with free facial chocolate",99.99],null,errorCB);
-    tx.executeSql(sqlInsert,[12345,"Used Monggol Pencil","img/item5.jpg","free Soy Sauce",99.99],null,errorCB);
-    tx.executeSql(sqlInsert,[795144075167,"Strawberry Kiss Intimate Secret","img/item6.jpg","BUY 1 TAKE 1",15.00],null,errorCB);
-    tx.executeSql(sqlInsert,[4005401548218,"Faber Castell TextLiner 48","img/item7.jpg","with free facial baby poweder",232.00],null,errorCB);
-    tx.executeSql(sqlInsert,[123,"Pocky Strawberry","img/item8.jpg","Free Cookies",232.00],null,errorCB);
-    tx.executeSql(sqlInsert,[11223344,"Pocky Set","img/item9.jpg","Mentos",232.00],null,errorCB);
+    tx.executeSql(sqlInsert,["101191","Yotsuba Revoltech","img/item1.jpg","with free 1kg rice",63.00],null,errorCB);
+    tx.executeSql(sqlInsert,["4801010127215","GIF sample","img/item2.gif","with free milk",63.00],null,errorCB);
+    tx.executeSql(sqlInsert,["8999999003395","Pond\'s Pure White","img/item3.jpg","with free candy",14.00],null,errorCB);
+    tx.executeSql(sqlInsert,["4807788058850","Iron Supplement","img/item4.gif","with free facial chocolate",99.99],null,errorCB);
+    tx.executeSql(sqlInsert,["12345","Used Monggol Pencil","img/item5.jpg","free Soy Sauce",99.99],null,errorCB);
+    tx.executeSql(sqlInsert,["795144075167","Strawberry Kiss Intimate Secret","img/item6.jpg","BUY 1 TAKE 1",15.00],null,errorCB);
+    tx.executeSql(sqlInsert,["4005401548218","Faber Castell TextLiner 48","img/item7.jpg","with free facial baby poweder",232.00],null,errorCB);
+    tx.executeSql(sqlInsert,["123","Pocky Strawberry","img/item8.jpg","Free Cookies",232.00],null,errorCB);
+    tx.executeSql(sqlInsert,["11223344","Pocky Set","img/item9.jpg","Mentos",232.00],null,errorCB);
+   
+    tx.executeSql(sqlInsert,["987654321098","40L notebooks","img/Item10.jpg","pack of 8",50.00],null,errorCB);
+    tx.executeSql(sqlInsert,["036000291452","Jockey Lowrise Brief","img/Item11.jpg","pack of 8",325.00],null,errorCB);
+    tx.executeSql(sqlInsert,["016000660601","Trolley Bags","img/Item12.jpg","(P799.75 each) save 10%",799.75],null,errorCB);
+    tx.executeSql(sqlInsert,["5010029020519","Trolley Bags","img/Item13.jpg","was P399",299.00],null,errorCB);
+    tx.executeSql(sqlInsert,["*9123*39","TSport Backpacks","img/Item14.jpg","(P198.00 each)",198.00],null,errorCB);
+    tx.executeSql(sqlInsert,["50184385","Shining East Value Pack","img/Item15.jpg","save P10",99.00],null,errorCB);
+    tx.executeSql(sqlInsert,["5702012000737","Darlington","img/Item16.jpg","Buy 1 Take 1",89.75],null,errorCB);
+    tx.executeSql(sqlInsert,["850785004003","Sanyang Clerical Chair","img/Item17.jpg","was P1899",1519.20],null,errorCB);
+    tx.executeSql(sqlInsert,["741360988644","Sanyang Computer Table","img/Item18.jpg","was P1595",1276.00],null,errorCB);
+    tx.executeSql(sqlInsert,["123456789012","Sanyang Office Table","img/Item19.jpg","was P1695",1320.00],null,errorCB);
+    tx.executeSql(sqlInsert,["042000062008","Sanyang Study Table","img/Item20.jpg","was P3750",3000.00],null,errorCB);
+    tx.executeSql(sqlInsert,["012345678905","80L notebooks","img/Item21.jpg","pack of 10",100.00],null,errorCB);
+   
+
 
 
     
@@ -220,7 +235,7 @@ function renderSearchResults(tx,results)
     for(var ind=0; ind < len; ind++)
     {
         
-        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).CatalogueTitle_InvtyCat+'</h1><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).SysPk_InvtyCat +'">View</a></div>';
+        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).CatalogueTitle_InvtyCat+'</h1><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).SysPk_InvtyCat +'">View</a></div><div class="clearfix"><hr></div>';
    
         $('#itemsList').append(htmlstring);
          
@@ -584,7 +599,7 @@ function renderSinglePage(tx,results)
 function queryItemDetailsByBarcode(tx,scanResult)
 {
   //alert('queryItemDetailsByBarcode started');
-  tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat=' + scanResult, [], renderSinglePage, errorCB); 
+  tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat="' + scanResult +'"', [], renderSinglePage, errorCB); 
   //alert('queryItemDetailsByBarcode done');
 }
 

@@ -452,6 +452,11 @@ article .entry-title
     margin-bottom:20px;
     padding-bottom:20px;
 }
+
+.clearfix
+{
+    clear:both;
+}
                             /*Masonry Stuff*/
                             #wrapper
                             {
