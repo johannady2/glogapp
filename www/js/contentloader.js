@@ -11,7 +11,7 @@
                  $('body').css('background-image', 'none');
                  $('nav , footer').show();
                  $('.splashscreencont').remove();
-                 $('.forsingleonly').hide();
+                 $('.forsingleonly , .foreditorderonly').hide();
                  if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
                 {
                     scanner.startScanning(MWBSInitSpace.init,MWBSInitSpace.callback);
@@ -32,8 +32,8 @@
      
      
      
-     //forsingleonly AKA backbutton has seperate loader
-        $('.navbar-nav > li > a , .navbar-default .navbar-brand').not('.forsingleonly a').on( "click", function(e) 
+     //forsingleonly and foreditorderonly have seperate loaders
+        $('.navbar-nav > li > a , .navbar-default .navbar-brand').not('.forsingleonly a , .foreditorderonly a').on( "click", function(e) 
         {
             e.preventDefault();
             
@@ -82,9 +82,9 @@
             var backTo = $(this).attr('href');
             
             $('.navbar-brand , .navbar-nav > li').not('.forsingleonly').show();
-            $('.forsingleonly').hide();
+            $('.forsingleonly , .foreditorderonly').hide();
             $(".content-cont").load(backTo);
-            $('.navbar-nav > li > a[href="'+ backTo +'"]').not('.forsingleonly a').click();
+            $('.navbar-nav > li > a[href="'+ backTo +'"]').not('.forsingleonly a , .foreditorderonly a').click();
       
         });
 

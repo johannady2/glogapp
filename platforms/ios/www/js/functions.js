@@ -13,6 +13,7 @@ var scanResult;
 //if variable is undefined, define.
 if(localStorage.BarcodeInvtyCat == null)
 {
+    /*initialized on placeOrder click*/
     localStorage.cataloguetitle = '';
     localStorage.picturefilename = '';
     localStorage.fulldescription = '';
@@ -20,6 +21,9 @@ if(localStorage.BarcodeInvtyCat == null)
     localStorage.BarcodeInvtyCat = '';
     localStorage.quantity = '';
     localStorage.subtotal = '';
+    
+    /*initialized on renderCart*/
+    localStorage.orderid='';
 }
 
 
@@ -39,8 +43,9 @@ function createDB(tx)
     
    
     tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat INTEGER, CatalogueTitle_InvtyCat , PictureFileName_InvtyCat , FullDescription_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2))',[],populateInventoryMasterCatalogue,errorCB);
-    
+    tx.executeSql('DROP TABLE IF EXISTS CATALOGUE_MASTER');
+    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat INTEGER, CatalogueTitle_InvtyCat , PictureFileName_InvtyCat , FullDescription_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2))',[],populateTables,errorCB);
+   //tx.executeSql('CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER(SysPk_CatMstr INTEGER PRIMARY KEY   AUTOINCREMENT,Description_CatMstr,Principal_CatMstr,PromoStartDate_CatMstr Date,PromoEndDate_CatMstr DATETIME)'
 }
 
 function errorCB(err)
@@ -55,7 +60,7 @@ function successCB()
 
 }
 
-function populateInventoryMasterCatalogue(tx)
+function populateTables(tx)
 {
  
 
@@ -244,7 +249,6 @@ function renderCartList()
     var BarcodeInvtyCatForArr = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
     var quantityForArr = localStorage.quantity.replace(/,\s*$/,'');
    var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
-
     
     var cartcataloguetitleArr =  cataloguetitleForArr.split(',');
     var cartpicturefilenameArr =  picturefilenameForArr.split(',');
@@ -257,6 +261,11 @@ function renderCartList()
     var cartLength = cartbarcodeArr.length;
 
      var htmlstringcart = '';
+    
+    
+    
+    /*CREATED HERE*/
+    var orderid ='';
 
     if(cartLength == 1 && !cartbarcodeArr[0])
     {
@@ -268,15 +277,18 @@ function renderCartList()
         
      for(var ind=0; ind < cartLength; ind++)
      {
-        
-        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-8 col-sm-8 col-xs-12"><h2>'+ cartcataloguetitleArr[ind] + '</h2><p>'+cartfulldescriptionArr[ind]+'</p></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
+        orderid += ind.toString() + ',';
+        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ cartcataloguetitleArr[ind] + '</h2><p>'+cartfulldescriptionArr[ind]+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
      }
         
     }
-        
-  
- 
+    
+    
+    localStorage.orderid = orderid;
     $('#cartListCont').append(htmlstringcart);
+    
+   // alert(localStorage.orderid);
+    //alert(localStorage.cataloguetitle);
 }
 
 
@@ -558,7 +570,7 @@ function queryItemDetailsByBarcode(tx,scanResult)
 
 
 
-/*-----------------other---------------------*/
+/*-----------------single-itme.html to cart.html---------------------*/
 
    
     
@@ -672,4 +684,26 @@ $(document).on('click','.placeOrder', function()
 
 });
 
-/*----------------//other-------------------*/
+/*----------------//single-itme.html  to cart.html-------------------*/
+
+
+
+/*-----------------cart.html to edit-order.html--------------------*/
+$(document).on('click','.edit-order', function ()
+{
+    
+    $('.navbar-brand , .navbar-nav > li').not('.foreditorderonly').hide();
+    $('.foreditorderonly').show();
+    
+    
+   
+});
+
+$(document).on('click','.foreditorderonly', function ()
+{
+    $('.navbar-brand , .navbar-nav > li').not('.foreditorderonly').show();
+    $('.forsingleonly , .foreditorderonly').hide();
+    $(".content-cont").load("cart.html");
+    $('.navbar-nav > li > a[href="cart.html"]').click();
+});
+/*-----------------cart.html to edit-order.html--------------------------------*/
