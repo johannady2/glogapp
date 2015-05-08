@@ -14,7 +14,7 @@ var scanResult;
 if(localStorage.BarcodeInvtyCat == null)
 {
     localStorage.cataloguetitle = '';
-    localStorage.image = '';
+    localStorage.picturefilename = '';
     localStorage.description = '';
     localStorage.displayPrice = '';
     localStorage.BarcodeInvtyCat = '';
@@ -238,7 +238,7 @@ function renderCartList()
 
     
     var cataloguetitleForArr = localStorage.cataloguetitle.replace(/,\s*$/,'');
-    var imageForArr = localStorage.image.replace(/,\s*$/,'');
+    var picturefilenameForArr = localStorage.picturefilename.replace(/,\s*$/,'');
    var descriptionForArr = localStorage.description.replace(/,\s*$/,'');
    //var displayPriceForArr = localStorage.displayPrice.replace(/,\s*$/,'');
     var BarcodeInvtyCatForArr = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
@@ -247,7 +247,7 @@ function renderCartList()
 
     
     var cartcataloguetitleArr =  cataloguetitleForArr.split(',');
-    var cartImageArr =  imageForArr.split(',');
+    var cartpicturefilenameArr =  picturefilenameForArr.split(',');
     var cartDescriptionArr =  descriptionForArr.split(',');
     //var cartdisplayPriceArr =  displayPriceForArr.split(',');
     var cartbarcodeArr =  BarcodeInvtyCatForArr.split(',');
@@ -269,7 +269,7 @@ function renderCartList()
      for(var ind=0; ind < cartLength; ind++)
      {
         
-        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ cartImageArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-8 col-sm-8 col-xs-12"><h2>'+ cartcataloguetitleArr[ind] + '</h2><p>'+cartDescriptionArr[ind]+'</p></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
+        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-8 col-sm-8 col-xs-12"><h2>'+ cartcataloguetitleArr[ind] + '</h2><p>'+cartDescriptionArr[ind]+'</p></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
      }
         
     }
@@ -521,7 +521,7 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '</td><td class="pull-right">';
         htmlstringSingle += '<div><p><span>$</span><span class="glogtotal">'+ results.rows.item(0).DisplayPrice_InvtyCat +'</span></p></div>';
         htmlstringSingle += '</td></tr></table>';
-        htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-displayPrice="'+ results.rows.item(0).DisplayPrice_InvtyCat +'" data-cataloguetitle="'+ results.rows.item(0).CatalogueTitle_InvtyCat +'" data-image="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-description="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).DisplayPrice_InvtyCat +'">Place Order</a>';
+        htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-displayPrice="'+ results.rows.item(0).DisplayPrice_InvtyCat +'" data-cataloguetitle="'+ results.rows.item(0).CatalogueTitle_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-description="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).DisplayPrice_InvtyCat +'">Place Order</a>';
         htmlstringSingle += '</div></div></div></div>';
     }
     else
@@ -643,7 +643,7 @@ $(document).on('click','.placeOrder', function()
 {
     
     var cataloguetitle = $(this).attr('data-cataloguetitle');
-    var image = $(this).attr('data-image');
+    var picturefilename = $(this).attr('data-picturefilename');
     var description = $(this).attr('data-description');
     var displayPrice = $(this).attr('data-displayPrice');
     var BarcodeInvtyCat = $(this).attr('data-BarcodeInvtyCat');
@@ -652,7 +652,7 @@ $(document).on('click','.placeOrder', function()
     
     //this prevents commas from cataloguetitles from being interpreted as , when localstorage string is turned into an array
     cataloguetitle = cataloguetitle.replace(',','(xxxGLogCommaxxx)');
-    image = image.replace(',','(xxxGLogCommaxxx)');
+    picturefilename = picturefilename.replace(',','(xxxGLogCommaxxx)');
     description = description.replace(',','(xxxGLogCommaxxx)');
     displayPrice = displayPrice.replace(',','(xxxGLogCommaxxx)');
     BarcodeInvtyCat = BarcodeInvtyCat.replace(',','(xxxGLogCommaxxx)');
@@ -660,7 +660,7 @@ $(document).on('click','.placeOrder', function()
     subtotal = subtotal.replace(',','(xxxGLogCommaxxx)');
 
     localStorage.cataloguetitle += cataloguetitle.toString()+',';
-    localStorage.image += image.toString()+',';
+    localStorage.picturefilename += picturefilename.toString()+',';
     localStorage.description += description.toString()+',';
     localStorage.displayPrice += displayPrice.toString()+',';
     localStorage.BarcodeInvtyCat += BarcodeInvtyCat.toString()+',';
