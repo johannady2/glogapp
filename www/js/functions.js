@@ -13,7 +13,7 @@ var scanResult;
 //if variable is undefined, define.
 if(localStorage.BarcodeInvtyCat == null)
 {
-    localStorage.title = '';
+    localStorage.CatalogueTitle_InvtyCat = '';
     localStorage.image = '';
     localStorage.description = '';
     localStorage.displayPrice = '';
@@ -39,7 +39,7 @@ function createDB(tx)
     
    
     tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat INTEGER, title , image , description,displayPrice DECIMAL(9,2))',[],populateInventoryMasterCatalogue,errorCB);
+    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat INTEGER, CatalogueTitle_InvtyCat , image , description,displayPrice DECIMAL(9,2))',[],populateInventoryMasterCatalogue,errorCB);
     
 }
 
@@ -60,7 +60,7 @@ function populateInventoryMasterCatalogue(tx)
  
 
    
-    var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(Barcode_InvtyCat,title,image,description,displayPrice) VALUES(?,?,?,?,?)';
+    var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(Barcode_InvtyCat,CatalogueTitle_InvtyCat,image,description,displayPrice) VALUES(?,?,?,?,?)';
    
     tx.executeSql(sqlInsert,[101191,"Yotsuba Revoltech","img/item1.jpg","with free 1kg rice",63.00],null,errorCB);
     tx.executeSql(sqlInsert,[4801010127215,"GIF sample","img/item2.gif","with free milk",63.00],null,errorCB);
@@ -147,7 +147,7 @@ function renderCatalogueItems(tx,results)
         {
 
             htmlstringCatalaogue += '<div class="item"><div class="row artcont"><div class="col-md-12 col-ms-12 col-xs-12"><article><header class="entry-header page-header"><div class="row"><div class="col-md-8 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<h1 class="entry-title">'+ results.rows.item(ind).title +'</h1>';
+            htmlstringCatalaogue += '<h1 class="entry-title">'+ results.rows.item(ind).CatalogueTitle_InvtyCat +'</h1>';
             htmlstringCatalaogue += '</div><div class="col-md-4 col-sm-12 col-xs-12">';
             htmlstringCatalaogue += '<h3 class="entry-title">$'+ results.rows.item(ind).displayPrice +'</h1>';
             htmlstringCatalaogue += '</div></div></header>';
@@ -190,7 +190,7 @@ function renderSearchResults(tx,results)
     for(var ind=0; ind < len; ind++)
     {
         
-        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).image +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).title+'</h1><p>'+results.rows.item(ind).description+'</p><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).SysPk_InvtyCat +'">View</a></div>';
+        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).image +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).CatalogueTitle_InvtyCat+'</h1><p>'+results.rows.item(ind).description+'</p><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).SysPk_InvtyCat +'">View</a></div>';
    
         $('#itemsList').append(htmlstring);
          
@@ -492,7 +492,7 @@ function queryItemDetails(tx,idForSinglePage)
 }
 
 function renderSinglePage(tx,results)
-{//results.rows.item(ind).title
+{//results.rows.item(ind).CatalogueTitle_InvtyCat
     
 
     
@@ -507,7 +507,7 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '<img src="'+ results.rows.item(0).image +'" class="responsiveImage">';
         htmlstringSingle += '</div></div>';
         htmlstringSingle += '<div class="col-md-6 col-sm-12 col-xs-12"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
-        htmlstringSingle += '<h1>'+ results.rows.item(0).title +'</h1>';
+        htmlstringSingle += '<h1>'+ results.rows.item(0).CatalogueTitle_InvtyCat +'</h1>';
         htmlstringSingle += '<p>'+ results.rows.item(0).description +'</p>';
         htmlstringSingle += '<h3 class="pull-right">$<span class="glogprice">'+ results.rows.item(0).displayPrice +'</span></h3>';
         htmlstringSingle += '</div> </div>';
@@ -521,7 +521,7 @@ function renderSinglePage(tx,results)
         htmlstringSingle += '</td><td class="pull-right">';
         htmlstringSingle += '<div><p><span>$</span><span class="glogtotal">'+ results.rows.item(0).displayPrice +'</span></p></div>';
         htmlstringSingle += '</td></tr></table>';
-        htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-displayPrice="'+ results.rows.item(0).displayPrice +'" data-title="'+ results.rows.item(0).title +'" data-image="'+ results.rows.item(0).image +'" data-description="'+ results.rows.item(0).description +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).displayPrice +'">Place Order</a>';
+        htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-displayPrice="'+ results.rows.item(0).displayPrice +'" data-title="'+ results.rows.item(0).CatalogueTitle_InvtyCat +'" data-image="'+ results.rows.item(0).image +'" data-description="'+ results.rows.item(0).description +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).displayPrice +'">Place Order</a>';
         htmlstringSingle += '</div></div></div></div>';
     }
     else
