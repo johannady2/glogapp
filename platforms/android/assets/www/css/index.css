@@ -402,7 +402,7 @@ article .entry-title
 }
 
 
-.viewItem , .placeOrder
+.viewItem , .placeOrder , .saveChanges
 {
     width:100%;
     min-height:60px;
@@ -410,7 +410,8 @@ article .entry-title
 }
 
 .viewItem:visited,
-.placeOrder:visited
+.placeOrder:visited,
+.saveChanges:visited
 {
     color:#ffffff;
 }

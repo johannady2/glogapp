@@ -10,9 +10,29 @@ var idForSinglePage;
 var scanResult;
 var orderidtoedit;
 
+
+
+
+
+
+
+
+
+
+
 //if variable is undefined, define.
 if(localStorage.BarcodeInvtyCat == null)
 {
+    
+    /*FOR LOCALSTORAGE TO ARRAY*/
+    var cartcataloguetitleArr;
+    var cartpicturefilenameArr;
+    var cartfulldescriptionArr;
+    var cartdisplayPriceArr;
+    var cartbarcodeArr;
+    var cartQuantityArr;
+    var cartsubtotalArr;
+    
     /*initialized on placeOrder click*/
     localStorage.cataloguetitle = '';
     localStorage.picturefilename = '';
@@ -154,6 +174,7 @@ function renderCatalogueItems(tx,results)
         var htmlstringCatalaogue ='';
         for(var ind=0; ind < numberOfCatalogueItems; ind++)
         {
+            /*These ones will not be put in html because the elements need to be looped through*/
 
             htmlstringCatalaogue += '<div class="item"><div class="row artcont"><div class="col-md-12 col-ms-12 col-xs-12"><article><header class="entry-header page-header"><div class="row"><div class="col-md-8 col-sm-12 col-xs-12">';
             htmlstringCatalaogue += '<h1 class="entry-title">'+ results.rows.item(ind).CatalogueTitle_InvtyCat +'</h1>';
@@ -240,7 +261,6 @@ function startSearch()
 
 
 
-
 function renderCartList()
 {
     
@@ -249,18 +269,18 @@ function renderCartList()
     var cataloguetitleForArr = localStorage.cataloguetitle.replace(/,\s*$/,'');
     var picturefilenameForArr = localStorage.picturefilename.replace(/,\s*$/,'');
    var fulldescriptionForArr = localStorage.fulldescription.replace(/,\s*$/,'');
-   //var displayPriceForArr = localStorage.displayPrice.replace(/,\s*$/,'');
+   var displayPriceForArr = localStorage.displayPrice.replace(/,\s*$/,'');
     var BarcodeInvtyCatForArr = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
     var quantityForArr = localStorage.quantity.replace(/,\s*$/,'');
    var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
     
-    var cartcataloguetitleArr =  cataloguetitleForArr.split(',');
-    var cartpicturefilenameArr =  picturefilenameForArr.split(',');
-    var cartfulldescriptionArr =  fulldescriptionForArr.split(',');
-    //var cartdisplayPriceArr =  displayPriceForArr.split(',');
-    var cartbarcodeArr =  BarcodeInvtyCatForArr.split(',');
-    var cartQuantityArr =  quantityForArr.split(',');
-    var cartsubtotalArr = subtotalForArr.split(',');
+    cartcataloguetitleArr =  cataloguetitleForArr.split(',');
+    cartpicturefilenameArr =  picturefilenameForArr.split(',');
+    cartfulldescriptionArr =  fulldescriptionForArr.split(',');
+    cartdisplayPriceArr =  displayPriceForArr.split(',');
+    cartbarcodeArr =  BarcodeInvtyCatForArr.split(',');
+    cartQuantityArr =  quantityForArr.split(',');
+    cartsubtotalArr = subtotalForArr.split(',');
     
     var cartLength = cartbarcodeArr.length;
 
@@ -518,6 +538,8 @@ function renderSinglePage(tx,results)
     
     if(doesThisExist > 0)
     {
+        
+        /*PROBABLY NEED TO MOVE TESE TO HTML IN THE FUTURE AND load each data per element*/
         var htmlstringSingle ='';
         htmlstringSingle += '<div class="row single-cont"><div class="col-md-6 col-sm-12 col-xs-12"><div class="img-container">';   
         htmlstringSingle += '<img src="'+ results.rows.item(0).PictureFileName_InvtyCat +'" class="responsiveImage">';
@@ -690,3 +712,8 @@ $(document).on('click','.placeOrder', function()
 
 /*----------------//single-itme.html  to cart.html-------------------*/
 
+
+function rendereditorderdetails(orderidtoedit)
+{
+    
+}
