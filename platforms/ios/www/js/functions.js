@@ -8,7 +8,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
 var db;
 var idForSinglePage;
 var scanResult;
-
+var orderidtoedit;
 
 //if variable is undefined, define.
 if(localStorage.BarcodeInvtyCat == null)
@@ -117,6 +117,10 @@ function doneScanning(event,scanResult)
      //alert('trigger completed');
 }
 
+function editOrderClickedContentReady(event,orderidtoedit)
+{
+    $(document).trigger('editOrderClicked',[orderidtoedit]);
+}
 
 /*----------------------------------------------------------------------*/
 /*-------------------//custom events-------------------------------*/
@@ -686,24 +690,3 @@ $(document).on('click','.placeOrder', function()
 
 /*----------------//single-itme.html  to cart.html-------------------*/
 
-
-
-/*-----------------cart.html to edit-order.html--------------------*/
-$(document).on('click','.edit-order', function ()
-{
-    
-    $('.navbar-brand , .navbar-nav > li').not('.foreditorderonly').hide();
-    $('.foreditorderonly').show();
-    
-    
-   
-});
-
-$(document).on('click','.foreditorderonly', function ()
-{
-    $('.navbar-brand , .navbar-nav > li').not('.foreditorderonly').show();
-    $('.forsingleonly , .foreditorderonly').hide();
-    $(".content-cont").load("cart.html");
-    $('.navbar-nav > li > a[href="cart.html"]').click();
-});
-/*-----------------cart.html to edit-order.html--------------------------------*/

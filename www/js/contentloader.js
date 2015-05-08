@@ -83,12 +83,29 @@
             
             $('.navbar-brand , .navbar-nav > li').not('.forsingleonly').show();
             $('.forsingleonly , .foreditorderonly').hide();
-            $(".content-cont").load(backTo);
-            $('.navbar-nav > li > a[href="'+ backTo +'"]').not('.forsingleonly a , .foreditorderonly a').click();
+            $(".content-cont").load(backTo ,  null, function()
+            {
+                $('.navbar-nav > li > a[href="'+ backTo +'"]').not('.forsingleonly a , .foreditorderonly a').click();
+            });
+           
       
         });
 
     
+
+       
+
+        $(document).on('click','.foreditorderonly', function ()
+        {
+            $('.navbar-brand , .navbar-nav > li').not('.foreditorderonly').show();
+            $('.forsingleonly , .foreditorderonly').hide();
+            $(".content-cont").load("cart.html",  null, function()
+            {
+                $('.navbar-nav > li > a[href="cart.html"]').click();
+            });
+   
+        });
+     
      
      
      

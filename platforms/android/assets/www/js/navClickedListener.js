@@ -31,6 +31,12 @@ $(document).on('navClicked',function(event,filename)
     {
      
         renderCartList();
+        $('body').off('click', '.edit-order').on('click','.edit-order', function(event,orderidtoedit)
+        {   
+            orderidtoedit = $(this).data('orderid');
+         
+            editOrderClickedContentReady(event,orderidtoedit);
+        });
     }
     else if(filename == "test-localstorage.html")
     {
