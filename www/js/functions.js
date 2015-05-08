@@ -13,7 +13,7 @@ var scanResult;
 //if variable is undefined, define.
 if(localStorage.BarcodeInvtyCat == null)
 {
-    localStorage.CatalogueTitle_InvtyCat = '';
+    localStorage.title = '';
     localStorage.image = '';
     localStorage.description = '';
     localStorage.displayPrice = '';
