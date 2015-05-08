@@ -39,8 +39,9 @@ function createDB(tx)
     
    
     tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat INTEGER, CatalogueTitle_InvtyCat , PictureFileName_InvtyCat , FullDescription_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2))',[],populateInventoryMasterCatalogue,errorCB);
-    
+    tx.executeSql('DROP TABLE IF EXISTS CATALOGUE_MASTER');
+    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat INTEGER, CatalogueTitle_InvtyCat , PictureFileName_InvtyCat , FullDescription_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2))',[],populateTables,errorCB);
+   //tx.executeSql('CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER(SysPk_CatMstr INTEGER PRIMARY KEY   AUTOINCREMENT,Description_CatMstr,Principal_CatMstr,PromoStartDate_CatMstr Date,PromoEndDate_CatMstr DATETIME)'
 }
 
 function errorCB(err)
@@ -55,7 +56,7 @@ function successCB()
 
 }
 
-function populateInventoryMasterCatalogue(tx)
+function populateTables(tx)
 {
  
 
