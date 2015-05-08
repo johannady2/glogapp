@@ -38,12 +38,6 @@ $(document).on('navClicked',function(event,filename)
             editOrderClickedContentReady(event,orderidtoedit);
         });
     }
-    else if(filename == "test-localstorage.html")
-    {
-      
-        testlocalstorage();
-
-    }
     else if(filename == "test-getjson.html")
     {      
        

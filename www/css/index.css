@@ -402,7 +402,7 @@ article .entry-title
 }
 
 
-.viewItem , .placeOrder , .saveChanges
+.viewItem , .placeOrder , .saveChanges , .removeFromCart
 {
     width:100%;
     min-height:60px;
@@ -411,7 +411,8 @@ article .entry-title
 
 .viewItem:visited,
 .placeOrder:visited,
-.saveChanges:visited
+.saveChanges:visited,
+.removeFromCart:visited
 {
     color:#ffffff;
 }
@@ -457,6 +458,9 @@ article .entry-title
 {
     clear:both;
 }
+
+
+
                             /*Masonry Stuff*/
                             #wrapper
                             {
