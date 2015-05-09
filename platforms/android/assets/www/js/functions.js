@@ -191,7 +191,7 @@ function renderCatalogueItems(tx,results)
         {
             /*These ones will not be put in html because the elements need to be looped through*/
 
-            htmlstringCatalaogue += '<div class="item"><div class="row artcont"><div class="col-md-12 col-ms-12 col-xs-12"><article><header class="entry-header page-header"><div class="row"><div class="col-md-8 col-sm-12 col-xs-12">';
+            htmlstringCatalaogue += '<div class="item"><div class="row artcont"><div class="col-md-12 col-ms-12 col-xs-12"><article class="oneitemarticle"><header class="entry-header page-header"><div class="row"><div class="col-md-8 col-sm-12 col-xs-12">';
             htmlstringCatalaogue += '<h1 class="entry-title">'+ results.rows.item(ind).CatalogueTitle_InvtyCat +'</h1>';
             htmlstringCatalaogue += '</div><div class="col-md-4 col-sm-12 col-xs-12">';
             htmlstringCatalaogue += '<h3 class="entry-title">$'+ results.rows.item(ind).DisplayPrice_InvtyCat +'</h1>';
@@ -448,37 +448,51 @@ function renderSinglePage(tx,results)
     
     if(doesThisExist > 0)
     {
+        $('.content-cont').load('single-item.html',null,function(){
         
-        /*PROBABLY NEED TO MOVE TESE TO HTML IN THE FUTURE AND load each data per element*/
-        var htmlstringSingle ='';
-        htmlstringSingle += '<div class="row single-cont"><div class="col-md-6 col-sm-12 col-xs-12"><div class="img-container">';   
-        htmlstringSingle += '<img src="'+ results.rows.item(0).PictureFileName_InvtyCat +'" class="responsiveImage">';
-        htmlstringSingle += '</div></div>';
-        htmlstringSingle += '<div class="col-md-6 col-sm-12 col-xs-12"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
-        htmlstringSingle += '<h1>'+ results.rows.item(0).CatalogueTitle_InvtyCat +'</h1>';
-        htmlstringSingle += '<p>'+ results.rows.item(0).FullDescription_InvtyCat +'</p>';
-        htmlstringSingle += '<h3 class="pull-right">$<span class="glogprice">'+ results.rows.item(0).DisplayPrice_InvtyCat +'</span></h3>';
-        htmlstringSingle += '</div> </div>';
-        htmlstringSingle += '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
-        htmlstringSingle += '<table class="totalcounter"><tr><td>';
-        htmlstringSingle += '<label for="quantity">Quantity</label>';
-        htmlstringSingle += '</td><td class="pull-right">';
-        htmlstringSingle += '<input type="text" name="glogquantity" id="glogquantity" value="1">';
-        htmlstringSingle += '</td></tr><tr><td>';
-        htmlstringSingle += '<label for="quantity">Subtotal</label>';
-        htmlstringSingle += '</td><td class="pull-right">';
-        htmlstringSingle += '<div><p><span>$</span><span class="glogtotal">'+ results.rows.item(0).DisplayPrice_InvtyCat +'</span></p></div>';
-        htmlstringSingle += '</td></tr></table>';
-        htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-displayPrice="'+ results.rows.item(0).DisplayPrice_InvtyCat +'" data-cataloguetitle="'+ results.rows.item(0).CatalogueTitle_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).DisplayPrice_InvtyCat +'">Place Order</a>';
-        htmlstringSingle += '</div></div></div></div>';
+         $('.singleitemPictureFileName').attr('src',results.rows.item(0).PictureFileName_InvtyCat);
+         $('.singleitemcataloguetitle').append(results.rows.item(0).CatalogueTitle_InvtyCat);
+         $('.singleitemfulldescription').append(results.rows.item(0).FullDescription_InvtyCat);
+         $('.singleitemdisplayprice').append(results.rows.item(0).DisplayPrice_InvtyCat);
+         $('.singleitemsubtotal').append(results.rows.item(0).DisplayPrice_InvtyCat);//temporary. value will change on quantity input
+        $( '.singleitemtable' ).after( '<a href="#" class="btn btn-success btn-large placeOrder" data-displayPrice="'+ results.rows.item(0).DisplayPrice_InvtyCat +'" data-cataloguetitle="'+ results.rows.item(0).CatalogueTitle_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).DisplayPrice_InvtyCat +'">Place Order</a>');
+        
+        });
+       
+        
+        /*PROBABLY NEED TO MOVE TESE TO HTML IN THE FUTURE AND load each data per element
+            var htmlstringSingle ='';
+            htmlstringSingle += '<div class="row single-cont"><div class="col-md-6 col-sm-12 col-xs-12"><div class="img-container">';   
+            htmlstringSingle += '<img src="'+ results.rows.item(0).PictureFileName_InvtyCat +'" class="responsiveImage">';
+            htmlstringSingle += '</div></div>';
+            htmlstringSingle += '<div class="col-md-6 col-sm-12 col-xs-12"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
+            htmlstringSingle += '<h1>'+ results.rows.item(0).CatalogueTitle_InvtyCat +'</h1>';
+            htmlstringSingle += '<p>'+ results.rows.item(0).FullDescription_InvtyCat +'</p>';
+            htmlstringSingle += '<h3 class="pull-right">$<span class="glogprice">'+ results.rows.item(0).DisplayPrice_InvtyCat +'</span></h3>';
+            htmlstringSingle += '</div> </div>';
+            htmlstringSingle += '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
+            htmlstringSingle += '<table class="totalcounter"><tr><td>';
+            htmlstringSingle += '<label for="quantity">Quantity</label>';
+            htmlstringSingle += '</td><td class="pull-right">';
+            htmlstringSingle += '<input type="text" name="glogquantity" id="glogquantity" value="1">';
+            htmlstringSingle += '</td></tr><tr><td>';
+            htmlstringSingle += '<label for="quantity">Subtotal</label>';
+            htmlstringSingle += '</td><td class="pull-right">';
+            htmlstringSingle += '<div><p><span>$</span><span class="glogtotal">'+ results.rows.item(0).DisplayPrice_InvtyCat +'</span></p></div>';
+            htmlstringSingle += '</td></tr></table>';
+            htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-displayPrice="'+ results.rows.item(0).DisplayPrice_InvtyCat +'" data-cataloguetitle="'+ results.rows.item(0).CatalogueTitle_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).DisplayPrice_InvtyCat +'">Place Order</a>';
+            htmlstringSingle += '</div></div></div></div>';
+        */
     }
     else
     {
         htmlstringSingle = 'Sorry, we do not have this item.';
-    }
-
         $('.content-cont').empty();
         $('.content-cont').append(htmlstringSingle);
+    
+    }
+
+
     
     
     
@@ -617,12 +631,12 @@ $(document).on('click','.placeOrder', function()
     
     alert('item added to cart');
     
-
+    $('.forsingleonly a').click();
 });
 
 /*----------------//single-itme.html  to cart.html-------------------*/
 
-
+/*---------------------------------------editOrder.html-----------------------------------*/
 function editOrderPageQuantityInputListener()
 {
 
@@ -661,3 +675,5 @@ function editOrderPageQuantityInputListener()
 
     });
 }
+/*-------------------------------//editorder.html----------------------------*/
+

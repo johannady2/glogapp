@@ -377,7 +377,10 @@ article .entry-title
     background-color: rgb(83, 134, 49);
 }
 /*//bootstrap override*/
-
+body
+{
+    background-color: rgb(233, 233, 233);
+}
 .content-cont
 {
     margin-top:60px;
@@ -457,6 +460,14 @@ article .entry-title
 .clearfix
 {
     clear:both;
+}
+
+.oneitemarticle
+{
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    padding: 27px 20px;
+    border-bottom: 1px solid #DADADA;
 }
 
 
