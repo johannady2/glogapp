@@ -91,7 +91,17 @@ function createDB(tx)
     query2 += 'Principal_CatMstr,PromoEndDate_CatMstr, PromoStartDate_CatMstr)';
     tx.executeSql( query2,[],populateCatalogueMaster,errorCB);
     
-   
+    
+    tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER');
+    var query3 ='';
+    query3 += 'CREATE TABLE IF NOT EXISTS INVENTORY_MASTER(RowNumber_CatMstr INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_Invty,';
+    query3 += 'UserPk_Invty, LastUpdatedBy_Invty, LastUpdatedConcurrencyID_Invty, LastUpdatedDate_Invty,';
+    query3 += 'Module_Invty,Particulars_Invty,PictureFileName_Invty, Status_Invty, Type_Invty, Barcode_Invty,';
+    query3 += 'Brand_Invty,Classification_Invty, Categories_Invty, Description_Invty,FullDescription_Invty,FreeDescription_Invty,';
+    query3 += 'DisplayPrice_Invty, Principal_Invty, QRcode_Invty, SubCategories_Invty)';
+    tx.executeSql(query3,[],populateInventoryMaster, errorCB);
+
+
 }
 
 function populateInventoryMasterCatalogue(tx)
@@ -134,9 +144,14 @@ function populateInventoryMasterCatalogue(tx)
 
 function populateCatalogueMaster()
 {
-    alert('populate catalogue master');
+    //alert('populate catalogue master');
 }
 
+
+function populateInventoryMaster()
+{
+     //alert('populate inventory master');
+}
 /*-----------------------------------------------------------------*/
 /*------------------------//Database-----------------------------------*/
 /*------------------------------------------------------------------*/
