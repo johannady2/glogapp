@@ -13,8 +13,8 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                
                 /*INITIAL DISPLAY - BEFORE EDIT*/
                 $('.edit-order-PictureFileName').attr('src',cartpicturefilenameArr[orderidtoedit]);//<h1>cataloguetitle</h1>
-                $('.edit-order-cataloguetitle').append(cartcataloguetitleArr[orderidtoedit]);//<h1>cataloguetitle</h1>
-                $('.edit-order-fulldescription').append(cartfulldescriptionArr[orderidtoedit]);//<p>fulldescription</p>
+                $('.edit-order-cataloguetitle').append(toNormalComma(cartcataloguetitleArr[orderidtoedit]));//<h1>cataloguetitle</h1>
+                $('.edit-order-fulldescription').append(toNormalComma(cartfulldescriptionArr[orderidtoedit]));//<p>fulldescription</p>
                 $('.edit-order-displayPrice').append(cartdisplayPriceArr[orderidtoedit]);//<h3>$<span>displayPrice</span></h3>
                 $('.edit-order-quantity').val(cartQuantityArr[orderidtoedit]);//<input type="text" name="quantity" id="quatity" class="edit-order-quantity" value="1">                
                 $('.edit-order-subtotal').append(cartsubtotalArr[orderidtoedit]);//<p><span>$</span><span class="edit-order-subtotal"></span></p>
@@ -28,7 +28,8 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                 
                 
                 /*save changes*/
-                $('.content-cont').off('click', '.saveChanges').on('click', '.saveChanges',function(){
+                $('.content-cont').off('click', '.saveChanges').on('click', '.saveChanges',function()
+                {
                     var editOrderNewQuantity = $('.edit-order-quantity').val();
                     var editOrderNewSubtotal = $('.edit-order-subtotal').html();
                     
@@ -50,7 +51,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                     var Quantity_ArrToSTring = cartQuantityArr.toString()+",";
                     var Subtotal_ArrToSTring = cartsubtotalArr.toString()+",";
                     
-                    localStorage.quantity = Quantity_ArrToSTring;
+                    localStorage.quantity =  Quantity_ArrToSTring;
                     localStorage.subtotal = Subtotal_ArrToSTring;
                     
                     alert('changes saved.');
@@ -82,8 +83,8 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                     var newarrstring_cartsubtotal = cartsubtotalArr.toString()+",";
                     
                
-                    localStorage.cataloguetitle = newarrstring_cataloguetitle;
-                    localStorage.picturefilename = newarrstring_picturefilename;
+                    localStorage.cataloguetitle = toCustomComma(newarrstring_cataloguetitle);
+                    localStorage.picturefilename = toCustomComma(newarrstring_picturefilename);
                     localStorage.fulldescription = newarrstring_fulldescription;
                     localStorage.displayPrice = newarrstring_displayPrice;
                     localStorage.BarcodeInvtyCat = newarrstring_cartbarcode;

@@ -412,13 +412,27 @@ body
     font-size:30px;
 }
 
+.orderAll
+{
+    width:60%;
+    min-height:60px;
+    font-size:30px;
+    margin: 10px auto;
+    display:block;
+}
+
 .viewItem:visited,
 .placeOrder:visited,
 .saveChanges:visited,
-.removeFromCart:visited
+.removeFromCart:visited,
+.orderAll:visited
 {
     color:#ffffff;
 }
+
+
+
+
 
 .rightmenu
 {
@@ -452,9 +466,11 @@ body
 
 .cartItemCont
 {
-    border-bottom:1px solid #a1a1a1;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    padding: 27px 20px;
+    border-bottom: 1px solid #DADADA;
     margin-bottom:20px;
-    padding-bottom:20px;
 }
 
 .clearfix
@@ -470,6 +486,22 @@ body
     border-bottom: 1px solid #DADADA;
 }
 
+.ItemNote
+{
+    color: rgb(83, 134, 49);
+}
+
+.orderAll-row
+{
+    background-color:#171717;
+    position:fixed;
+    bottom:0px;
+    padding:0px;
+    margin:0px;
+    width:100%;
+    left:0px;
+    z-index:100;
+}
 
 
                             /*Masonry Stuff*/

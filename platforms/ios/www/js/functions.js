@@ -87,7 +87,7 @@ function populateTables(tx)
    
     var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(Barcode_InvtyCat,CatalogueTitle_InvtyCat,PictureFileName_InvtyCat,FullDescription_InvtyCat,DisplayPrice_InvtyCat) VALUES(?,?,?,?,?)';
    
-    tx.executeSql(sqlInsert,["101191","Yotsuba Revoltech","img/item1.jpg","with free 1kg rice",63.00],null,errorCB);
+    tx.executeSql(sqlInsert,["101191","Yotsuba,Revoltech","img/item1.jpg","Sample,f Strings with commas.",63.00],null,errorCB);
     tx.executeSql(sqlInsert,["4801010127215","GIF sample","img/item2.gif","with free milk",63.00],null,errorCB);
     tx.executeSql(sqlInsert,["8999999003395","Pond\'s Pure White","img/item3.jpg","with free candy",14.00],null,errorCB);
     tx.executeSql(sqlInsert,["4807788058850","Iron Supplement","img/item4.gif","with free facial chocolate",99.99],null,errorCB);
@@ -309,14 +309,34 @@ function renderCartList()
      for(var ind=0; ind < cartLength; ind++)
      {
         orderid += ind.toString() + ',';
-        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ cartcataloguetitleArr[ind] + '</h2><p>'+cartfulldescriptionArr[ind]+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
+         
+         //commas are toNormal because this is for display
+        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ toNormalComma(cartcataloguetitleArr[ind]) + '</h2><p>'+toNormalComma(cartfulldescriptionArr[ind])+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
      }
         
     }
-    
+
     
     localStorage.orderid = orderid;
     $('#cartListCont').append(htmlstringcart);
+
+    //commas are not using toNormal so that string won't be interpreted as different array indexes.
+    $('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-cataloguetitle="' + cartcataloguetitleArr.toString() +'" data-picturefilename="'+ cartpicturefilenameArr.toString() +'" data-fulldescription="'+ cartfulldescriptionArr.toString() +'" data-displayPrice="'+ cartdisplayPriceArr.toString()+'" data-barcode="'+cartbarcodeArr.toString()+'" data-quantity= "'+cartQuantityArr.toString() +'"  data-subtotal="'+ cartsubtotalArr.toString()+'">Order All</a>');
+    
+    
+    
+    $('body').off('click','.orderAll').on('click','.orderAll' , function()
+    {
+       alert($(this).attr('data-cataloguetitle'));
+       alert($(this).attr('data-picturefilename'));
+       alert($(this).attr('data-fulldescription'));
+       alert($(this).attr('data-displayPrice'));
+       alert($(this).attr('data-barcode'));
+       alert($(this).attr('data-quantity'));
+       alert($(this).attr('data-subtotal'));
+        
+        
+    });
 }
 
 
@@ -676,4 +696,22 @@ function editOrderPageQuantityInputListener()
     });
 }
 /*-------------------------------//editorder.html----------------------------*/
+
+function toNormalComma(stringWithCustomComma)
+{
+   var stringWithNormalComma = stringWithCustomComma.replace('(xxxGLogCommaxxx)',',');
+
+    
+    
+    return stringWithNormalComma;
+    
+}
+
+function toCustomComma(stringWithNormalComma)
+{
+    var stringWithCustomComma = stringWithNormalComma.replace(',','(xxxGLogCommaxxx)');
+
+    
+    return stringWithCustomComma;
+}
 
