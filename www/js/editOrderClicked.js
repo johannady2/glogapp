@@ -1,7 +1,8 @@
 $(document).on('editOrderClicked',function(event,orderidtoedit)
 {
-            
-   
+            alert(cartpromonameArr);
+    alert(orderidtoedit);
+   alert(cartpromonameArr[orderidtoedit]);
 
             //alert(orderidtoedit);
             $('.navbar-brand , .navbar-nav > li').not('.foreditorderonly').hide();
@@ -12,8 +13,8 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
             {
                
                 /*INITIAL DISPLAY - BEFORE EDIT*/
-                $('.edit-order-PictureFileName').attr('src',cartpicturefilenameArr[orderidtoedit]);//<h1>cataloguetitle</h1>
-                $('.edit-order-cataloguetitle').append(toNormalComma(cartcataloguetitleArr[orderidtoedit]));//<h1>cataloguetitle</h1>
+                $('.edit-order-PictureFileName').attr('src',cartpicturefilenameArr[orderidtoedit]);//<h1>promoname</h1>
+                $('.edit-order-promoname').append(toNormalComma(cartpromonameArr[orderidtoedit]));//<h1>promoname</h1>
                 $('.edit-order-fulldescription').append(toNormalComma(cartfulldescriptionArr[orderidtoedit]));//<p>fulldescription</p>
                 $('.edit-order-promoPrice').append(cartpromoPriceArr[orderidtoedit]);//<h3>$<span>promoPrice</span></h3>
                 $('.edit-order-quantity').val(cartQuantityArr[orderidtoedit]);//<input type="text" name="quantity" id="quatity" class="edit-order-quantity" value="1">                
@@ -65,7 +66,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                 $('.content-cont').off('click', '.removeFromCart').on('click', '.removeFromCart',function()
                 {
 
-                    cartcataloguetitleArr.splice(orderidtoedit,1);
+                    cartpromonameArr.splice(orderidtoedit,1);
                     cartpicturefilenameArr.splice(orderidtoedit,1);
                     cartfulldescriptionArr.splice(orderidtoedit,1);
                     cartpromoPriceArr.splice(orderidtoedit,1);
@@ -75,7 +76,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                     
                     if(cartbarcodeArr.length > 0)
                     {
-                        var newarrstring_cataloguetitle = cartcataloguetitleArr.toString()+",";
+                        var newarrstring_promoname = cartpromonameArr.toString()+",";
                         var newarrstring_picturefilename = cartpicturefilenameArr.toString()+",";
                         var newarrstring_fulldescription = cartfulldescriptionArr.toString()+",";
                         var newarrstring_promoPrice = cartpromoPriceArr.toString()+",";
@@ -85,7 +86,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                     } 
                     else
                     {
-                        var newarrstring_cataloguetitle = '';
+                        var newarrstring_promoname = '';
                         var newarrstring_picturefilename = '';
                         var newarrstring_fulldescription = '';
                         var newarrstring_promoPrice ='';
@@ -94,7 +95,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                         var newarrstring_cartsubtotal = '';
                     }
                
-                    localStorage.cataloguetitle = newarrstring_cataloguetitle;
+                    localStorage.promoname = newarrstring_promoname;
                     localStorage.picturefilename = newarrstring_picturefilename;
                     localStorage.fulldescription = newarrstring_fulldescription;
                     localStorage.promoPrice = newarrstring_promoPrice;

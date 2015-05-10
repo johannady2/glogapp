@@ -22,7 +22,7 @@ if(localStorage.BarcodeInvtyCat == null)
     
     /*FOR LOCALSTORAGE TO ARRAY*/
     //NOTE: x,y,z
-    var cartcataloguetitleArr;
+    var cartpromonameArr;
     var cartpicturefilenameArr;
     var cartfulldescriptionArr;
     var cartpromoPriceArr;
@@ -33,7 +33,7 @@ if(localStorage.BarcodeInvtyCat == null)
     /*initialized on placeOrder click*/
     //NOTE: x,y,z,
     //always add "," at the end of array when storing as localStorage
-    localStorage.cataloguetitle = '';
+    localStorage.promoname = '';
     localStorage.picturefilename = '';
     localStorage.fulldescription = '';
     localStorage.promoPrice = '';
@@ -68,7 +68,7 @@ function createDB(tx)
     query += 'Barcode_Freebies01_InvtyCat,Barcode_Freebies02_InvtyCat,Barcode_Freebies03_InvtyCat,Barcode_Freebies04_InvtyCat,Barcode_Freebies05_InvtyCat,';
     query += 'Barcode_InvtyCat, Brand_InvtyCat ,CatalogueTitle_InvtyCat ,';
     query +='CataloguePageNumber_InvtyCat,Categories_InvtyCat,Classification_InvtyCat,Description_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2),';
-    query +=  'FreeDescription_InvtyCat,FullDescription_InvtyCat,PromoPrice_InvtyCat,PricePerPiece_InvtyCat,';
+    query +=  'FreeDescription_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat,PricePerPiece_InvtyCat,';
     query += 'PromoStartDate_InvtyCat, PromoEndDate_InvtyCat, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,';
     query += 'RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,';
     query += 'UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)';
@@ -97,7 +97,7 @@ function populateTables(tx)
     alert('populating');
 
    
-    var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,CatalogueTitle_InvtyCat,PromoPrice_InvtyCat,FullDescription_InvtyCat) VALUES(?,?,?,?,?,?)';
+    var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat,FullDescription_InvtyCat) VALUES(?,?,?,?,?,?)';
    
    
     tx.executeSql(sqlInsert,["111111","img/item1.jpg","101191","Yotsuba , Revoltech",63.00,"Sample,f Strings with commas."],null,errorCB);
@@ -130,7 +130,7 @@ function populateTables(tx)
     sqlInsert +=' UserFk_Invty_InvtyCat,UserFk_CatMstr_InvtyCat,LastUpdatedBy_InvtyCat,LastUpdatedConcurrencyID_InvtyCat,LastUpdatedDate_InvtyCat,';
     sqlInsert += 'Module_InvtyCat, Particulars_InvtyCat,PictureFileName_InvtyCat , Status_InvtyCat, Type_InvtyCat,';
     sqlInsert += 'Barcode_Freebies01_InvtyCat,Barcode_Freebies02_InvtyCat,Barcode_Freebies03_InvtyCat,Barcode_Freebies04_InvtyCat,Barcode_Freebies05_InvtyCat,';
-    sqlInsert += 'Barcode_InvtyCat, Brand_InvtyCat ,CatalogueTitle_InvtyCat ,';
+    sqlInsert += 'Barcode_InvtyCat, Brand_InvtyCat ,PromoName_InvtyCat ,';
     sqlInsert += 'CataloguePageNumber_InvtyCat,Categories_InvtyCat,Classification_InvtyCat,Description_InvtyCat,PromoPrice_InvtyCat,';
     sqlInsert +=  'FreeDescription_InvtyCat,FullDescription_InvtyCat,PromoPrice_InvtyCat,PricePerPiece_InvtyCat,';
     sqlInsert += 'PromoStartDate_InvtyCat, PromoEndDate_InvtyCat, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,';
@@ -228,7 +228,7 @@ function renderCatalogueItems(tx,results)
             /*These ones will not be put in html because the elements need to be looped through*/
 
             htmlstringCatalaogue += '<div class="item"><div class="row artcont"><div class="col-md-12 col-ms-12 col-xs-12"><article class="oneitemarticle"><header class="entry-header page-header"><div class="row"><div class="col-md-8 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<h1 class="entry-title">'+ results.rows.item(ind).CatalogueTitle_InvtyCat +'</h1>';
+            htmlstringCatalaogue += '<h1 class="entry-title">'+ results.rows.item(ind).PromoName_InvtyCat +'</h1>';
             htmlstringCatalaogue += '</div><div class="col-md-4 col-sm-12 col-xs-12">';
             htmlstringCatalaogue += '<h3 class="entry-title">$'+ results.rows.item(ind).PromoPrice_InvtyCat +'</h1>';
             htmlstringCatalaogue += '</div></div></header>';
@@ -271,7 +271,7 @@ function renderSearchResults(tx,results)
     for(var ind=0; ind < len; ind++)
     {
         
-        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).CatalogueTitle_InvtyCat+'</h1><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a></div><div class="clearfix"><hr></div>';
+        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).PromoName_InvtyCat+'</h1><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a></div><div class="clearfix"><hr></div>';
    
         $('#itemsList').append(htmlstring);
          
@@ -316,7 +316,7 @@ function renderCartList()
 {
     var orderAllTotal = 0;
     
-    var cataloguetitleForArr = localStorage.cataloguetitle.replace(/,\s*$/,'');
+    var promonameForArr = localStorage.promoname.replace(/,\s*$/,'');
     var picturefilenameForArr = localStorage.picturefilename.replace(/,\s*$/,'');
     var fulldescriptionForArr = localStorage.fulldescription.replace(/,\s*$/,'');
     var promoPriceForArr = localStorage.promoPrice.replace(/,\s*$/,'');
@@ -324,7 +324,7 @@ function renderCartList()
     var quantityForArr = localStorage.quantity.replace(/,\s*$/,'');
     var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
     
-    cartcataloguetitleArr =  cataloguetitleForArr.split(',');
+    cartpromonameArr =  promonameForArr.split(',');
     cartpicturefilenameArr =  picturefilenameForArr.split(',');
     cartfulldescriptionArr =  fulldescriptionForArr.split(',');
     cartpromoPriceArr =  promoPriceForArr.split(',');
@@ -353,7 +353,7 @@ function renderCartList()
         orderid += ind.toString() + ',';
 
          //commas are toNormal because this is for display
-        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ toNormalComma(cartcataloguetitleArr[ind]) + '</h2><p>'+toNormalComma(cartfulldescriptionArr[ind])+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
+        htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ toNormalComma(cartpromonameArr[ind]) + '</h2><p>'+toNormalComma(cartfulldescriptionArr[ind])+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
      }
         
     }
@@ -369,7 +369,7 @@ function renderCartList()
     //commas are not using toNormal so that string won't be interpreted as different array indexes.
     if(orderAllTotal >= 1000)
     {
-        $('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-cataloguetitle="' + cartcataloguetitleArr.toString() +'" data-picturefilename="'+ cartpicturefilenameArr.toString() +'" data-fulldescription="'+ cartfulldescriptionArr.toString() +'" data-promoPrice="'+ cartpromoPriceArr.toString()+'" data-barcode="'+cartbarcodeArr.toString()+'" data-quantity= "'+cartQuantityArr.toString() +'"  data-subtotal="'+ cartsubtotalArr.toString()+'">Order All</a>');
+        $('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-promoname="' + cartpromonameArr.toString() +'" data-picturefilename="'+ cartpicturefilenameArr.toString() +'" data-fulldescription="'+ cartfulldescriptionArr.toString() +'" data-promoPrice="'+ cartpromoPriceArr.toString()+'" data-barcode="'+cartbarcodeArr.toString()+'" data-quantity= "'+cartQuantityArr.toString() +'"  data-subtotal="'+ cartsubtotalArr.toString()+'">Order All</a>');
     }
     else
     {
@@ -379,7 +379,7 @@ function renderCartList()
     
     $('body').off('click','.orderAll').on('click','.orderAll' , function()
     {
-       alert($(this).attr('data-cataloguetitle'));
+       alert($(this).attr('data-promoname'));
        alert($(this).attr('data-picturefilename'));
        alert($(this).attr('data-fulldescription'));
        alert($(this).attr('data-promoPrice'));
@@ -525,11 +525,11 @@ function renderSinglePage(tx,results)
         $('.content-cont').load('single-item.html',null,function(){
         
          $('.singleitemPictureFileName').attr('src',results.rows.item(0).PictureFileName_InvtyCat);
-         $('.singleitemcataloguetitle').append(results.rows.item(0).CatalogueTitle_InvtyCat);
+         $('.singleitempromoname').append(results.rows.item(0).PromoName_InvtyCat);
          $('.singleitemfulldescription').append(results.rows.item(0).FullDescription_InvtyCat);
          $('.singleitempromoprice').append(results.rows.item(0).PromoPrice_InvtyCat);
          $('.singleitemsubtotal').append(results.rows.item(0).PromoPrice_InvtyCat);//temporary. value will change on quantity input
-        $( '.singleitemtable' ).after( '<a href="#" class="btn btn-success btn-large placeOrder" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-cataloguetitle="'+ results.rows.item(0).CatalogueTitle_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'">Place Order</a>');
+        $( '.singleitemtable' ).after( '<a href="#" class="btn btn-success btn-large placeOrder" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoname="'+ results.rows.item(0).PromoName_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'">Place Order</a>');
         
         });
        
@@ -540,7 +540,7 @@ function renderSinglePage(tx,results)
             htmlstringSingle += '<img src="'+ results.rows.item(0).PictureFileName_InvtyCat +'" class="responsiveImage">';
             htmlstringSingle += '</div></div>';
             htmlstringSingle += '<div class="col-md-6 col-sm-12 col-xs-12"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
-            htmlstringSingle += '<h1>'+ results.rows.item(0).CatalogueTitle_InvtyCat +'</h1>';
+            htmlstringSingle += '<h1>'+ results.rows.item(0).PromoName_InvtyCat +'</h1>';
             htmlstringSingle += '<p>'+ results.rows.item(0).FullDescription_InvtyCat +'</p>';
             htmlstringSingle += '<h3 class="pull-right">$<span class="glogprice">'+ results.rows.item(0).PromoPrice_InvtyCat +'</span></h3>';
             htmlstringSingle += '</div> </div>';
@@ -554,7 +554,7 @@ function renderSinglePage(tx,results)
             htmlstringSingle += '</td><td class="pull-right">';
             htmlstringSingle += '<div><p><span>$</span><span class="glogtotal">'+ results.rows.item(0).PromoPrice_InvtyCat +'</span></p></div>';
             htmlstringSingle += '</td></tr></table>';
-            htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-cataloguetitle="'+ results.rows.item(0).CatalogueTitle_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'">Place Order</a>';
+            htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoname="'+ results.rows.item(0).PromoName_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'">Place Order</a>';
             htmlstringSingle += '</div></div></div></div>';
         */
     }
@@ -678,7 +678,7 @@ function testinput(re, str)
 $(document).on('click','.placeOrder', function()
 {
     
-    var cataloguetitle = $(this).attr('data-cataloguetitle');
+    var promoname = $(this).attr('data-promoname');
     var picturefilename = $(this).attr('data-picturefilename');
     var fulldescription = $(this).attr('data-fulldescription');
     var promoPrice = $(this).attr('data-promoPrice');
@@ -686,8 +686,8 @@ $(document).on('click','.placeOrder', function()
     var quantity = $(this).attr('data-quantity');
     var subtotal = $(this).attr('data-subtotal');
     
-    //this prevents commas from cataloguetitles from being interpreted as , when localstorage string is turned into an array
-    cataloguetitle = cataloguetitle.replace(',','(xxxGLogCommaxxx)');
+    //this prevents commas from promonames from being interpreted as , when localstorage string is turned into an array
+    promoname = promoname.replace(',','(xxxGLogCommaxxx)');
     picturefilename = picturefilename.replace(',','(xxxGLogCommaxxx)');
     fulldescription = fulldescription.replace(',','(xxxGLogCommaxxx)');
     promoPrice = promoPrice.replace(',','(xxxGLogCommaxxx)');
@@ -695,7 +695,7 @@ $(document).on('click','.placeOrder', function()
     quantity = quantity.replace(',','(xxxGLogCommaxxx)');
     subtotal = subtotal.replace(',','(xxxGLogCommaxxx)');
 
-    localStorage.cataloguetitle += cataloguetitle.toString()+',';
+    localStorage.promoname += promoname.toString()+',';
     localStorage.picturefilename += picturefilename.toString()+',';
     localStorage.fulldescription += fulldescription.toString()+',';
     localStorage.promoPrice += promoPrice.toString()+',';
