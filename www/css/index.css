@@ -529,7 +529,12 @@ body
     
 }
 
-
+.spaceformenu
+{
+    display:block;
+    width:100%;
+    height:120px;
+}
                             /*Masonry Stuff*/
                             #wrapper
                             {

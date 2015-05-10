@@ -1,7 +1,7 @@
 $(document).on('editOrderClicked',function(event,orderidtoedit)
 {
             
-    
+   
 
             //alert(orderidtoedit);
             $('.navbar-brand , .navbar-nav > li').not('.foreditorderonly').hide();
@@ -15,7 +15,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                 $('.edit-order-PictureFileName').attr('src',cartpicturefilenameArr[orderidtoedit]);//<h1>cataloguetitle</h1>
                 $('.edit-order-cataloguetitle').append(toNormalComma(cartcataloguetitleArr[orderidtoedit]));//<h1>cataloguetitle</h1>
                 $('.edit-order-fulldescription').append(toNormalComma(cartfulldescriptionArr[orderidtoedit]));//<p>fulldescription</p>
-                $('.edit-order-displayPrice').append(cartdisplayPriceArr[orderidtoedit]);//<h3>$<span>displayPrice</span></h3>
+                $('.edit-order-promoPrice').append(cartpromoPriceArr[orderidtoedit]);//<h3>$<span>promoPrice</span></h3>
                 $('.edit-order-quantity').val(cartQuantityArr[orderidtoedit]);//<input type="text" name="quantity" id="quatity" class="edit-order-quantity" value="1">                
                 $('.edit-order-subtotal').append(cartsubtotalArr[orderidtoedit]);//<p><span>$</span><span class="edit-order-subtotal"></span></p>
                  
@@ -68,7 +68,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                     cartcataloguetitleArr.splice(orderidtoedit,1);
                     cartpicturefilenameArr.splice(orderidtoedit,1);
                     cartfulldescriptionArr.splice(orderidtoedit,1);
-                    cartdisplayPriceArr.splice(orderidtoedit,1);
+                    cartpromoPriceArr.splice(orderidtoedit,1);
                     cartbarcodeArr.splice(orderidtoedit,1);
                     cartQuantityArr.splice(orderidtoedit,1);
                     cartsubtotalArr.splice(orderidtoedit,1);
@@ -78,7 +78,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                         var newarrstring_cataloguetitle = cartcataloguetitleArr.toString()+",";
                         var newarrstring_picturefilename = cartpicturefilenameArr.toString()+",";
                         var newarrstring_fulldescription = cartfulldescriptionArr.toString()+",";
-                        var newarrstring_displayPrice = cartdisplayPriceArr.toString()+",";
+                        var newarrstring_promoPrice = cartpromoPriceArr.toString()+",";
                         var newarrstring_cartbarcode = cartbarcodeArr.toString()+",";
                         var newarrstring_cartQuantity = cartQuantityArr.toString()+",";
                         var newarrstring_cartsubtotal = cartsubtotalArr.toString()+",";
@@ -88,7 +88,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                         var newarrstring_cataloguetitle = '';
                         var newarrstring_picturefilename = '';
                         var newarrstring_fulldescription = '';
-                        var newarrstring_displayPrice ='';
+                        var newarrstring_promoPrice ='';
                         var newarrstring_cartbarcode = '';
                         var newarrstring_cartQuantity = '';
                         var newarrstring_cartsubtotal = '';
@@ -97,7 +97,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                     localStorage.cataloguetitle = newarrstring_cataloguetitle;
                     localStorage.picturefilename = newarrstring_picturefilename;
                     localStorage.fulldescription = newarrstring_fulldescription;
-                    localStorage.displayPrice = newarrstring_displayPrice;
+                    localStorage.promoPrice = newarrstring_promoPrice;
                     localStorage.BarcodeInvtyCat = newarrstring_cartbarcode;
                     localStorage.quantity = newarrstring_cartQuantity;
                     localStorage.subtotal = newarrstring_cartsubtotal;
