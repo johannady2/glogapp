@@ -13,7 +13,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                
                 /*INITIAL DISPLAY - BEFORE EDIT*/
                 $('.edit-order-PictureFileName').attr('src',cartpicturefilenameArr[orderidtoedit]);//<h1>cataloguetitle</h1>
-                $('.edit-order-cataloguetitle').append(toNormalComma(cartcataloguetitleArr[orderidtoedit]) + '-' + orderidtoedit);//<h1>cataloguetitle</h1>
+                $('.edit-order-cataloguetitle').append(toNormalComma(cartcataloguetitleArr[orderidtoedit]));//<h1>cataloguetitle</h1>
                 $('.edit-order-fulldescription').append(toNormalComma(cartfulldescriptionArr[orderidtoedit]));//<p>fulldescription</p>
                 $('.edit-order-displayPrice').append(cartdisplayPriceArr[orderidtoedit]);//<h3>$<span>displayPrice</span></h3>
                 $('.edit-order-quantity').val(cartQuantityArr[orderidtoedit]);//<input type="text" name="quantity" id="quatity" class="edit-order-quantity" value="1">                

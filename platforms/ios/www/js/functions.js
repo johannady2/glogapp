@@ -14,15 +14,11 @@ var orderidtoedit;
 
 
 
-
-
-
-
-
-
 //if variable is undefined, define.
 if(localStorage.BarcodeInvtyCat == null)
 {
+    
+
     
     /*FOR LOCALSTORAGE TO ARRAY*/
     //NOTE: x,y,z
@@ -281,6 +277,8 @@ function startSearch()
 
 function renderCartList()
 {
+    var orderAllTotal = 0;
+    
     var cataloguetitleForArr = localStorage.cataloguetitle.replace(/,\s*$/,'');
     var picturefilenameForArr = localStorage.picturefilename.replace(/,\s*$/,'');
     var fulldescriptionForArr = localStorage.fulldescription.replace(/,\s*$/,'');
@@ -311,9 +309,12 @@ function renderCartList()
         
      for(var ind=0; ind < cartLength; ind++)
      {
-        orderid += ind.toString() + ',';
-  
+        orderAllTotal += parseFloat(cartsubtotalArr[ind]);
+        
+        
          
+        orderid += ind.toString() + ',';
+
          //commas are toNormal because this is for display
         htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ toNormalComma(cartcataloguetitleArr[ind]) + '</h2><p>'+toNormalComma(cartfulldescriptionArr[ind])+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
      }
@@ -329,8 +330,14 @@ function renderCartList()
     
 
     //commas are not using toNormal so that string won't be interpreted as different array indexes.
-    $('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-cataloguetitle="' + cartcataloguetitleArr.toString() +'" data-picturefilename="'+ cartpicturefilenameArr.toString() +'" data-fulldescription="'+ cartfulldescriptionArr.toString() +'" data-displayPrice="'+ cartdisplayPriceArr.toString()+'" data-barcode="'+cartbarcodeArr.toString()+'" data-quantity= "'+cartQuantityArr.toString() +'"  data-subtotal="'+ cartsubtotalArr.toString()+'">Order All</a>');
-    
+    if(orderAllTotal >= 1000)
+    {
+        $('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-cataloguetitle="' + cartcataloguetitleArr.toString() +'" data-picturefilename="'+ cartpicturefilenameArr.toString() +'" data-fulldescription="'+ cartfulldescriptionArr.toString() +'" data-displayPrice="'+ cartdisplayPriceArr.toString()+'" data-barcode="'+cartbarcodeArr.toString()+'" data-quantity= "'+cartQuantityArr.toString() +'"  data-subtotal="'+ cartsubtotalArr.toString()+'">Order All</a>');
+    }
+    else
+    {
+        $('.orderAll-cont').append('<a href="#" class="btn btn-large orderAllDisabledLook">Order All</a><br><small class="minimumPurchaseNote">-A minimum of P1000 worth of items is required to checkout.</small>');
+    }
     
     
     $('body').off('click','.orderAll').on('click','.orderAll' , function()
@@ -342,6 +349,8 @@ function renderCartList()
        alert($(this).attr('data-barcode'));
        alert($(this).attr('data-quantity'));
        alert($(this).attr('data-subtotal'));
+        
+        alert('TOTAL:' + orderAllTotal);
         
         
     });

@@ -418,12 +418,12 @@ body
     font-size:30px;
 }
 
-.orderAll
+.orderAll 
 {
     width:60%;
     min-height:60px;
     font-size:30px;
-    margin: 10px auto;
+    margin: 10px auto 0 auto;
     display:block;
 }
 
@@ -436,6 +436,25 @@ body
     color:#ffffff;
 }
 
+.orderAllDisabledLook ,.orderAllDisabledLook:visited, .orderAllDisabledLook:active
+{
+    color:#ffffff;
+    width:60%;
+    min-height:60px;
+    font-size:30px;
+    margin: 10px auto;
+    display:block;
+    background-color:darkgrey;
+}
+
+.minimumPurchaseNote
+{
+    color:#ffffff;
+    width:60%;
+    margin: 0 auto 12px auto;
+    display: block;
+    
+}
 
 
 
@@ -502,11 +521,12 @@ body
     background-color:#171717;
     position:fixed;
     bottom:0px;
-    padding:0px;
+    padding:0px 0px 10px 0px;
     margin:0px;
     width:100%;
     left:0px;
     z-index:100;
+    
 }
 
 
