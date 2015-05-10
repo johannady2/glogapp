@@ -4,21 +4,16 @@
 
 document.addEventListener("deviceready",onDeviceReady,false);
 
-//GLOBAL VARIABLES
+/*~~~~~~~~~~~~~~~~~~~~~~GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 var db;
 var idForSinglePage;
 var scanResult;
 var orderidtoedit;
 
 
-
-
-
 //if variable is undefined, define.
 if(localStorage.BarcodeInvtyCat == null)
 {
-    
-
     
     /*FOR LOCALSTORAGE TO ARRAY*/
     //NOTE: x,y,z
@@ -44,40 +39,8 @@ if(localStorage.BarcodeInvtyCat == null)
     /*initialized on renderCart*/
     localStorage.orderid='';
 }
+/*~~~~~~~~~~~~~~~~~~~~//GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-
-
-
-function onDeviceReady()
-{
-    
-    db = window.openDatabase("Database","1.0","Cordova Demo", 2*1024*1024);
-    db.transaction(createDB, errorCB, successCB);
-   
-}
-
-
-function createDB(tx)
-{   tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
-   
-    var query = '';
-    query += 'CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,';
-    query += 'SysFk_Invty_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,SysSeq_InvtyCat,UserSeq_InvtyCat, UserPk_InvtyCat,';
-    query +=' UserFk_Invty_InvtyCat,UserFk_CatMstr_InvtyCat,LastUpdatedBy_InvtyCat,LastUpdatedConcurrencyID_InvtyCat,LastUpdatedDate_InvtyCat,';
-    query += 'Module_InvtyCat, Particulars_InvtyCat,PictureFileName_InvtyCat , Status_InvtyCat, Type_InvtyCat,';
-    query += 'Barcode_Freebies01_InvtyCat,Barcode_Freebies02_InvtyCat,Barcode_Freebies03_InvtyCat,Barcode_Freebies04_InvtyCat,Barcode_Freebies05_InvtyCat,';
-    query += 'Barcode_InvtyCat, Brand_InvtyCat ,CatalogueTitle_InvtyCat ,';
-    query +='CataloguePageNumber_InvtyCat,Categories_InvtyCat,Classification_InvtyCat,Description_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2),';
-    query +=  'FreeDescription_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat,PricePerPiece_InvtyCat,';
-    query += 'PromoStartDate_InvtyCat, PromoEndDate_InvtyCat, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,';
-    query += 'RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,';
-    query += 'UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)';
-
-   
-    tx.executeSql( query ,[],populateTables,errorCB);
- 
-   
-}
 
 function errorCB(err)
 {
@@ -91,7 +54,47 @@ function successCB()
 
 }
 
-function populateTables(tx)
+
+function onDeviceReady()
+{
+    
+    db = window.openDatabase("Database","1.0","Cordova Demo", 2*1024*1024);
+    db.transaction(createDB, errorCB, successCB);
+   
+}
+
+
+function createDB(tx)
+{
+    tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
+    var query = '';
+    query += 'CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,';
+    query += 'SysFk_Invty_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,SysSeq_InvtyCat,UserSeq_InvtyCat, UserPk_InvtyCat,';
+    query +=' UserFk_Invty_InvtyCat,UserFk_CatMstr_InvtyCat,LastUpdatedBy_InvtyCat,LastUpdatedConcurrencyID_InvtyCat,LastUpdatedDate_InvtyCat,';
+    query += 'Module_InvtyCat, Particulars_InvtyCat,PictureFileName_InvtyCat , Status_InvtyCat, Type_InvtyCat,';
+    query += 'Barcode_Freebies01_InvtyCat,Barcode_Freebies02_InvtyCat,Barcode_Freebies03_InvtyCat,Barcode_Freebies04_InvtyCat,Barcode_Freebies05_InvtyCat,';
+    query += 'Barcode_InvtyCat, Brand_InvtyCat ,CatalogueTitle_InvtyCat ,';
+    query +='CataloguePageNumber_InvtyCat,Categories_InvtyCat,Classification_InvtyCat,Description_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2),';
+    query +=  'FreeDescription_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat,PricePerPiece_InvtyCat,';
+    query += 'PromoStartDate_InvtyCat, PromoEndDate_InvtyCat, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,';
+    query += 'RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,';
+    query += 'UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)';
+    tx.executeSql( query ,[],populateInventoryMasterCatalogue,errorCB);
+ 
+ 
+    tx.executeSql('DROP TABLE IF EXISTS CATALOGUE_MASTER');
+    var query2 = '';
+    query2 += 'CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_CatMstr,';
+    query2 += 'SysFk_CatMstr, USerPk_CatMstr, LastUpdatedBy_CatMstr, LastUpdatedConcurrencyID_CatMstr, Module_CatMstr,';
+    query2 += 'Particulars_CatMstr,PictureFileName_CatMstr, Status_CatMstr,Type_CatMstr,';
+    query2 += 'CatalogueTitle_CatMstr, Description_CatMstr, FullDescription_CatMstr, FreeDescription_CatMstr,';
+    query2 += 'Principal_CatMstr,PromoEndDate_CatMstr, PromoStartDate_CatMstr)';
+    tx.executeSql( query2,[],populateCatalogueMaster,errorCB);
+    
+   
+}
+
+function populateInventoryMasterCatalogue(tx)
 {
  
     /*just add fields as needed. please keep it in the same order sa it was created*/
@@ -124,11 +127,14 @@ function populateTables(tx)
     tx.executeSql(sqlInsert,["2222222222","img/Item20.jpg","042000062008","was P3750","Sanyang Study Table",3000.00],null,errorCB);
     tx.executeSql(sqlInsert,["3333333333","img/Item21.jpg","012345678905","pack of 10","80L notebooks",100.00],null,errorCB);
 
-    
+ 
+
+}
 
 
-   
-
+function populateCatalogueMaster()
+{
+    alert('populate catalogue master');
 }
 
 /*-----------------------------------------------------------------*/
