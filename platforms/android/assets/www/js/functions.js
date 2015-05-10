@@ -25,6 +25,7 @@ if(localStorage.BarcodeInvtyCat == null)
 {
     
     /*FOR LOCALSTORAGE TO ARRAY*/
+    //NOTE: x,y,z
     var cartcataloguetitleArr;
     var cartpicturefilenameArr;
     var cartfulldescriptionArr;
@@ -34,6 +35,8 @@ if(localStorage.BarcodeInvtyCat == null)
     var cartsubtotalArr;
     
     /*initialized on placeOrder click*/
+    //NOTE: x,y,z,
+    //always add "," at the end of array when storing as localStorage
     localStorage.cataloguetitle = '';
     localStorage.picturefilename = '';
     localStorage.fulldescription = '';

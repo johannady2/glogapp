@@ -13,7 +13,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                
                 /*INITIAL DISPLAY - BEFORE EDIT*/
                 $('.edit-order-PictureFileName').attr('src',cartpicturefilenameArr[orderidtoedit]);//<h1>cataloguetitle</h1>
-                $('.edit-order-cataloguetitle').append(toNormalComma(cartcataloguetitleArr[orderidtoedit]));//<h1>cataloguetitle</h1>
+                $('.edit-order-cataloguetitle').append(toNormalComma(cartcataloguetitleArr[orderidtoedit]) + '-' + orderidtoedit);//<h1>cataloguetitle</h1>
                 $('.edit-order-fulldescription').append(toNormalComma(cartfulldescriptionArr[orderidtoedit]));//<p>fulldescription</p>
                 $('.edit-order-displayPrice').append(cartdisplayPriceArr[orderidtoedit]);//<h3>$<span>displayPrice</span></h3>
                 $('.edit-order-quantity').val(cartQuantityArr[orderidtoedit]);//<input type="text" name="quantity" id="quatity" class="edit-order-quantity" value="1">                
@@ -73,18 +73,29 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                     cartQuantityArr.splice(orderidtoedit,1);
                     cartsubtotalArr.splice(orderidtoedit,1);
                     
-                   
-                    var newarrstring_cataloguetitle = cartcataloguetitleArr.toString()+",";
-                    var newarrstring_picturefilename = cartpicturefilenameArr.toString()+",";
-                    var newarrstring_fulldescription = cartfulldescriptionArr.toString()+",";
-                    var newarrstring_displayPrice = cartdisplayPriceArr.toString()+",";
-                    var newarrstring_cartbarcode = cartbarcodeArr.toString()+",";
-                    var newarrstring_cartQuantity = cartQuantityArr.toString()+",";
-                    var newarrstring_cartsubtotal = cartsubtotalArr.toString()+",";
-                    
+                    if(cartbarcodeArr.length > 0)
+                    {
+                        var newarrstring_cataloguetitle = cartcataloguetitleArr.toString()+",";
+                        var newarrstring_picturefilename = cartpicturefilenameArr.toString()+",";
+                        var newarrstring_fulldescription = cartfulldescriptionArr.toString()+",";
+                        var newarrstring_displayPrice = cartdisplayPriceArr.toString()+",";
+                        var newarrstring_cartbarcode = cartbarcodeArr.toString()+",";
+                        var newarrstring_cartQuantity = cartQuantityArr.toString()+",";
+                        var newarrstring_cartsubtotal = cartsubtotalArr.toString()+",";
+                    } 
+                    else
+                    {
+                        var newarrstring_cataloguetitle = '';
+                        var newarrstring_picturefilename = '';
+                        var newarrstring_fulldescription = '';
+                        var newarrstring_displayPrice ='';
+                        var newarrstring_cartbarcode = '';
+                        var newarrstring_cartQuantity = '';
+                        var newarrstring_cartsubtotal = '';
+                    }
                
-                    localStorage.cataloguetitle = toCustomComma(newarrstring_cataloguetitle);
-                    localStorage.picturefilename = toCustomComma(newarrstring_picturefilename);
+                    localStorage.cataloguetitle = newarrstring_cataloguetitle;
+                    localStorage.picturefilename = newarrstring_picturefilename;
                     localStorage.fulldescription = newarrstring_fulldescription;
                     localStorage.displayPrice = newarrstring_displayPrice;
                     localStorage.BarcodeInvtyCat = newarrstring_cartbarcode;

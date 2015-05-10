@@ -25,6 +25,7 @@ if(localStorage.BarcodeInvtyCat == null)
 {
     
     /*FOR LOCALSTORAGE TO ARRAY*/
+    //NOTE: x,y,z
     var cartcataloguetitleArr;
     var cartpicturefilenameArr;
     var cartfulldescriptionArr;
@@ -34,6 +35,8 @@ if(localStorage.BarcodeInvtyCat == null)
     var cartsubtotalArr;
     
     /*initialized on placeOrder click*/
+    //NOTE: x,y,z,
+    //always add "," at the end of array when storing as localStorage
     localStorage.cataloguetitle = '';
     localStorage.picturefilename = '';
     localStorage.fulldescription = '';
@@ -309,6 +312,7 @@ function renderCartList()
      for(var ind=0; ind < cartLength; ind++)
      {
         orderid += ind.toString() + ',';
+  
          
          //commas are toNormal because this is for display
         htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ toNormalComma(cartcataloguetitleArr[ind]) + '</h2><p>'+toNormalComma(cartfulldescriptionArr[ind])+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
