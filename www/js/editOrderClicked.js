@@ -1,8 +1,6 @@
 $(document).on('editOrderClicked',function(event,orderidtoedit)
 {
-            alert(cartpromonameArr);
-    alert(orderidtoedit);
-   alert(cartpromonameArr[orderidtoedit]);
+
 
             //alert(orderidtoedit);
             $('.navbar-brand , .navbar-nav > li').not('.foreditorderonly').hide();
