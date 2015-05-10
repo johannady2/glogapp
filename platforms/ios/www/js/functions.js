@@ -58,61 +58,98 @@ function onDeviceReady()
 
 
 function createDB(tx)
-{
-    
+{   tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
+    alert('table dropped');
+    var query = '';
+    query += 'CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,';
+    query += 'SysFk_Invty_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,SysSeq_InvtyCat,UserSeq_InvtyCat, UserPk_InvtyCat,';
+    query +=' UserFk_Invty_InvtyCat,UserFk_CatMstr_InvtyCat,LastUpdatedBy_InvtyCat,LastUpdatedConcurrencyID_InvtyCat,LastUpdatedDate_InvtyCat,';
+    query += 'Module_InvtyCat, Particulars_InvtyCat,PictureFileName_InvtyCat , Status_InvtyCat, Type_InvtyCat,';
+    query += 'Barcode_Freebies01_InvtyCat,Barcode_Freebies02_InvtyCat,Barcode_Freebies03_InvtyCat,Barcode_Freebies04_InvtyCat,Barcode_Freebies05_InvtyCat,';
+    query += 'Barcode_InvtyCat, Brand_InvtyCat ,CatalogueTitle_InvtyCat ,';
+    query +='CataloguePageNumber_InvtyCat,Categories_InvtyCat,Classification_InvtyCat,Description_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2),';
+    query +=  'FreeDescription_InvtyCat,FullDescription_InvtyCat,PromoPrice_InvtyCat,PricePerPiece_InvtyCat,';
+    query += 'PromoStartDate_InvtyCat, PromoEndDate_InvtyCat, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,';
+    query += 'RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,';
+    query += 'UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)';
+
    
-    tx.executeSql('DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE');
-    tx.executeSql('DROP TABLE IF EXISTS CATALOGUE_MASTER');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat INTEGER PRIMARY KEY   AUTOINCREMENT ,Barcode_InvtyCat, CatalogueTitle_InvtyCat , PictureFileName_InvtyCat , FullDescription_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2))',[],populateTables,errorCB);
-   //tx.executeSql('CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER(SysPk_CatMstr INTEGER PRIMARY KEY   AUTOINCREMENT,Description_CatMstr,Principal_CatMstr,PromoStartDate_CatMstr Date,PromoEndDate_CatMstr DATETIME)'
+    tx.executeSql( query ,[],populateTables,errorCB);
+ 
+    alert('table created');
 }
 
 function errorCB(err)
 {
-    //alert("Error processing SQL: " + err.message);
+    alert("Error processing SQL: " + err.message);
    
 }
 
 function successCB()
 {
-    ////alert('successful');
+    alert('successful');
 
 }
 
 function populateTables(tx)
 {
  
+    alert('populating');
 
    
-    var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(Barcode_InvtyCat,CatalogueTitle_InvtyCat,PictureFileName_InvtyCat,FullDescription_InvtyCat,DisplayPrice_InvtyCat) VALUES(?,?,?,?,?)';
+    var sqlInsert = 'INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,CatalogueTitle_InvtyCat,DisplayPrice_InvtyCat,FullDescription_InvtyCat) VALUES(?,?,?,?,?,?)';
    
-    tx.executeSql(sqlInsert,["101191","Yotsuba , Revoltech","img/item1.jpg","Sample,f Strings with commas.",63.00],null,errorCB);
-    tx.executeSql(sqlInsert,["4801010127215","GIF sample","img/item2.gif","with free milk",63.00],null,errorCB);
-    tx.executeSql(sqlInsert,["8999999003395","Pond\'s Pure White","img/item3.jpg","with free candy",14.00],null,errorCB);
-    tx.executeSql(sqlInsert,["4807788058850","Iron Supplement","img/item4.gif","with free facial chocolate",99.99],null,errorCB);
-    tx.executeSql(sqlInsert,["12345","Used Monggol Pencil","img/item5.jpg","free Soy Sauce",99.99],null,errorCB);
-    tx.executeSql(sqlInsert,["795144075167","Strawberry Kiss Intimate Secret","img/item6.jpg","BUY 1 TAKE 1",15.00],null,errorCB);
-    tx.executeSql(sqlInsert,["4005401548218","Faber Castell TextLiner 48","img/item7.jpg","with free facial baby poweder",232.00],null,errorCB);
-    tx.executeSql(sqlInsert,["123","Pocky Strawberry","img/item8.jpg","Free Cookies",232.00],null,errorCB);
-    tx.executeSql(sqlInsert,["11223344","Pocky Set","img/item9.jpg","Mentos",232.00],null,errorCB);
    
-    tx.executeSql(sqlInsert,["987654321098","40L notebooks","img/Item10.jpg","pack of 8",50.00],null,errorCB);
-    tx.executeSql(sqlInsert,["036000291452","Jockey Lowrise Brief","img/Item11.jpg","pack of 8",325.00],null,errorCB);
-    tx.executeSql(sqlInsert,["016000660601","Trolley Bags","img/Item12.jpg","(P799.75 each) save 10%",799.75],null,errorCB);
-    tx.executeSql(sqlInsert,["5010029020519","Trolley Bags","img/Item13.jpg","was P399",299.00],null,errorCB);
-    tx.executeSql(sqlInsert,["*9123*39","TSport Backpacks","img/Item14.jpg","(P198.00 each)",198.00],null,errorCB);
-    tx.executeSql(sqlInsert,["50184385","Shining East Value Pack","img/Item15.jpg","save P10",99.00],null,errorCB);
-    tx.executeSql(sqlInsert,["5702012000737","Darlington","img/Item16.jpg","Buy 1 Take 1",89.75],null,errorCB);
-    tx.executeSql(sqlInsert,["850785004003","Sanyang Clerical Chair","img/Item17.jpg","was P1899",1519.20],null,errorCB);
-    tx.executeSql(sqlInsert,["741360988644","Sanyang Computer Table","img/Item18.jpg","was P1595",1276.00],null,errorCB);
-    tx.executeSql(sqlInsert,["123456789012","Sanyang Office Table","img/Item19.jpg","was P1695",1320.00],null,errorCB);
-    tx.executeSql(sqlInsert,["042000062008","Sanyang Study Table","img/Item20.jpg","was P3750",3000.00],null,errorCB);
-    tx.executeSql(sqlInsert,["012345678905","80L notebooks","img/Item21.jpg","pack of 10",100.00],null,errorCB);
-   
+    tx.executeSql(sqlInsert,["111111","img/item1.jpg","101191","Yotsuba , Revoltech",63.00,"Sample,f Strings with commas."],null,errorCB);
+    tx.executeSql(sqlInsert,["222222","img/item2.gif","4801010127215","GIF sample",63.00,"with free milk"],null,errorCB);
+    tx.executeSql(sqlInsert,["333333","img/item3.jpg","8999999003395","Pond\'s Pure White",14.00,"with free candy"],null,errorCB);
+    tx.executeSql(sqlInsert,["444444","img/item4.gif","4807788058850","Iron Supplement",99.99,"with free facial chocolate"],null,errorCB);
+    tx.executeSql(sqlInsert,["555555","img/item5.jpg","12345","Used Monggol Pencil",31.99,"free Soy Sauce"],null,errorCB);
+    tx.executeSql(sqlInsert,["666666","img/item6.jpg","795144075167","Strawberry Kiss Intimate Secret",15.00,"BUY 1 TAKE 1"],null,errorCB);
+    tx.executeSql(sqlInsert,["777777","img/item7.jpg","4005401548218","Faber Castell TextLiner 48",232.25,"with free facial baby poweder"],null,errorCB);
+    tx.executeSql(sqlInsert,["888888","img/item8.jpg","123","Pocky Strawberry",232.00,"Free Cookies"],null,errorCB);
+    tx.executeSql(sqlInsert,["999999","img/item9.jpg","11223344","Pocky Set",232.00,"Mentos"],null,errorCB);
 
-
+    tx.executeSql(sqlInsert,["11111111","img/Item10.jpg","987654321098","40L notebooks",50.00,"pack of 8"],null,errorCB);
+    tx.executeSql(sqlInsert,["22222222","img/Item11.jpg","036000291452","Jockey Lowrise Brief",325.00,"pack of 8"],null,errorCB);
+    tx.executeSql(sqlInsert,["33333333","img/Item12.jpg","016000660601","Trolley Bags",799.75,"(P799.75 each) save 10%"],null,errorCB);
+    tx.executeSql(sqlInsert,["44444444","img/Item13.jpg","5010029020519","Trolley Bags",299.00,"was P399"],null,errorCB);
+    tx.executeSql(sqlInsert,["55555555","img/Item14.jpg","*9123*39","TSport Backpacks",198.00,"(P198.00 each)"],null,errorCB);
+    tx.executeSql(sqlInsert,["66666666","img/Item15.jpg","50184385","Shining East Value Pack",99.00,"save P10"],null,errorCB);
+    tx.executeSql(sqlInsert,["77777777","img/Item16.jpg","5702012000737","Darlington",89.75,"Buy 1 Take 1"],null,errorCB);
+    tx.executeSql(sqlInsert,["88888888","img/Item17.jpg","850785004003","Sanyang Clerical Chair",1519.20,"was P1899"],null,errorCB);
+    tx.executeSql(sqlInsert,["99999999","img/Item18.jpg","741360988644","Sanyang Computer Table",1276.00,"was P1595"],null,errorCB);
+    tx.executeSql(sqlInsert,["1111111111","img/Item19.jpg","123456789012","Sanyang Office Table",1320.00,"was P1695"],null,errorCB);
+    tx.executeSql(sqlInsert,["2222222222","img/Item20.jpg","042000062008","Sanyang Study Table",3000.00,"was P3750"],null,errorCB);
+    tx.executeSql(sqlInsert,["3333333333","img/Item21.jpg","012345678905","80L notebooks",100.00,"pack of 10"],null,errorCB);
 
     
+    /*var sqlInsert = '';
+    sqlInsert += 'INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat, ';
+    sqlInsert += 'SysFk_Invty_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,SysSeq_InvtyCat,UserSeq_InvtyCat, UserPk_InvtyCat,';
+    sqlInsert +=' UserFk_Invty_InvtyCat,UserFk_CatMstr_InvtyCat,LastUpdatedBy_InvtyCat,LastUpdatedConcurrencyID_InvtyCat,LastUpdatedDate_InvtyCat,';
+    sqlInsert += 'Module_InvtyCat, Particulars_InvtyCat,PictureFileName_InvtyCat , Status_InvtyCat, Type_InvtyCat,';
+    sqlInsert += 'Barcode_Freebies01_InvtyCat,Barcode_Freebies02_InvtyCat,Barcode_Freebies03_InvtyCat,Barcode_Freebies04_InvtyCat,Barcode_Freebies05_InvtyCat,';
+    sqlInsert += 'Barcode_InvtyCat, Brand_InvtyCat ,CatalogueTitle_InvtyCat ,';
+    sqlInsert += 'CataloguePageNumber_InvtyCat,Categories_InvtyCat,Classification_InvtyCat,Description_InvtyCat,DisplayPrice_InvtyCat,';
+    sqlInsert +=  'FreeDescription_InvtyCat,FullDescription_InvtyCat,PromoPrice_InvtyCat,PricePerPiece_InvtyCat,';
+    sqlInsert += 'PromoStartDate_InvtyCat, PromoEndDate_InvtyCat, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,';
+    sqlInsert += 'RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,';
+    sqlInsert += 'UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)'; 
+    sqlInsert += 'VALUES(?,?,?,?,?,?, ?,';
+    sqlInsert += '?,?,?,?,?,';
+    sqlInsert += '?, ?,? , ?, ?,';
+    sqlInsert += '?,?,?,?,?,';
+    sqlInsert += '?, ? ,? ,';
+    sqlInsert += '?,?,?,';
+    sqlInsert +=  '?,?,?,?,';
+    sqlInsert += '?,?, ?, ?,?,?,?,';
+    sqlInsert += '?,?,?,?,?,?,?,';
+    sqlInsert += '?,?,?,?,?,?)';
+    */
+    
+
+    alert('populating complete');
 
 }
 
@@ -202,7 +239,7 @@ function renderCatalogueItems(tx,results)
             htmlstringCatalaogue += '<p>'+ results.rows.item(ind).FullDescription_InvtyCat +'</p>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '<div class="col-md-12 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).SysPk_InvtyCat +'">View</a>';
+            htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '</div></div></article></div></div></div>';
 
@@ -234,7 +271,7 @@ function renderSearchResults(tx,results)
     for(var ind=0; ind < len; ind++)
     {
         
-        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).CatalogueTitle_InvtyCat+'</h1><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).SysPk_InvtyCat +'">View</a></div><div class="clearfix"><hr></div>';
+        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).CatalogueTitle_InvtyCat+'</h1><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a></div><div class="clearfix"><hr></div>';
    
         $('#itemsList').append(htmlstring);
          
@@ -366,7 +403,7 @@ function renderCartList()
 function testgetjson()
 {
 
-    var SysPk_InvtyCatARR = [];
+    var RowNumber_InvtyCatARR = [];
     var Barcode_InvtyCatARR = [];
     var SysFk_Freebies01_InvtyCatARR = [];
     var SysFk_Freebies02_InvtyCatARR = [];
@@ -473,7 +510,7 @@ function testgetjson()
 function queryItemDetails(tx,idForSinglePage)
 {
     
-  tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE SysPk_InvtyCat=' + idForSinglePage , [], renderSinglePage, errorCB);  
+  tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE RowNumber_InvtyCat=' + idForSinglePage , [], renderSinglePage, errorCB);  
 }
 
 function renderSinglePage(tx,results)
