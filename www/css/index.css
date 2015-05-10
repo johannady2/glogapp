@@ -375,6 +375,12 @@ article .entry-title
 .btn-success:active
 {
     background-color: rgb(83, 134, 49);
+    
+}
+
+.entry-title
+{
+ white-space:normal;
 }
 /*//bootstrap override*/
 body
