@@ -219,7 +219,7 @@ function editOrderClickedContentReady(event,orderidtoedit)
 
 function queryCatalogueItems(tx)
 {
-   tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE' , [], renderCatalogueItems, errorCB);  
+   tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr' , [], renderCatalogueItems, errorCB);  
 }
 
 function renderCatalogueItems(tx,results)
@@ -233,7 +233,7 @@ function renderCatalogueItems(tx,results)
             /*These ones will not be put in html because the elements need to be looped through*/
 
             htmlstringCatalaogue += '<div class="item"><div class="row artcont"><div class="col-md-12 col-ms-12 col-xs-12"><article class="oneitemarticle"><header class="entry-header page-header"><div class="row"><div class="col-md-8 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<h1 class="entry-title">'+ results.rows.item(ind).PromoName_InvtyCat +'</h1>';
+            htmlstringCatalaogue += '<h1 class="entry-title">'+ results.rows.item(ind).CatalogueTitle_CatMstr + '- test -' + results.rows.item(ind).PromoName_InvtyCat +'</h1>';
             htmlstringCatalaogue += '</div><div class="col-md-4 col-sm-12 col-xs-12">';
             htmlstringCatalaogue += '<h3 class="entry-title">$'+ results.rows.item(ind).PromoPrice_InvtyCat +'</h1>';
             htmlstringCatalaogue += '</div></div></header>';
