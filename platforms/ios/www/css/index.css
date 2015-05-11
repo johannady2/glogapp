@@ -536,13 +536,21 @@ body
     height:120px;
 }
 
+.catalogueTitle-cont
+{
+	display:block;
+	width:100%;
+	
+}
 .catalogueTitle
 {
-	font-size: 50px;
+	
+	
 	width:100%;
 	text-align:center;
 	font-weight:bold;
-	margin:0px;
+	margin:100px 0 30px 0;
+	
 }
                             /*Masonry Stuff*/
                             #wrapper
@@ -563,7 +571,8 @@ body
                                 -moz-column-fill: auto;
                                 column-count: 3;
                                 column-gap: 1.875em; /* 30px */
-                                column-fill: auto;
+                                column-fill: auto;	
+								
                             }
                                 .item
                                 {

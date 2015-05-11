@@ -132,15 +132,17 @@ function populateInventoryMasterCatalogue(tx)
     var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?)";
    
    
-    tx.executeSql(sqlInsert,["111111","1","img/item1.jpg","101191","Sample,f Strings with commas." ,"Yotsuba , Revoltech",63.00],null,errorCB);
-  
-    tx.executeSql(sqlInsert,["222222","1","img/item2.gif","4801010127215","with free milk","GIF sample",63.00],null,errorCB);
-    tx.executeSql(sqlInsert,["333333","1","img/item3.jpg","8999999003395","with free candy","Pond\'s Pure White",14.00],null,errorCB);
-    tx.executeSql(sqlInsert,["444444","1","img/item4.gif","4807788058850","with freechocolate","Iron Supplement",99.99],null,errorCB);
+    tx.executeSql(sqlInsert,["111111","4","img/item1.jpg","101191","Sample,f Strings with commas." ,"Yotsuba , Revoltech",63.00],null,errorCB);
+    tx.executeSql(sqlInsert,["333333","4","img/item3.jpg","8999999003395","with free candy","Pond\'s Pure White",14.00],null,errorCB);
+    tx.executeSql(sqlInsert,["444444","4","img/item4.gif","4807788058850","with freechocolate","Iron Supplement",99.99],null,errorCB);
     tx.executeSql(sqlInsert,["555555","1","img/item5.jpg","12345","free Soy Sauce","Used Monggol Pencil",31.99],null,errorCB);
     tx.executeSql(sqlInsert,["666666","1","img/item6.jpg","795144075167","BUY 1 TAKE 1","Strawberry Kiss Intimate Secret",15.00],null,errorCB);
-    tx.executeSql(sqlInsert,["777777","3","img/item7.jpg","4005401548218","with free baby poweder","Faber Castell TextLiner 48",232.25],null,errorCB);
-    tx.executeSql(sqlInsert,["888888","3","img/item8.jpg","123","Free Cookies","Pocky Strawberry",232.00],null,errorCB);
+	tx.executeSql(sqlInsert,["777777","1","img/item7.jpg","4005401548218","with free baby poweder","Faber Castell TextLiner 48",232.25],null,errorCB);
+  
+	
+	
+	tx.executeSql(sqlInsert,["222222","3","img/item2.gif","4801010127215","with free milk","GIF sample",63.00],null,errorCB);
+	tx.executeSql(sqlInsert,["888888","3","img/item8.jpg","123","Free Cookies","Pocky Strawberry",232.00],null,errorCB);
     tx.executeSql(sqlInsert,["999999","3","img/item9.jpg","11223344","Mentos","Pocky Set",232.00],null,errorCB);
 
     tx.executeSql(sqlInsert,["11111111","2","img/Item10.jpg","987654321098","pack of 8","40L notebooks",50.00],null,errorCB);
@@ -216,8 +218,9 @@ function populateCatalogueMaster(tx)
     var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,SysSeq_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) VALUES(?,?,?,?,?)";
     
     tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2015-05-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
-    tx.executeSql(sqlInsert2,["2",1,"Gaisano Catalogue","2015-06-29 24:59:59","2015-05-29 00:00:00"],null,errorCB);
+    tx.executeSql(sqlInsert2,["2",1,"Back To School Catalogue","2015-06-29 24:59:59","2015-05-29 00:00:00"],null,errorCB);
 	tx.executeSql(sqlInsert2,["3",3,"Expired Catalogue","2014-05-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
+	tx.executeSql(sqlInsert2,["4",4,"NOOOTOOSHOO Catalogue","2015-05-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
 }
 
 
@@ -318,7 +321,7 @@ function nextRecord(tx,results)
 			resulstparam = results;
 		   
 			//alert(results.rows.item(RecordCounter).CatalogueTitle_CatMstr);
-			$('.lists-cont').append('<h1 class="catalogueTitle">'+  results.rows.item(RecordCounter).CatalogueTitle_CatMstr  +'</h1><br><div class="list listSet-'+results.rows.item(RecordCounter).SysPk_CatMstr+'"></div>');
+			$('.lists-cont').append('<div class="catalogueTitle-cont"><h1 class="catalogueTitle">'+  results.rows.item(RecordCounter).CatalogueTitle_CatMstr  +'</h1></div><div class="clearfix"></div><div class="list listSet-'+results.rows.item(RecordCounter).SysPk_CatMstr+'"></div><div class="clearfix"></div>');
 			
 			db.transaction(function(tx2){
 				tx2.executeSql('SELECT IMC.*,CM.SysPk_CatMstr AS syspkcatmstr, CM.CatalogueTitle_CatMstr, CM.PromoEndDate_CatMstr, CM.PromoStartDate_CatMstr  FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr WHERE IMC.SysFk_CatMstr_InvtyCat = ?', [results.rows.item(RecordCounter).SysPk_CatMstr], renderCatalogueItems);// WHERE IMC.SysFk_CatMstr_InvtyCat ="'+ results.rows.item(RecordCounter).CatalogueTitle_CatMstr +'"
