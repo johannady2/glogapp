@@ -126,7 +126,7 @@ function createDB(tx)
 function populateInventoryMasterCatalogue(tx)
 {
  
-	alert('populate Inventory Master Catalogue');
+	//alert('populate Inventory Master Catalogue');
 
    
     var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?)";
@@ -176,7 +176,7 @@ function queryForExpired(tx)
 
 function deleteExpiredPromos(tx,results)
 {
-	alert(results.rows.length);
+	//alert(results.rows.length);
 	
 	
 	
@@ -185,7 +185,7 @@ function deleteExpiredPromos(tx,results)
 	for(var ind=0; ind < results.rows.length ; ind++ )
 	{
 		
-		alert(results.rows.item(ind).SysFk_CatMstr_InvtyCat);
+		//alert(results.rows.item(ind).SysFk_CatMstr_InvtyCat);
 		
 		deleteString += '"'+results.rows.item(ind).SysFk_CatMstr_InvtyCat + '",';
 		
@@ -196,7 +196,7 @@ function deleteExpiredPromos(tx,results)
 	deleteString = deleteString.substring(0, deleteString.length - 1);
 	
 	//var testDelString = ' ';
-	alert(deleteString);
+	//alert(deleteString);
 	
 	
 	tx.executeSql('DELETE FROM CATALOGUE_MASTER WHERE SysPk_CatMstr IN('+ deleteString +')');
@@ -210,7 +210,7 @@ function succesTest()
 {
 	//alert(results.rows.length);
 
-	alert('deleted');
+	//alert('deleted');
 }
 
 function populateCatalogueMaster(tx)
