@@ -139,9 +139,10 @@ function populateInventoryMasterCatalogue(tx)
     tx.executeSql(sqlInsert,["444444","1","img/item4.gif","4807788058850","with freechocolate","Iron Supplement",99.99],null,errorCB);
     tx.executeSql(sqlInsert,["555555","1","img/item5.jpg","12345","free Soy Sauce","Used Monggol Pencil",31.99],null,errorCB);
     tx.executeSql(sqlInsert,["666666","1","img/item6.jpg","795144075167","BUY 1 TAKE 1","Strawberry Kiss Intimate Secret",15.00],null,errorCB);
-    tx.executeSql(sqlInsert,["777777","1","img/item7.jpg","4005401548218","with free baby poweder","Faber Castell TextLiner 48",232.25],null,errorCB);
-    tx.executeSql(sqlInsert,["888888","1","img/item8.jpg","123","Free Cookies","Pocky Strawberry",232.00],null,errorCB);
-    tx.executeSql(sqlInsert,["999999","1","img/item9.jpg","11223344","Mentos","Pocky Set",232.00],null,errorCB);
+	
+    tx.executeSql(sqlInsert,["777777","3","img/item7.jpg","4005401548218","with free baby poweder","Faber Castell TextLiner 48",232.25],null,errorCB);
+    tx.executeSql(sqlInsert,["888888","3","img/item8.jpg","123","Free Cookies","Pocky Strawberry",232.00],null,errorCB);
+    tx.executeSql(sqlInsert,["999999","3","img/item9.jpg","11223344","Mentos","Pocky Set",232.00],null,errorCB);
 
     tx.executeSql(sqlInsert,["11111111","2","img/Item10.jpg","987654321098","pack of 8","40L notebooks",50.00],null,errorCB);
     tx.executeSql(sqlInsert,["22222222","2","img/Item11.jpg","036000291452","pack of 8","Jockey Lowrise Brief",325.00],null,errorCB);
@@ -214,8 +215,10 @@ function succesTest()
 function populateCatalogueMaster(tx)
 {
     var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,SysSeq_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) VALUES(?,?,?,?,?)";
-    tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2014-05-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
-    tx.executeSql(sqlInsert2,["2",1,"Gaisano Catalogue","2015-06-29 24:59:59","2015-05-29 00:00:00"],null,errorCB);
+    
+    tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2015-05-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
+    tx.executeSql(sqlInsert2,["2",1,"Back To School Catalogue","2015-06-29 24:59:59","2015-05-29 00:00:00"],null,errorCB);
+	tx.executeSql(sqlInsert2,["3",3,"Expired Catalogue","2014-05-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
 }
 
 
