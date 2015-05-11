@@ -21,22 +21,22 @@ if(localStorage.BarcodeInvtyCat == null)
     
     /*FOR LOCALSTORAGE TO ARRAY*/
     //NOTE: x,y,z
-    var cartpromonameArr;
-    var cartpicturefilenameArr;
-    var cartfulldescriptionArr;
-    var cartpromoPriceArr;
+	var cartpicturefilenameArr;
     var cartbarcodeArr;
+    var cartfulldescriptionArr;
+    var cartpromonameArr;
+	var cartpromoPriceArr;
     var cartQuantityArr;
     var cartsubtotalArr;
     
     /*initialized on placeOrder click*/
     //NOTE: x,y,z,
     //always add "," at the end of array when storing as localStorage
+	localStorage.picturefilename = '';
+	localStorage.BarcodeInvtyCat = '';
+	localStorage.fulldescription = '';
     localStorage.promoname = '';
-    localStorage.picturefilename = '';
-    localStorage.fulldescription = '';
     localStorage.promoPrice = '';
-    localStorage.BarcodeInvtyCat = '';
     localStorage.quantity = '';
     localStorage.subtotal = '';
     
@@ -109,6 +109,12 @@ function createDB(tx)
     query3 += "Brand_Invty,Classification_Invty, Categories_Invty, Description_Invty,FullDescription_Invty,FreeDescription_Invty,";
     query3 += "DisplayPrice_Invty, Principal_Invty, QRcode_Invty, SubCategories_Invty)";
     tx.executeSql(query3,[],populateInventoryMaster, errorCB);
+	
+	
+	tx.executeSql("DROP TABLE IF EXISTS SETTINGS");
+	var query4 ="";
+	query4 +="CREATE TABLE IF NOT EXISTS SETTINGS(MinimumPrice_Settings)";
+	tx.executeSql(query4,[],populateSettingsTable,errorCB);
 
 
 }
@@ -152,15 +158,22 @@ function populateInventoryMasterCatalogue(tx)
 
 function populateCatalogueMaster(tx)
 {
-    var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) VALUES(?,?,?,?)";
-    tx.executeSql(sqlInsert2,["1","Johanna Catalogue","2015-06-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
-    tx.executeSql(sqlInsert2,["2","Gaisano Catalogue","2015-06-29 24:59:59","2015-05-29 00:00:00"],null,errorCB);
+    var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,SysSeq_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) VALUES(?,?,?,?,?)";
+    tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2015-06-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
+    tx.executeSql(sqlInsert2,["2",1,"Gaisano Catalogue","2015-06-29 24:59:59","2015-05-29 00:00:00"],null,errorCB);
 }
 
 
 function populateInventoryMaster()
 {
      //alert('populate inventory master');
+}
+
+function populateSettingsTable(tx)
+{
+	   var sqlInsert4 = "INSERT INTO SETTINGS(MinimumPrice_Settings) VALUES(?)";
+		tx.executeSql(sqlInsert4,[1000],null,errorCB);
+  
 }
 /*-----------------------------------------------------------------*/
 /*------------------------//Database-----------------------------------*/
@@ -227,7 +240,7 @@ function queryCatalogues(tx)
 {
  
    //tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr' , [], renderCatalogueItems, errorCB);  
-   tx.executeSql('SELECT * FROM CATALOGUE_MASTER' , [], nextRecord, errorCB);  
+   tx.executeSql('SELECT * FROM CATALOGUE_MASTER ORDER BY SysSeq_CatMstr ASC' , [], nextRecord, errorCB);  
 //	alert('select sql excecuted');
 }
 
@@ -374,29 +387,34 @@ function startSearch()
 
 
 
+function queryCartSettings(tx)
+{
+	    
+    tx.executeSql('SELECT * FROM SETTINGS' , [], renderCartList, errorCB);
+
+}
 
 
 
-
-function renderCartList()
+function renderCartList(tx,results)
 {
     var orderAllTotal = 0;
     
-    var promonameForArr = localStorage.promoname.replace(/,\s*$/,'');
-    var picturefilenameForArr = localStorage.picturefilename.replace(/,\s*$/,'');
-    var fulldescriptionForArr = localStorage.fulldescription.replace(/,\s*$/,'');
-    var promoPriceForArr = localStorage.promoPrice.replace(/,\s*$/,'');
-    var BarcodeInvtyCatForArr = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
-    var quantityForArr = localStorage.quantity.replace(/,\s*$/,'');
-    var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
+	var picturefilenameForArr = localStorage.picturefilename.replace(/,\s*$/,'');
+	var BarcodeInvtyCatForArr = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
+	var fulldescriptionForArr = localStorage.fulldescription.replace(/,\s*$/,'');
+	var promoPriceForArr = localStorage.promoPrice.replace(/,\s*$/,'');
+	var promonameForArr = localStorage.promoname.replace(/,\s*$/,'');
+	var quantityForArr = localStorage.quantity.replace(/,\s*$/,'');
+	var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
     
-    cartpromonameArr =  promonameForArr.split(',');
-    cartpicturefilenameArr =  picturefilenameForArr.split(',');
-    cartfulldescriptionArr =  fulldescriptionForArr.split(',');
-    cartpromoPriceArr =  promoPriceForArr.split(',');
-    cartbarcodeArr =  BarcodeInvtyCatForArr.split(',');
-    cartQuantityArr =  quantityForArr.split(',');
-    cartsubtotalArr = subtotalForArr.split(',');
+	cartpicturefilenameArr =  picturefilenameForArr.split(',');
+	cartbarcodeArr =  BarcodeInvtyCatForArr.split(',');
+	cartfulldescriptionArr =  fulldescriptionForArr.split(',');
+	cartpromoPriceArr =  promoPriceForArr.split(',');
+	cartpromonameArr =  promonameForArr.split(',');
+	cartQuantityArr =  quantityForArr.split(',');
+	cartsubtotalArr = subtotalForArr.split(',');
     
     var cartLength = cartbarcodeArr.length;
     var htmlstringcart = '';
@@ -430,15 +448,17 @@ function renderCartList()
   
    
     
-    
+
 
     //commas are not using toNormal so that string won't be interpreted as different array indexes.
-    if(orderAllTotal >= 1000)
+    if((orderAllTotal >= results.rows.item(0).MinimumPrice_Settings))
     {
+		$('.orderAll-cont').empty();
         $('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-promoname="' + cartpromonameArr.toString() +'" data-picturefilename="'+ cartpicturefilenameArr.toString() +'" data-fulldescription="'+ cartfulldescriptionArr.toString() +'" data-promoPrice="'+ cartpromoPriceArr.toString()+'" data-barcode="'+cartbarcodeArr.toString()+'" data-quantity= "'+cartQuantityArr.toString() +'"  data-subtotal="'+ cartsubtotalArr.toString()+'">Order All</a>');
     }
     else
     {
+		$('.orderAll-cont').empty();
         $('.orderAll-cont').append('<a href="#" class="btn btn-large orderAllDisabledLook">Order All</a><br><small class="minimumPurchaseNote">-A minimum of P1000 worth of items is required to checkout.</small>');
     }
     
@@ -743,29 +763,28 @@ function testinput(re, str)
 
 $(document).on('click','.placeOrder', function()
 {
-    
-    var promoname = $(this).attr('data-promoname');
     var picturefilename = $(this).attr('data-picturefilename');
-    var fulldescription = $(this).attr('data-fulldescription');
-    var promoPrice = $(this).attr('data-promoPrice');
-    var BarcodeInvtyCat = $(this).attr('data-BarcodeInvtyCat');
+	var BarcodeInvtyCat = $(this).attr('data-BarcodeInvtyCat');
+	var fulldescription = $(this).attr('data-fulldescription');
+    var promoname = $(this).attr('data-promoname');
+    var promoPrice = $(this).attr('data-promoPrice');  
     var quantity = $(this).attr('data-quantity');
     var subtotal = $(this).attr('data-subtotal');
     
     //this prevents commas from promonames from being interpreted as , when localstorage string is turned into an array
     promoname = promoname.replace(',','(xxxGLogCommaxxx)');
+	BarcodeInvtyCat = BarcodeInvtyCat.replace(',','(xxxGLogCommaxxx)');
+	fulldescription = fulldescription.replace(',','(xxxGLogCommaxxx)');
+	promoPrice = promoPrice.replace(',','(xxxGLogCommaxxx)');
     picturefilename = picturefilename.replace(',','(xxxGLogCommaxxx)');
-    fulldescription = fulldescription.replace(',','(xxxGLogCommaxxx)');
-    promoPrice = promoPrice.replace(',','(xxxGLogCommaxxx)');
-    BarcodeInvtyCat = BarcodeInvtyCat.replace(',','(xxxGLogCommaxxx)');
     quantity = quantity.replace(',','(xxxGLogCommaxxx)');
     subtotal = subtotal.replace(',','(xxxGLogCommaxxx)');
 
-    localStorage.promoname += promoname.toString()+',';
-    localStorage.picturefilename += picturefilename.toString()+',';
+	localStorage.picturefilename += picturefilename.toString()+',';
+	localStorage.BarcodeInvtyCat += BarcodeInvtyCat.toString()+',';
     localStorage.fulldescription += fulldescription.toString()+',';
+	localStorage.promoname += promoname.toString()+',';
     localStorage.promoPrice += promoPrice.toString()+',';
-    localStorage.BarcodeInvtyCat += BarcodeInvtyCat.toString()+',';
     localStorage.quantity += quantity.toString()+',';
     localStorage.subtotal += subtotal.toString()+',';
     

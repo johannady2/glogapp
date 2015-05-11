@@ -30,7 +30,8 @@ $(document).on('navClicked',function(event,filename)
     else if(filename == "cart.html")
     {
      
-        renderCartList();
+        //renderCartList();
+		db.transaction(queryCartSettings,errorCB);
         $('body').off('click', '.edit-order').on('click','.edit-order', function(event,orderidtoedit)
         {   
             orderidtoedit = $(this).data('orderid');
