@@ -10,6 +10,10 @@ var idForSinglePage;
 var scanResult;
 var orderidtoedit;
 
+var RecordCounter = 0;//for rendering catalogue items
+var txparam; // so i can pass this object to callback
+var resulstparam;// so i can pass this object to callback
+
 
 //if variable is undefined, define.
 if(localStorage.BarcodeInvtyCat == null)
@@ -50,7 +54,7 @@ function errorCB(err)
 
 function successCB()
 {
-   // alert('successful');
+  alert('successful');
 
 }
 
@@ -198,6 +202,8 @@ function editOrderClickedContentReady(event,orderidtoedit)
     $(document).trigger('editOrderClicked',[orderidtoedit]);
 }
 
+
+
 /*----------------------------------------------------------------------*/
 /*-------------------//custom events-------------------------------*/
 /*----------------------------------------------------------------------*/
@@ -217,21 +223,77 @@ function editOrderClickedContentReady(event,orderidtoedit)
 
 
 
-function queryCatalogueItems(tx)
+function queryCatalogues(tx)
 {
-   tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr' , [], renderCatalogueItems, errorCB);  
+ 
+   //tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr' , [], renderCatalogueItems, errorCB);  
+   tx.executeSql('SELECT * FROM CATALOGUE_MASTER' , [], nextRecord, errorCB);  
+	alert('select sql excecuted');
 }
 
-function renderCatalogueItems(tx,results)
+function nextRecord(tx,results)
 {
-    
-        var numberOfCatalogueItems = results.rows.length;
-       
+		var recordBeingProcessed = RecordCounter + 1;//plus one because RecordCounter starts at zero..
+	   var numberOfCatalogues = results.rows.length;
+	
+
+
+	alert('numberOfCatalogues -' + numberOfCatalogues);
+	alert('recordBeingProcessed -' + recordBeingProcessed);
+	   if(recordBeingProcessed <= numberOfCatalogues)
+	   {
+		   
+		   
+		   txparam = tx; // so i can pass this object to callback
+			resulstparam = results;
+		   
+			alert(results.rows.item(RecordCounter).CatalogueTitle_CatMstr);
+			$('.lists-cont').append('<h1>'+  results.rows.item(RecordCounter).CatalogueTitle_CatMstr  +'</h1><br><div class="list listSet-'+results.rows.item(RecordCounter).SysPk_CatMstr+'"></div>');
+			
+			db.transaction(function(tx2){
+				tx2.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr WHERE IMC.SysFk_CatMstr_InvtyCat = ?', [results.rows.item(RecordCounter).SysPk_CatMstr], renderCatalogueItems);// WHERE IMC.SysFk_CatMstr_InvtyCat ="'+ results.rows.item(RecordCounter).CatalogueTitle_CatMstr +'"
+			},errorCB,function(){  RecordCounter  += 1;  nextRecord(txparam,resulstparam); alert('test');});
+		   
+		  
+		
+	   }
+	   else
+	   {
+		   alert('no more records');
+		   RecordCounter = 0;//reset to zero because it's a global varibale.. so that will start counting zero again when we comeback from a different page.
+	   }
+	
+
+		/*for(var ind=0; ind < results.rows.length ; ind++)
+		{
+			$('.lists-cont').append('<h1>'+  results.rows.item(ind).CatalogueTitle_CatMstr  +'</h1><div class="list listSet-'+results.rows.item(ind).SysPk_CatMstr+'"></div>');
+	
+		}*/
+
+
+}
+
+
+
+ /* 
+function selectThese(tx,SysPk_CatMstr, callback)
+{
+
+	 tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr WHERE IMC.SysFk_CatMstr_InvtyCat ="'+ SysPk_CatMstr +'"', [], renderCatalogueItems, errorCB);
+
+}*/
+
+function renderCatalogueItems(tx2,results)
+{
+	
+	alert('renderCatalogueItems' + results.rows.length);
+
+	/*
+      var numberOfCatalogueItems = results.rows.length;
+       alert(numberOfCatalogueItems);
         var htmlstringCatalaogue ='';
         for(var ind=0; ind < numberOfCatalogueItems; ind++)
         {
-            /*These ones will not be put in html because the elements need to be looped through*/
-
             htmlstringCatalaogue += '<div class="item"><div class="row artcont"><div class="col-md-12 col-ms-12 col-xs-12"><article class="oneitemarticle"><header class="entry-header page-header"><div class="row"><div class="col-md-8 col-sm-12 col-xs-12">';
             htmlstringCatalaogue += '<h1 class="entry-title">' + results.rows.item(ind).PromoName_InvtyCat +'</h1>';
             htmlstringCatalaogue += '</div><div class="col-md-4 col-sm-12 col-xs-12">';
@@ -247,16 +309,14 @@ function renderCatalogueItems(tx,results)
             htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '</div></div></article></div></div></div>';
-
+			
         }
     
     
-        $('#list').append(htmlstringCatalaogue);
-    
-        
+        $('.listSet-'+results.rows.item(ind).SysPk_CatMstr).append(htmlstringCatalaogue);
+		*/
+		
 }
-
-
 
 
 function queryForSearch(tx)

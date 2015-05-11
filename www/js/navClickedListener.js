@@ -6,7 +6,7 @@ $(document).on('navClicked',function(event,filename)
         if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
         { 
             
-            db.transaction(queryCatalogueItems, errorCB);
+            db.transaction(queryCatalogues, errorCB);
             
 
                 //off click is fix for event trigger multiple times.There are many other solutions if needed to change this in the future.
