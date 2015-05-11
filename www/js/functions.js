@@ -54,7 +54,7 @@ function errorCB(err)
 
 function successCB()
 {
-  alert('successful');
+ // alert('successful');
 
 }
 
@@ -94,7 +94,7 @@ function createDB(tx)
     tx.executeSql("DROP TABLE IF EXISTS CATALOGUE_MASTER");
     var query2 = "";
     query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_CatMstr,";
-    query2 += "SysFk_CatMstr, USerPk_CatMstr, LastUpdatedBy_CatMstr, LastUpdatedConcurrencyID_CatMstr, LastUpdatedDate_CatMstr TIMESTAMP DEFAULT (datetime('now','localtime')), Module_CatMstr,";
+    query2 += "SysFk_CatMstr,SysSeq_CatMstr, UserPk_CatMstr, LastUpdatedBy_CatMstr, LastUpdatedConcurrencyID_CatMstr, LastUpdatedDate_CatMstr TIMESTAMP DEFAULT (datetime('now','localtime')), Module_CatMstr,";
     query2 += "Particulars_CatMstr,PictureFileName_CatMstr, Status_CatMstr,Type_CatMstr,";
     query2 += "CatalogueTitle_CatMstr, Description_CatMstr, FullDescription_CatMstr, FreeDescription_CatMstr,";
     query2 += "Principal_CatMstr,PromoEndDate_CatMstr TIMESTAMP, PromoStartDate_CatMstr TIMESTAMP)";
@@ -228,7 +228,7 @@ function queryCatalogues(tx)
  
    //tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr' , [], renderCatalogueItems, errorCB);  
    tx.executeSql('SELECT * FROM CATALOGUE_MASTER' , [], nextRecord, errorCB);  
-	alert('select sql excecuted');
+//	alert('select sql excecuted');
 }
 
 function nextRecord(tx,results)
@@ -238,8 +238,8 @@ function nextRecord(tx,results)
 	
 
 
-	alert('numberOfCatalogues -' + numberOfCatalogues);
-	alert('recordBeingProcessed -' + recordBeingProcessed);
+	//alert('numberOfCatalogues -' + numberOfCatalogues);
+	//alert('recordBeingProcessed -' + recordBeingProcessed);
 	   if(recordBeingProcessed <= numberOfCatalogues)
 	   {
 		   
@@ -247,19 +247,19 @@ function nextRecord(tx,results)
 		   txparam = tx; // so i can pass this object to callback
 			resulstparam = results;
 		   
-			alert(results.rows.item(RecordCounter).CatalogueTitle_CatMstr);
-			$('.lists-cont').append('<h1>'+  results.rows.item(RecordCounter).CatalogueTitle_CatMstr  +'</h1><br><div class="list listSet-'+results.rows.item(RecordCounter).SysPk_CatMstr+'"></div>');
+			//alert(results.rows.item(RecordCounter).CatalogueTitle_CatMstr);
+			$('.lists-cont').append('<h1 class="catalogueTitle">'+  results.rows.item(RecordCounter).CatalogueTitle_CatMstr  +'</h1><br><div class="list listSet-'+results.rows.item(RecordCounter).SysPk_CatMstr+'"></div>');
 			
 			db.transaction(function(tx2){
-				tx2.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr WHERE IMC.SysFk_CatMstr_InvtyCat = ?', [results.rows.item(RecordCounter).SysPk_CatMstr], renderCatalogueItems);// WHERE IMC.SysFk_CatMstr_InvtyCat ="'+ results.rows.item(RecordCounter).CatalogueTitle_CatMstr +'"
-			},errorCB,function(){  RecordCounter  += 1;  nextRecord(txparam,resulstparam); alert('test');});
+				tx2.executeSql('SELECT IMC.*,CM.SysPk_CatMstr AS syspkcatmstr, CM.CatalogueTitle_CatMstr, CM.PromoEndDate_CatMstr, CM.PromoStartDate_CatMstr  FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr WHERE IMC.SysFk_CatMstr_InvtyCat = ?', [results.rows.item(RecordCounter).SysPk_CatMstr], renderCatalogueItems);// WHERE IMC.SysFk_CatMstr_InvtyCat ="'+ results.rows.item(RecordCounter).CatalogueTitle_CatMstr +'"
+			},errorCB,function(){  RecordCounter  += 1;  nextRecord(txparam,resulstparam);});
 		   
 		  
 		
 	   }
 	   else
 	   {
-		   alert('no more records');
+		 //  alert('no more records');
 		   RecordCounter = 0;//reset to zero because it's a global varibale.. so that will start counting zero again when we comeback from a different page.
 	   }
 	
@@ -275,22 +275,16 @@ function nextRecord(tx,results)
 
 
 
- /* 
-function selectThese(tx,SysPk_CatMstr, callback)
-{
 
-	 tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr WHERE IMC.SysFk_CatMstr_InvtyCat ="'+ SysPk_CatMstr +'"', [], renderCatalogueItems, errorCB);
-
-}*/
 
 function renderCatalogueItems(tx2,results)
 {
 	
-	alert('renderCatalogueItems' + results.rows.length);
+	//alert('renderCatalogueItems' + results.rows.length);
 
-	/*
+	
       var numberOfCatalogueItems = results.rows.length;
-       alert(numberOfCatalogueItems);
+     //  alert(numberOfCatalogueItems);
         var htmlstringCatalaogue ='';
         for(var ind=0; ind < numberOfCatalogueItems; ind++)
         {
@@ -310,11 +304,18 @@ function renderCatalogueItems(tx2,results)
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '</div></div></article></div></div></div>';
 			
+			
+			
+			
+		
+			
         }
     
     
-        $('.listSet-'+results.rows.item(ind).SysPk_CatMstr).append(htmlstringCatalaogue);
-		*/
+		
+     $('.listSet-'+results.rows.item(0).syspkcatmstr).append(htmlstringCatalaogue);
+    // $('#list').append(htmlstringCatalaogue);
+		
 		
 }
 
