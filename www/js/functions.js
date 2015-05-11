@@ -148,9 +148,9 @@ function populateInventoryMasterCatalogue(tx)
 
 function populateCatalogueMaster(tx)
 {
-    var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,CatalogueTitle_CatMstr) VALUES(?,?)";
-    tx.executeSql(sqlInsert2,["1","Johanna Catalogue"],null,errorCB);
-    tx.executeSql(sqlInsert2,["2","Gaisano Catalogue"],null,errorCB);
+    var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) VALUES(?,?,?,?)";
+    tx.executeSql(sqlInsert2,["1","Johanna Catalogue","2015-06-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
+    tx.executeSql(sqlInsert2,["2","Gaisano Catalogue","2015-06-29 24:59:59","2015-05-29 00:00:00"],null,errorCB);
 }
 
 
@@ -233,7 +233,7 @@ function renderCatalogueItems(tx,results)
             /*These ones will not be put in html because the elements need to be looped through*/
 
             htmlstringCatalaogue += '<div class="item"><div class="row artcont"><div class="col-md-12 col-ms-12 col-xs-12"><article class="oneitemarticle"><header class="entry-header page-header"><div class="row"><div class="col-md-8 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<h1 class="entry-title">'+ results.rows.item(ind).CatalogueTitle_CatMstr + '- test -' + results.rows.item(ind).PromoName_InvtyCat +'</h1>';
+            htmlstringCatalaogue += '<h1 class="entry-title">' + results.rows.item(ind).PromoName_InvtyCat +'</h1>';
             htmlstringCatalaogue += '</div><div class="col-md-4 col-sm-12 col-xs-12">';
             htmlstringCatalaogue += '<h3 class="entry-title">$'+ results.rows.item(ind).PromoPrice_InvtyCat +'</h1>';
             htmlstringCatalaogue += '</div></div></header>';
@@ -241,7 +241,7 @@ function renderCatalogueItems(tx,results)
             htmlstringCatalaogue += '<img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage">';
             htmlstringCatalaogue += '</div><br/></div>';
             htmlstringCatalaogue += '<div class="col-md-12 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<p>'+ results.rows.item(ind).FullDescription_InvtyCat +'</p>';
+            htmlstringCatalaogue += '<p>'+ results.rows.item(ind).FullDescription_InvtyCat + '<br>test:<br>' + results.rows.item(ind).CatalogueTitle_CatMstr + '<br>test:<br>' + results.rows.item(ind).PromoStartDate_CatMstr + ' to ' + results.rows.item(ind).PromoEndDate_CatMstr +'</p>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '<div class="col-md-12 col-sm-12 col-xs-12">';
             htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a>';
