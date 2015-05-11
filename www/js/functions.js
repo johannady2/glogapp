@@ -43,6 +43,10 @@ if(localStorage.BarcodeInvtyCat == null)
     /*initialized on renderCart*/
     localStorage.orderid='';
 }
+
+
+
+
 /*~~~~~~~~~~~~~~~~~~~~//GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
@@ -122,6 +126,7 @@ function createDB(tx)
 function populateInventoryMasterCatalogue(tx)
 {
  
+	alert('populate Inventory Master Catalogue');
 
    
     var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?)";
@@ -149,17 +154,67 @@ function populateInventoryMasterCatalogue(tx)
     tx.executeSql(sqlInsert,["99999999","2","img/Item18.jpg","741360988644","was P1595","Sanyang Computer Table",1276.00],null,errorCB);
     tx.executeSql(sqlInsert,["1111111111","2","img/Item19.jpg","123456789012","was P1695","Sanyang Office Table",1320.00],null,errorCB);
     tx.executeSql(sqlInsert,["2222222222","2","img/Item20.jpg","042000062008","was P3750","Sanyang Study Table",3000.00],null,errorCB);
-    tx.executeSql(sqlInsert,["3333333333","2","img/Item21.jpg","012345678905","pack of 10","80L notebooks",100.00],null,errorCB);
+    tx.executeSql(sqlInsert,["3333333333","2","img/Item21.jpg","012345678905","pack of 10","80L notebooks",100.00],queryForExpired,errorCB);
    
 
+	//var deleteExpiredSql = "DELETE FROM INVENTORY_MASTER";
+	//tx.executeSql();
 
 }
 
+function queryForExpired(tx)
+{
+	var queryexpd = 'SELECT DISTINCT IMC.SysFk_CatMstr_InvtyCat,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC ';
+	queryexpd += 'INNER JOIN CATALOGUE_MASTER AS CM ';
+	queryexpd += 'ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr ';
+	queryexpd += 'WHERE PromoEndDate_CatMstr < ? ';
+	var datetimenow = getDateTimeNow();
+	tx.executeSql(queryexpd, [datetimenow], deleteExpiredPromos);
+}
+
+function deleteExpiredPromos(tx,results)
+{
+	alert(results.rows.length);
+	
+	
+	
+	var deleteString = '';
+	
+	for(var ind=0; ind < results.rows.length ; ind++ )
+	{
+		
+		alert(results.rows.item(ind).SysFk_CatMstr_InvtyCat);
+		
+		deleteString += '"'+results.rows.item(ind).SysFk_CatMstr_InvtyCat + '",';
+		
+	}
+	
+	//deleteString
+	
+	deleteString = deleteString.substring(0, deleteString.length - 1);
+	
+	//var testDelString = ' ';
+	alert(deleteString);
+	
+	
+	tx.executeSql('DELETE FROM CATALOGUE_MASTER WHERE SysPk_CatMstr IN('+ deleteString +')');
+	
+	var querydelexpd= 'DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysFk_CatMstr_InvtyCat IN('+ deleteString +')';
+	tx.executeSql(querydelexpd,[],succesTest,errorCB);
+	
+}
+
+function succesTest()
+{
+	//alert(results.rows.length);
+
+	alert('deleted');
+}
 
 function populateCatalogueMaster(tx)
 {
     var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,SysSeq_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) VALUES(?,?,?,?,?)";
-    tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2015-06-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
+    tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2014-05-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
     tx.executeSql(sqlInsert2,["2",1,"Gaisano Catalogue","2015-06-29 24:59:59","2015-05-29 00:00:00"],null,errorCB);
 }
 
@@ -854,3 +909,21 @@ function toCustomComma(stringWithNormalComma)
     return stringWithCustomComma;
 }
 
+
+function getDateTimeNow()
+{
+	var d = new Date();
+
+	var month = d.getMonth()+1;
+	var day = d.getDate();
+	var hours = d.getHours();
+	var minutes = d.getMinutes();
+	var seconds = d.getSeconds();
+
+	var output = d.getFullYear() + '-' +
+		(month<10 ? '0' : '') + month + '-' +
+		(day<10 ? '0' : '') + day + ' ' +
+		(hours<10 ? '0' : '')+hours +':'+(minutes<10 ? '0' : '')+minutes+':'+(seconds<10 ? '0' : '')+seconds;
+
+	return output;
+}
