@@ -78,7 +78,7 @@ function successCB()
 function onDeviceReady()
 {
     
-    db = window.openDatabase("Database","1.0","Cordova Demo", 2*1024*1024);
+    db = window.openDatabase("Database","1.0","Cordova Demo", 4*1024*1024);
     db.transaction(createDB, errorCB, successCB);
    
 }
@@ -131,8 +131,20 @@ function createDB(tx)
 	var query4 ="";
 	query4 +="CREATE TABLE IF NOT EXISTS SETTINGS(MinimumPrice_Settings)";
 	tx.executeSql(query4,[],populateSettingsTable,errorCB);
-
-
+	
+/*
+	tx.executeSql("DROP TABLE IF EXISTS CATEGORY_MASTER");
+	var query5= "";
+	query5 += "CREATE TABLE IF NOT EXISTS CATEGORY_MASTER(RowNumber_CatgyMstr INTEGER PRIMARY KEY AUTOINCREMENT,SysPk_CatgyMstr, CategoryName_CatgyMstr)";
+	tx.executeSql(query5,[],populateCategoryMaster,errorCB);
+	
+*/	
+	//relationship between inventory master catalogue && category master
+	//tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY");
+	/*var query6 ="";
+	query6 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY(RowNumber_InvtyCatCatgy INTEGER PRIMARY KEY AUTOINCREMENT,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
+	tx.executeSql(query6,[],populateinvtycatcatgrymstrrelationship,errorCB);
+	*/
 }
 
 function populateInventoryMasterCatalogue(tx)
@@ -241,10 +253,31 @@ function populateInventoryMaster()
 
 function populateSettingsTable(tx)
 {
+alert('test');	
 	   var sqlInsert4 = "INSERT INTO SETTINGS(MinimumPrice_Settings) VALUES(?)";
 		tx.executeSql(sqlInsert4,[1000],null,errorCB);
   
 }
+
+function populateCategoryMaster(tx)
+{	alert('category master created.';)
+		var sqlInsert5 = "INSERT INTO CATEGORY_MASTER(SysPk_CatgyMstr, CategoryName_CatgyMstr) VALUES(?,?)";
+		tx.executeSql(sqlInsert5,["catgy1","Exclusive"],null,errorCB);
+		tx.executeSql(sqlInsert5,["catgy2","Style"],null,errorCB);
+		tx.executeSql(sqlInsert5,["catgy3","Leisure"],null,errorCB);
+		tx.executeSql(sqlInsert5,["catgy4","Good Home"],null,errorCB);
+		tx.executeSql(sqlInsert5,["catgy5","Tech"],null,errorCB);
+		tx.executeSql(sqlInsert5,["catgy6","Kiddy"],null,errorCB);
+	
+	alert('category master populated.';)
+}
+
+/*
+function populateinvtycatcatgrymstrrelationship(tx)
+{
+	var sqlInsert6 = "INSERT INTO INVENTORY_MASTER_CATALOGUE_CATEGORY() VALUES(?)";
+	tx.executeSql(sqlInsert6,[],null,errorCB);
+}*/
 /*-----------------------------------------------------------------*/
 /*------------------------//Database-----------------------------------*/
 /*------------------------------------------------------------------*/
