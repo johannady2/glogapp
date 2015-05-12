@@ -141,34 +141,34 @@ function populateInventoryMasterCatalogue(tx)
 	//alert('populate Inventory Master Catalogue');
 
    
-    var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?)";
+    var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
    
    
-    tx.executeSql(sqlInsert,["111111","4","sku111111","img/item1.jpg","101191","Sample,f Strings with commas." ,"Yotsuba , Revoltech",63.00],null,errorCB);
-    tx.executeSql(sqlInsert,["333333","4","sku333333","img/item3.jpg","8999999003395","with free candy","Pond\'s Pure White",14.00],null,errorCB);
-    tx.executeSql(sqlInsert,["444444","4","sku444444","img/item4.gif","4807788058850","with freechocolate","Iron Supplement",99.99],null,errorCB);
-    tx.executeSql(sqlInsert,["555555","1","sku555555","img/item5.jpg","12345","free Soy Sauce","Used Monggol Pencil",31.99],null,errorCB);
-    tx.executeSql(sqlInsert,["666666","1","sku666666","img/item6.jpg","795144075167","BUY 1 TAKE 1","Strawberry Kiss Intimate Secret",15.00],null,errorCB);
-	tx.executeSql(sqlInsert,["777777","1","sku777777","img/item7.jpg","4005401548218","with free baby poweder","Faber Castell TextLiner 48",232.25],null,errorCB);
+    tx.executeSql(sqlInsert,["111111","4","sku111111","img/item1.jpg","101191","natasha","Sample,f Strings with commas." ,"Yotsuba , Revoltech",63.00],null,errorCB);
+    tx.executeSql(sqlInsert,["333333","4","sku333333","img/item3.jpg","8999999003395","natasha","with free candy","Pond\'s Pure White",14.00],null,errorCB);
+    tx.executeSql(sqlInsert,["444444","4","sku444444","img/item4.gif","4807788058850","natasha","with freechocolate","Iron Supplement",99.99],null,errorCB);
+    tx.executeSql(sqlInsert,["555555","1","sku555555","img/item5.jpg","12345","natasha","free Soy Sauce","Used Monggol Pencil",31.99],null,errorCB);
+    tx.executeSql(sqlInsert,["666666","1","sku666666","img/item6.jpg","795144075167","natasha","BUY 1 TAKE 1","Strawberry Kiss Intimate Secret",15.00],null,errorCB);
+	tx.executeSql(sqlInsert,["777777","1","sku777777","img/item7.jpg","4005401548218","natasha","with free baby poweder","Faber Castell TextLiner 48",232.25],null,errorCB);
   
 	
 	
-	tx.executeSql(sqlInsert,["222222","3","sku222222","img/item2.gif","4801010127215","with free milk","GIF sample",63.00],null,errorCB);
-	tx.executeSql(sqlInsert,["888888","3","sku888888","img/item8.jpg","123","Free Cookies","Pocky Strawberry",232.00],null,errorCB);
-    tx.executeSql(sqlInsert,["999999","3","sku999999","img/item9.jpg","11223344","Mentos","Pocky Set",232.00],null,errorCB);
+	tx.executeSql(sqlInsert,["222222","3","sku222222","img/item2.gif","4801010127215","avon","with free milk","GIF sample",63.00],null,errorCB);
+	tx.executeSql(sqlInsert,["888888","3","sku888888","img/item8.jpg","123","avon","Free Cookies","Pocky Strawberry",232.00],null,errorCB);
+    tx.executeSql(sqlInsert,["999999","3","sku999999","img/item9.jpg","11223344","avon","Mentos","Pocky Set",232.00],null,errorCB);
 
-    tx.executeSql(sqlInsert,["11111111","2","sku11111111","img/Item10.jpg","987654321098","pack of 8","40L notebooks",50.00],null,errorCB);
-    tx.executeSql(sqlInsert,["22222222","2","sku22222222","img/Item11.jpg","036000291452","pack of 8","Jockey Lowrise Brief",325.00],null,errorCB);
-    tx.executeSql(sqlInsert,["33333333","2","sku33333333","img/Item12.jpg","016000660601","(P799.75 each) save 10%","Trolley Bags",799.75],null,errorCB);
-    tx.executeSql(sqlInsert,["44444444","2","sku44444444","img/Item13.jpg","5010029020519","was P399","Trolley Bags",299.00],null,errorCB);
-    tx.executeSql(sqlInsert,["55555555","2","sku55555555","img/Item14.jpg","*9123*39","(P198.00 each)","TSport Backpacks",198.00],null,errorCB);
-    tx.executeSql(sqlInsert,["66666666","2","sku66666666","img/Item15.jpg","50184385","save P10","Shining East Value Pack",99.00],null,errorCB);
-    tx.executeSql(sqlInsert,["77777777","2","sku77777777","img/Item16.jpg","5702012000737","Buy 1 Take 1","Darlington",89.75],null,errorCB);
-    tx.executeSql(sqlInsert,["88888888","2","sku88888888","img/Item17.jpg","850785004003","was P1899","Sanyang Clerical Chair",1519.20],null,errorCB);
-    tx.executeSql(sqlInsert,["99999999","2","sku99999999","img/Item18.jpg","741360988644","was P1595","Sanyang Computer Table",1276.00],null,errorCB);
-    tx.executeSql(sqlInsert,["1111111111","2","sku1111111111","img/Item19.jpg","123456789012","was P1695","Sanyang Office Table",1320.00],null,errorCB);
-    tx.executeSql(sqlInsert,["2222222222","2","sku2222222222","img/Item20.jpg","042000062008","was P3750","Sanyang Study Table",3000.00],null,errorCB);
-    tx.executeSql(sqlInsert,["3333333333","2","sku3333333333","img/Item21.jpg","012345678905","pack of 10","80L notebooks",100.00],queryForExpired,errorCB);
+    tx.executeSql(sqlInsert,["11111111","2","sku11111111","img/Item10.jpg","987654321098","avon","pack of 8","40L notebooks",50.00],null,errorCB);
+    tx.executeSql(sqlInsert,["22222222","2","sku22222222","img/Item11.jpg","036000291452","avon","pack of 8","Jockey Lowrise Brief",325.00],null,errorCB);
+    tx.executeSql(sqlInsert,["33333333","2","sku33333333","img/Item12.jpg","016000660601","avon","(P799.75 each) save 10%","Trolley Bags",799.75],null,errorCB);
+    tx.executeSql(sqlInsert,["44444444","2","sku44444444","img/Item13.jpg","5010029020519","avon","was P399","Trolley Bags",299.00],null,errorCB);
+    tx.executeSql(sqlInsert,["55555555","2","sku55555555","img/Item14.jpg","*9123*39","etude house","(P198.00 each)","TSport Backpacks",198.00],null,errorCB);
+    tx.executeSql(sqlInsert,["66666666","2","sku66666666","img/Item15.jpg","50184385","etude house","save P10","Shining East Value Pack",99.00],null,errorCB);
+    tx.executeSql(sqlInsert,["77777777","2","sku77777777","img/Item16.jpg","5702012000737","etude house","Buy 1 Take 1","Darlington",89.75],null,errorCB);
+    tx.executeSql(sqlInsert,["88888888","2","sku88888888","img/Item17.jpg","850785004003","etude house","was P1899","Sanyang Clerical Chair",1519.20],null,errorCB);
+    tx.executeSql(sqlInsert,["99999999","2","sku99999999","img/Item18.jpg","741360988644","etude house","was P1595","Sanyang Computer Table",1276.00],null,errorCB);
+    tx.executeSql(sqlInsert,["1111111111","2","sku1111111111","img/Item19.jpg","123456789012","etude house","was P1695","Sanyang Office Table",1320.00],null,errorCB);
+    tx.executeSql(sqlInsert,["2222222222","2","sku2222222222","img/Item20.jpg","042000062008","etude house","was P3750","Sanyang Study Table",3000.00],null,errorCB);
+    tx.executeSql(sqlInsert,["3333333333","2","sku3333333333","img/Item21.jpg","012345678905","etude house","pack of 10","80L notebooks",100.00],queryForExpired,errorCB);
    
 
 	//var deleteExpiredSql = "DELETE FROM INVENTORY_MASTER";
