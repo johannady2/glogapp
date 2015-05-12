@@ -553,6 +553,22 @@ body
 	margin:30px 0 30px 0;
 }
 
+.invalid
+{
+	background-color:#F6F6F6 !important;
+}
+
+
+.warning
+{
+	color:red;
+}
+
+.hidethis
+{
+	display:none;
+}
+
                             /*Masonry Stuff*/
                             #wrapper
                             {

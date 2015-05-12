@@ -6,13 +6,13 @@ document.addEventListener("deviceready",onDeviceReady,false);
 
 /*~~~~~~~~~~~~~~~~~~~~~~GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 var db;
-var idForSinglePage;
-var scanResult;
-var orderidtoedit;
+var idForSinglePage;//uses primary key to open singlepage
+var scanResult;//the barcode you get from scanning
+var orderidtoedit;//index of cart item. for editorder page.
 
-var RecordCounter = 0;//for rendering catalogue items
-var txparam; // so i can pass this object to callback
-var resulstparam;// so i can pass this object to callback
+var RecordCounter = 0;//for reccursive function  for rendering catalogue items. because for loop won't wait until select statement is successful.
+var txparam; // tx ca not be passed as a parameter to nextRecord() as callback so made this global variable.
+var resulstparam;//results ca not be passed as a parameter to nextRecord()as callback so made this global variable.
 
 
 //if variable is undefined, define.
@@ -41,10 +41,8 @@ if(localStorage.BarcodeInvtyCat == null)
 	localStorage.fulldescription = '';
     localStorage.promoname = '';
     localStorage.promoPrice = '';
-	
 	localStorage.promoenddate = '';
 	localStorage.promostartdate = '';
-	
     localStorage.quantity = '';
     localStorage.subtotal = '';
     
@@ -465,6 +463,17 @@ function queryCartSettings(tx)
 
 function renderCartList(tx,results)
 {
+	/*valid items  data that wil be passed to order all button*/
+	var validSKUArr = [];
+	var validpicturefilenameArr = [];
+	var validbarcodeArr = [];
+	var validfulldescriptionArr = [];
+	var validpromonameArr = [];
+	var validpromoPriceArr = [];
+	var validpromoEndDateArr = [];
+	var validpromoStartDateArr = [];
+	var validQuantityArr = [];
+	var validsubtotalArr = [];
 	
 	
     var orderAllTotal = 0;
@@ -514,19 +523,60 @@ function renderCartList(tx,results)
         
         
          
-        orderid += ind.toString() + ',';
+		 orderid += ind.toString() + ',';
 		 
-		 //var validsku , validpicturefilename ,validpromoname, etc..
 		 
-		//inavlid items will not be totaled.
-		if((getDateTimeNow() >= cartpromoStartDateArr[ind]) && (getDateTimeNow()<= cartpromoEndDateArr[ind]))
-		{
-			orderAllTotal += parseFloat(cartsubtotalArr[ind]);
-		}
+
+
+		
 		 
-         //commas are toNormal because this is for display
-      htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ toNormalComma(cartpromonameArr[ind]) + '</h2><p>'+toNormalComma(cartfulldescriptionArr[ind])+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
-     }
+
+			if((getDateTimeNow() >= cartpromoStartDateArr[ind]) && (getDateTimeNow()<= cartpromoEndDateArr[ind]))
+			{
+				orderAllTotal += parseFloat(cartsubtotalArr[ind]);//only valid items are totaled
+				
+				//commas are toNormal because this is for display
+				htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ toNormalComma(cartpromonameArr[ind]) + '</h2><p>'+toNormalComma(cartfulldescriptionArr[ind])+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
+
+				
+				
+				
+
+				validSKUArr.push(cartSKUArr[ind]);
+				validpicturefilenameArr.push(cartpicturefilenameArr[ind]);
+				validbarcodeArr.push(cartbarcodeArr[ind]);
+				validfulldescriptionArr.push(cartfulldescriptionArr[ind]);
+				validpromonameArr.push(cartpromonameArr[ind]);
+				validpromoPriceArr.push(cartpromoPriceArr[ind]);
+				validpromoEndDateArr.push(cartpromoEndDateArr[ind]);
+				validpromoStartDateArr.push(cartpromoStartDateArr[ind]);
+				validQuantityArr.push(cartQuantityArr[ind]);
+				validsubtotalArr.push(cartsubtotalArr[ind]);
+
+
+
+			}
+			else
+			{
+				htmlstringcart +=  '<div class="row cartItemCont invalid"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ toNormalComma(cartpromonameArr[ind]) + '</h2>'+'<small class="warning"> - This Item is only valid from '+ cartpromoStartDateArr[ind] + ' to ' +  cartpromoEndDateArr[ind] +'</small>'+'<br><p>'+toNormalComma(cartfulldescriptionArr[ind])+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
+
+			}
+
+
+			 
+  		}//end of for loop
+		
+		
+			/*alert(validSKUArr);
+			alert(validpicturefilenameArr);
+			alert(validbarcodeArr);
+			alert(validfulldescriptionArr);
+			alert(validpromonameArr);
+			alert(validpromoPriceArr);
+			alert(validpromoEndDateArr);
+			alert(validpromoStartDateArr);
+			alert(validQuantityArr);
+			alert(validsubtotalArr);*/
         
     }
 
@@ -546,7 +596,7 @@ function renderCartList(tx,results)
 		
 		$('.orderAll-cont').empty();
 		//change to validArrs later
-		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ cartSKUArr.toString() +'" data-picturefilename="'+ cartpicturefilenameArr.toString() +'"  data-promoname="' + cartpromonameArr.toString() +'" data-fulldescription="'+ cartfulldescriptionArr.toString() +'" data-promoPrice="'+ cartpromoPriceArr.toString()+'" data-promoEndDate="'+cartpromoEndDateArr.toString()+'" data-promoStartDate="'+cartpromoStartDateArr.toString()+'" data-barcode="'+cartbarcodeArr.toString()+'" data-quantity= "'+cartQuantityArr.toString() +'"  data-subtotal="'+ cartsubtotalArr.toString()+'">Order All</a>');
+		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'">Order All</a>');
    
 		
 	
@@ -718,11 +768,21 @@ function renderSinglePage(tx,results)
          $('.singleitemsubtotal').append(results.rows.item(0).PromoPrice_InvtyCat);//temporary. value will change on quantity input
 			
 		//STOPPED HERE
-			alert('date now: ' + getDateTimeNow());
-			alert('end date: ' + results.rows.item(0).PromoEndDate_CatMstr);
-			alert('start date: ' + results.rows.item(0).PromoStartDate_CatMstr);
+			//alert('date now: ' + getDateTimeNow());
+			//alert('end date: ' + results.rows.item(0).PromoEndDate_CatMstr);
+			//alert('start date: ' + results.rows.item(0).PromoStartDate_CatMstr);
 			
-		
+		if((getDateTimeNow() >= results.rows.item(0).PromoStartDate_CatMstr)&&(getDateTimeNow() <= results.rows.item(0).PromoEndDate_CatMstr))
+		{
+			$('.InvalidNote').hide();
+			
+		}
+		else
+		{
+			$('.InvalidNote').append('-This item is only valid from ' + results.rows.item(0).PromoStartDate_CatMstr + ' to ' + results.rows.item(0).PromoEndDate_CatMstr +'.<br>');
+
+		}
+			
 			$( '.singleitemtable' ).after( '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoEndDate="'+ results.rows.item(0).PromoEndDate_CatMstr +'" data-promoStartDate="'+ results.rows.item(0).PromoStartDate_CatMstr +'" data-promoname="'+ results.rows.item(0).PromoName_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'">Place Order</a>');
 			
 		
@@ -777,7 +837,7 @@ function renderSinglePage(tx,results)
 function queryItemDetailsByBarcode(tx,scanResult)
 {
   //alert('queryItemDetailsByBarcode started');
-  tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat="' + scanResult +'"', [], renderSinglePage, errorCB); 
+  tx.executeSql('SELECT IMC.*, CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM  ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr WHERE IMC.Barcode_InvtyCat="' + scanResult +'"', [], renderSinglePage, errorCB); 
   //alert('queryItemDetailsByBarcode done');
 }
 
