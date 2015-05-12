@@ -73,7 +73,7 @@ function errorCB(err)
 
 function successCB()
 {
-  alert('successful');
+  //alert('successful');
 
 }
 
@@ -192,6 +192,24 @@ function populateInventoryMasterCatalogue(tx)
 
 }
 
+
+function queryCategories(tx)
+{
+	tx.executeSql('SELECT * FROM CATEGORY_MASTER', [], renderCategoriesToSelectBox);
+}
+
+function renderCategoriesToSelectBox(tx,results)
+{var categoriesString = '';
+	//alert(results.rows.length);
+	for(var ind=0; ind < results.rows.length ; ind++ )
+	{//SysPk_CatgyMstr, CategoryName_CatgyMstr
+		categoriesString += '<option value="'+results.rows.item(ind).SysPk_CatgyMstr+'">'+results.rows.item(ind).CategoryName_CatgyMstr+'</option>';
+	}
+	$('.search-category').append(categoriesString);
+}
+
+
+
 function queryForExpired(tx)
 {
 	var queryexpd = 'SELECT DISTINCT IMC.SysFk_CatMstr_InvtyCat,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC ';
@@ -228,16 +246,11 @@ function deleteExpiredPromos(tx,results)
 	
 	
 	tx.executeSql('DELETE FROM CATALOGUE_MASTER WHERE SysPk_CatMstr IN('+ deleteString +')');
-	tx.executeSql('DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysFk_CatMstr_InvtyCat IN('+ deleteString +')',[],succesTest,errorCB);
+	tx.executeSql('DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysFk_CatMstr_InvtyCat IN('+ deleteString +')',[],null,errorCB);
 	
 }
 
-function succesTest()
-{
-	//alert(results.rows.length);
 
-	//alert('deleted');
-}
 
 function populateCatalogueMaster(tx)
 {
@@ -266,12 +279,12 @@ function populateSettingsTable(tx)
 function populateCategoryMaster(tx)
 {	
 		var sqlInsert5 = "INSERT INTO CATEGORY_MASTER(SysPk_CatgyMstr, CategoryName_CatgyMstr) VALUES(?,?)";
-		tx.executeSql(sqlInsert5,["catgy1","Exclusive"],null,errorCB);
-		tx.executeSql(sqlInsert5,["catgy2","Style"],null,errorCB);
-		tx.executeSql(sqlInsert5,["catgy3","Leisure"],null,errorCB);
-		tx.executeSql(sqlInsert5,["catgy4","Good Home"],null,errorCB);
-		tx.executeSql(sqlInsert5,["catgy5","Tech"],null,errorCB);
-		tx.executeSql(sqlInsert5,["catgy6","Kiddy"],null,errorCB);
+		tx.executeSql(sqlInsert5,["catgy1","Category Name 1"],null,errorCB);
+		tx.executeSql(sqlInsert5,["catgy2","Category Name 2"],null,errorCB);
+		tx.executeSql(sqlInsert5,["catgy3","Category Name 3"],null,errorCB);
+		tx.executeSql(sqlInsert5,["catgy4","Category Name 4"],null,errorCB);
+		tx.executeSql(sqlInsert5,["catgy5","Category Name 5"],null,errorCB);
+		tx.executeSql(sqlInsert5,["catgy6","Category Name 6"],null,errorCB);
 	
 	
 }
@@ -279,7 +292,7 @@ function populateCategoryMaster(tx)
 
 function populateInvtyCatCatgy(tx)
 {
-	alert('test1');
+	//alert('test1');
 	var sqlInsert6 = "INSERT INTO INVENTORY_MASTER_CATALOGUE_CATEGORY(SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy) VALUES(?,?)";
 	tx.executeSql(sqlInsert6,["111111","catgy1"],null,errorCB);
 	tx.executeSql(sqlInsert6,["333333","catgy2"],null,errorCB);
@@ -289,7 +302,7 @@ function populateInvtyCatCatgy(tx)
 	tx.executeSql(sqlInsert6,["777777","catgy6"],null,errorCB);
 
 
-	alert('test2');
+	//alert('test2');
 }
 /*-----------------------------------------------------------------*/
 /*------------------------//Database-----------------------------------*/
@@ -460,7 +473,7 @@ function queryForSearch(tx)
 	var enteredCategory = $('.search-category').val();
 	
 	var enteredBarcodelength = enteredBarcode.length;
-	alert('barcode length: ' + enteredBarcodelength);
+	//alert('barcode length: ' + enteredBarcodelength);
 	if(enteredBarcodelength > 0)
 	{
 	  var barcodeWhereString  = ' IMC.Barcode_InvtyCat = "' + enteredBarcode +'"';
@@ -472,7 +485,7 @@ function queryForSearch(tx)
 	
 	
 	var enteredPromonamelength = enteredPromoname.length;
-	alert('promo name length: ' + enteredPromonamelength);
+	//alert('promo name length: ' + enteredPromonamelength);
 	if(enteredPromonamelength > 0)
 	{
 	  var promonameWhereString  = ' AND  IMC.PromoName_InvtyCat LIKE  "%' + enteredPromoname +'%"';
@@ -483,7 +496,7 @@ function queryForSearch(tx)
 	}
 	
 	var enteredBrandlength = enteredBrand.length;
-	alert('brand length: ' + enteredBrandlength);
+	//alert('brand length: ' + enteredBrandlength);
 	if(enteredBrandlength > 0)
 	{
 	  var brandWhereString  = ' AND  IMC.Brand_InvtyCat LIKE  "%' + enteredBrand +'%"';
@@ -494,7 +507,7 @@ function queryForSearch(tx)
 	}
 		
 	var enteredCategorylength = enteredCategory.length;
-	alert('Category length: ' + enteredCategorylength);
+	//alert('Category length: ' + enteredCategorylength);
 	if(enteredCategorylength > 0)
 	{
 	  var CategoryWhereString  = ' AND  IMCC.SysFk_CatgyMstr_InvtyCatCatgy =  "' + enteredCategory +'"';
@@ -521,24 +534,11 @@ function queryForSearch(tx)
 }
 
 
-function checkForWhereAnd(str)//replace all WHERE AND with WHERE
-{	
-	alert('before if ' + str);
-	alert('index before if ' + str.indexOf("WHERE AND"));
-	if(str.indexOf("WHERE AND") != -1)
-	{
-		str = str.replace("WHERE AND", "WHERE"); 
-		alert('after replace ' + str);
-		checkForWhereAnd(str);
-	}
 
-	
-	return str;
-}
 
 function renderSearchResults(tx,results)
 {
-	alert('RENDERING SEARCH RESULTS');
+	//alert('RENDERING SEARCH RESULTS');
     var htmlstring = "";
     var len = results.rows.length;
     
@@ -1195,4 +1195,19 @@ function getDateTimeNow()
 		(hours<10 ? '0' : '')+hours +':'+(minutes<10 ? '0' : '')+minutes+':'+(seconds<10 ? '0' : '')+seconds;
 
 	return output;
+}
+
+function checkForWhereAnd(str)//replace all WHERE AND with WHERE
+{	
+	//alert('Initial String: ' + str);
+	//alert('Index: ' + str.indexOf("WHERE AND"));
+	if(str.indexOf("WHERE AND") != -1)
+	{
+		str = str.replace("WHERE AND", "WHERE"); 
+		//alert('New String: ' + str);
+		checkForWhereAnd(str);
+	}
+
+	
+	return str;
 }
