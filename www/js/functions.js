@@ -505,6 +505,7 @@ function renderCartList(tx,results)
 
     
     localStorage.orderid = orderid;
+    $('#cartListCont').empty();
     $('#cartListCont').append(htmlstringcart);
   
    
@@ -526,14 +527,15 @@ function renderCartList(tx,results)
     
     $('body').off('click','.orderAll').on('click','.orderAll' , function()
     {
-       alert($(this).attr('data-promoname'));
-       alert($(this).attr('data-picturefilename'));
-       alert($(this).attr('data-fulldescription'));
-       alert($(this).attr('data-promoPrice'));
-       alert($(this).attr('data-barcode'));
-       alert($(this).attr('data-quantity'));
-       alert($(this).attr('data-subtotal'));
-        
+        alert($(this).attr('data-sku'));
+        alert($(this).attr('data-picturefilename'));
+        alert($(this).attr('data-barcode'));
+        alert($(this).attr('data-fulldescription'));
+        alert($(this).attr('data-promoname'));
+        alert($(this).attr('data-promoPrice'));
+        alert($(this).attr('data-quantity'));
+        alert($(this).attr('data-subtotal'));
+
         alert('TOTAL:' + orderAllTotal);
         
         

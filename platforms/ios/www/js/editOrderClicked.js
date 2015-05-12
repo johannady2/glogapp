@@ -63,6 +63,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                 /*remove from cart*/
                 $('.content-cont').off('click', '.removeFromCart').on('click', '.removeFromCart',function()
                 {
+                    cartSKUArr.splice(orderidtoedit,1);
 					cartpicturefilenameArr.splice(orderidtoedit,1);
 					cartbarcodeArr.splice(orderidtoedit,1);
 					cartfulldescriptionArr.splice(orderidtoedit,1);
@@ -73,6 +74,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                     
                     if(cartbarcodeArr.length > 0)
                     {
+						var newarrstring_sku = cartpicturefilenameArr.toString()+",";
 						var newarrstring_picturefilename = cartpicturefilenameArr.toString()+",";
 						var newarrstring_cartbarcode = cartbarcodeArr.toString()+",";
 						var newarrstring_fulldescription = cartfulldescriptionArr.toString()+",";
@@ -83,7 +85,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                     } 
                     else
                     {
-                        
+                        var newarrstring_sku = '';
                         var newarrstring_picturefilename = '';
                         var newarrstring_cartbarcode = '';
 						var newarrstring_fulldescription = '';
@@ -93,7 +95,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                         var newarrstring_cartsubtotal = '';
                     }
                
-                    
+                    localStorage.sku = newarrstring_sku;
                     localStorage.picturefilename = newarrstring_picturefilename;
 					localStorage.BarcodeInvtyCat = newarrstring_cartbarcode;
                     localStorage.fulldescription = newarrstring_fulldescription;
