@@ -10,6 +10,9 @@ var idForSinglePage;//uses primary key to open singlepage
 var scanResult;//the barcode you get from scanning
 var orderidtoedit;//index of cart item. for editorder page.
 
+var globalorderFromSwitch;//switch for catalogue or search because they use the same query
+var globalorderedFrom;//when single page is opened.
+
 var RecordCounter = 0;//for reccursive function  for rendering catalogue items. because for loop won't wait until select statement is successful.
 var txparam; // tx ca not be passed as a parameter to nextRecord() as callback so made this global variable.
 var resulstparam;//results ca not be passed as a parameter to nextRecord()as callback so made this global variable.
@@ -31,6 +34,8 @@ if(localStorage.BarcodeInvtyCat == null)
 	var cartpromoStartDateArr;
     var cartQuantityArr;
     var cartsubtotalArr;
+	var cartorderedFromArr;//to know whether item was ordered from scan or catalogue or search
+
     
     /*initialized on placeOrder click*/
     //NOTE: x,y,z,
@@ -45,7 +50,8 @@ if(localStorage.BarcodeInvtyCat == null)
 	localStorage.promostartdate = '';
     localStorage.quantity = '';
     localStorage.subtotal = '';
-    
+    localStorage.orderedfrom ='';
+	
     /*initialized on renderCart*/
     localStorage.orderid='';
 }
@@ -404,6 +410,9 @@ function queryForSearch(tx)
     var enteredBarcode = $('#searchForm').children('[name="search"]').val();
     
     tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat = "' + enteredBarcode +'"' , [], renderSearchResults, errorCB);
+
+	globalorderFromSwitch = 1;
+	
 }
 
 function renderSearchResults(tx,results)
@@ -474,6 +483,7 @@ function renderCartList(tx,results)
 	var validpromoStartDateArr = [];
 	var validQuantityArr = [];
 	var validsubtotalArr = [];
+	var validorderedFromArr = [];
 	
 	
     var orderAllTotal = 0;
@@ -487,6 +497,7 @@ function renderCartList(tx,results)
 	var promonameForArr = localStorage.promoname.replace(/,\s*$/,'');
 	var quantityForArr = localStorage.quantity.replace(/,\s*$/,'');
 	var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
+	var orderedFromArr = localStorage.orderedfrom.replace(/,\s*$/,'');
 	
     
 	
@@ -501,6 +512,7 @@ function renderCartList(tx,results)
 	cartpromonameArr =  promonameForArr.split(',');
 	cartQuantityArr =  quantityForArr.split(',');
 	cartsubtotalArr = subtotalForArr.split(',');
+	cartorderedFromArr = orderedFromArr.split(',');
 	
 	
 		
@@ -520,16 +532,8 @@ function renderCartList(tx,results)
      for(var ind=0; ind < cartLength; ind++)
      {
        
-        
-        
-         
 		 orderid += ind.toString() + ',';
-		 
-		 
 
-
-		
-		 
 
 			if((getDateTimeNow() >= cartpromoStartDateArr[ind]) && (getDateTimeNow()<= cartpromoEndDateArr[ind]))
 			{
@@ -552,6 +556,7 @@ function renderCartList(tx,results)
 				validpromoStartDateArr.push(cartpromoStartDateArr[ind]);
 				validQuantityArr.push(cartQuantityArr[ind]);
 				validsubtotalArr.push(cartsubtotalArr[ind]);
+				validorderedFromArr.push(cartorderedFromArr[ind]);
 
 
 
@@ -596,7 +601,7 @@ function renderCartList(tx,results)
 		
 		$('.orderAll-cont').empty();
 		//change to validArrs later
-		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'">Order All</a>');
+		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'" data-orderedfrom="'+validorderedFromArr.toString()+'">Order All</a>');
    
 		
 	
@@ -622,6 +627,7 @@ function renderCartList(tx,results)
         alert($(this).attr('data-promoStartDate'));
         alert($(this).attr('data-quantity'));
         alert($(this).attr('data-subtotal'));
+        alert('ordered from: ' + $(this).attr('data-orderedfrom'));
 
         alert('TOTAL:' + orderAllTotal);
         
@@ -748,6 +754,18 @@ function queryItemDetails(tx,idForSinglePage)
 {
     
   tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE IMC.RowNumber_InvtyCat=' + idForSinglePage , [], renderSinglePage, errorCB);  
+
+	if(globalorderFromSwitch == 1)
+	{
+		globalorderedFrom = 'search';
+	}
+	else
+	{
+		globalorderedFrom = 'catalogue';
+	}
+	
+	globalorderFromSwitch = 0;//set back to zero for next time.
+	
 }
 
 function renderSinglePage(tx,results)
@@ -783,7 +801,7 @@ function renderSinglePage(tx,results)
 
 		}
 			
-			$( '.singleitemtable' ).after( '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoEndDate="'+ results.rows.item(0).PromoEndDate_CatMstr +'" data-promoStartDate="'+ results.rows.item(0).PromoStartDate_CatMstr +'" data-promoname="'+ results.rows.item(0).PromoName_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'">Place Order</a>');
+			$( '.singleitemtable' ).after( '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoEndDate="'+ results.rows.item(0).PromoEndDate_CatMstr +'" data-promoStartDate="'+ results.rows.item(0).PromoStartDate_CatMstr +'" data-promoname="'+ results.rows.item(0).PromoName_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-orderedfrom="'+ globalorderedFrom +'">Place Order</a>');
 			
 		
         });
@@ -839,6 +857,7 @@ function queryItemDetailsByBarcode(tx,scanResult)
   //alert('queryItemDetailsByBarcode started');
   tx.executeSql('SELECT IMC.*, CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM  ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr WHERE IMC.Barcode_InvtyCat="' + scanResult +'"', [], renderSinglePage, errorCB); 
   //alert('queryItemDetailsByBarcode done');
+	globalorderedFrom = 'scan';
 }
 
 //renderSinglePage already created for viewItemClicked.js
@@ -942,7 +961,8 @@ $(document).on('click','.placeOrder', function()
 	var promoStartDate = $(this).attr('data-promoStartDate'); 
     var quantity = $(this).attr('data-quantity');
     var subtotal = $(this).attr('data-subtotal');
-    
+    var orderedFrom = $(this).attr('data-orderedfrom');
+	
     //this prevents commas from promonames from being interpreted as , when localstorage string is turned into an array
     SKU = SKU.replace(',','(xxxGLogCommaxxx)');
     picturefilename = picturefilename.replace(',','(xxxGLogCommaxxx)');
@@ -954,6 +974,7 @@ $(document).on('click','.placeOrder', function()
 	promoStartDate = promoStartDate.replace(',','(xxxGLogCommaxxx)');
     quantity = quantity.replace(',','(xxxGLogCommaxxx)');
     subtotal = subtotal.replace(',','(xxxGLogCommaxxx)');
+	orderedFrom = orderedFrom.replace(',','(xxxGlogCommaxxx)');
 
     localStorage.sku += SKU.toString()+',';
 	localStorage.picturefilename += picturefilename.toString()+',';
@@ -965,6 +986,7 @@ $(document).on('click','.placeOrder', function()
 	localStorage.promostartdate += promoStartDate.toString()+',';
     localStorage.quantity += quantity.toString()+',';
     localStorage.subtotal += subtotal.toString()+',';
+	localStorage.orderedfrom += orderedFrom.toString()+',';
     
     alert('item added to cart');
     
