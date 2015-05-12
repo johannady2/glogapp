@@ -411,7 +411,7 @@ body
 }
 
 
-.viewItem , .placeOrder , .saveChanges , .removeFromCart
+.viewItem , .placeOrder , .saveChanges , .removeFromCart , .SearchBtn
 {
     width:100%;
     min-height:60px;
@@ -431,7 +431,8 @@ body
 .placeOrder:visited,
 .saveChanges:visited,
 .removeFromCart:visited,
-.orderAll:visited
+.orderAll:visited,
+.SearchBtn:visited
 {
     color:#ffffff;
 }

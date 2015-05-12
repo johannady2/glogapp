@@ -1,19 +1,18 @@
 <div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="col-md-5 col-sm-5 col-xs-12">
+		<h1>Filtered Search</h1>
         <form method="post" id="searchForm">
-            <label>Search by barcode: &nbsp; </label></label><input type="text" name="search">
-            <input type="submit" value="search" class="btn btn-success":>
+            <label>Barcode: &nbsp; </label><input type="text" name="search-barcode"><br>
+            <label>Product Name: &nbsp; </label><input type="text" name="search-promoname">
+			<br>
+            <input type="submit" value="search" class="btn btn-success SearchBtn">
         </form>
-    
-        <br>
-    
-            <!--<p>Last Searched Item was: <div class="lastsearched"></div></p>-->
+    </div>
 
-        <br>
-
-        <div class="row" id="itemsList">
+	<div class="col-md-7 col-sm-7 col-xs-12">
+		
+		 <div class="row" id="itemsList">
             
         </div>
-
-    </div>
+	</div>
 </div>

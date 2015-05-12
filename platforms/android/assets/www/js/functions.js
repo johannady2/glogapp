@@ -450,9 +450,36 @@ function renderCatalogueItems(tx2,results)
 function queryForSearch(tx)
 {
    
-    var enteredBarcode = $('#searchForm').children('[name="search"]').val();
-    
-    tx.executeSql('SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE Barcode_InvtyCat = "' + enteredBarcode +'"' , [], renderSearchResults, errorCB);
+    var enteredBarcode = $('#searchForm').children('[name="search-barcode"]').val();
+	var enteredPromoname = $('#searchForm').children('[name="search-promoname"]').val();
+	
+	var enteredBarcodelength = enteredBarcode.length;
+	alert('barcode length: ' + enteredBarcodelength);
+	if(enteredBarcodelength > 0)
+	{
+	  var barcodeWhereString  = 'WHERE	Barcode_InvtyCat = "' + enteredBarcode +'" ';
+	}
+	else
+	{
+		var barcodeWhereString = '';
+	}
+	
+	
+	var enteredPromonamelength = enteredPromoname.length;
+	alert('promo name length: ' + enteredPromonamelength);
+	if(enteredPromonamelength > 0)
+	{
+	  var promonameWhereString  = 'AND PromoName_InvtyCat = "' + enteredPromoname +'" ';
+	}
+	else
+	{
+		var promonameWhereString = '';
+	}
+	
+	
+	var finalqueryString = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE '+ barcodeWhereString + promonameWhereString;
+	alert(finalqueryString);
+    tx.executeSql(finalqueryString, [], renderSearchResults, errorCB);
 
 	globalorderFromSwitch = 1;
 	
@@ -487,12 +514,12 @@ function startSearch()
             db.transaction(queryForSearch, errorCB);
         }
         
-        var searchedValue = $(this).children('[name="search"]').val();
+        //var searchedValue = $(this).children('[name="search-barcode"]').val();
 
       //  localStorage.searchedValueStorage = searchedValue;
        // $('.lastsearched').empty().append(localStorage.searchedValueStorage);
 
-        return false;
+        return false;//prevents refresh on submit
     });
         
         
