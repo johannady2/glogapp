@@ -63,12 +63,14 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                 /*remove from cart*/
                 $('.content-cont').off('click', '.removeFromCart').on('click', '.removeFromCart',function()
                 {
-                    cartSKUArr.splice(orderidtoedit,1);
+                    cartSKUArr.splice(orderidtoedit,1);//remove index of array
 					cartpicturefilenameArr.splice(orderidtoedit,1);
 					cartbarcodeArr.splice(orderidtoedit,1);
 					cartfulldescriptionArr.splice(orderidtoedit,1);
                     cartpromonameArr.splice(orderidtoedit,1);
                     cartpromoPriceArr.splice(orderidtoedit,1);
+					cartpromoEndDateArr.splice(orderidtoedit,1);
+					cartpromoStartDateArr.splice(orderidtoedit,1);
                     cartQuantityArr.splice(orderidtoedit,1);
                     cartsubtotalArr.splice(orderidtoedit,1);
                     
@@ -80,10 +82,12 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
 						var newarrstring_fulldescription = cartfulldescriptionArr.toString()+",";
                         var newarrstring_promoname = cartpromonameArr.toString()+",";
                         var newarrstring_promoPrice = cartpromoPriceArr.toString()+",";
+						var newarrstring_promoEndDate = cartpromoEndDateArr.toString()+",";
+						var newarrstring_promoStartDate = cartpromoStartDateArr.toString()+",";
                         var newarrstring_cartQuantity = cartQuantityArr.toString()+",";
                         var newarrstring_cartsubtotal = cartsubtotalArr.toString()+",";
                     } 
-                    else
+                    else//if last item, do not put comma at the end.
                     {
                         var newarrstring_sku = '';
                         var newarrstring_picturefilename = '';
@@ -91,6 +95,8 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
 						var newarrstring_fulldescription = '';
 						var newarrstring_promoname = '';
                         var newarrstring_promoPrice ='';
+						var newarrstring_promoEndDate = '';
+						var newarrstring_promoStartDate = '';
                         var newarrstring_cartQuantity = '';
                         var newarrstring_cartsubtotal = '';
                     }
@@ -101,6 +107,8 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                     localStorage.fulldescription = newarrstring_fulldescription;
 					localStorage.promoname = newarrstring_promoname;
                     localStorage.promoPrice = newarrstring_promoPrice;
+					localStorage.promoenddate = newarrstring_promoEndDate;
+					localStorage.promostartdate = newarrstring_promoStartDate;
                     localStorage.quantity = newarrstring_cartQuantity;
                     localStorage.subtotal = newarrstring_cartsubtotal;
                     
