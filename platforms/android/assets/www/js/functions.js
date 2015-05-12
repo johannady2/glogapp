@@ -21,6 +21,7 @@ if(localStorage.BarcodeInvtyCat == null)
     
     /*FOR LOCALSTORAGE TO ARRAY*/
     //NOTE: x,y,z
+    var cartSKUArr;
 	var cartpicturefilenameArr;
     var cartbarcodeArr;
     var cartfulldescriptionArr;
@@ -32,6 +33,7 @@ if(localStorage.BarcodeInvtyCat == null)
     /*initialized on placeOrder click*/
     //NOTE: x,y,z,
     //always add "," at the end of array when storing as localStorage
+    localStorage.sku = '';
 	localStorage.picturefilename = '';
 	localStorage.BarcodeInvtyCat = '';
 	localStorage.fulldescription = '';
@@ -129,34 +131,34 @@ function populateInventoryMasterCatalogue(tx)
 	//alert('populate Inventory Master Catalogue');
 
    
-    var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?)";
+    var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?)";
    
    
-    tx.executeSql(sqlInsert,["111111","4","img/item1.jpg","101191","Sample,f Strings with commas." ,"Yotsuba , Revoltech",63.00],null,errorCB);
-    tx.executeSql(sqlInsert,["333333","4","img/item3.jpg","8999999003395","with free candy","Pond\'s Pure White",14.00],null,errorCB);
-    tx.executeSql(sqlInsert,["444444","4","img/item4.gif","4807788058850","with freechocolate","Iron Supplement",99.99],null,errorCB);
-    tx.executeSql(sqlInsert,["555555","1","img/item5.jpg","12345","free Soy Sauce","Used Monggol Pencil",31.99],null,errorCB);
-    tx.executeSql(sqlInsert,["666666","1","img/item6.jpg","795144075167","BUY 1 TAKE 1","Strawberry Kiss Intimate Secret",15.00],null,errorCB);
-	tx.executeSql(sqlInsert,["777777","1","img/item7.jpg","4005401548218","with free baby poweder","Faber Castell TextLiner 48",232.25],null,errorCB);
+    tx.executeSql(sqlInsert,["111111","4","sku111111","img/item1.jpg","101191","Sample,f Strings with commas." ,"Yotsuba , Revoltech",63.00],null,errorCB);
+    tx.executeSql(sqlInsert,["333333","4","sku333333","img/item3.jpg","8999999003395","with free candy","Pond\'s Pure White",14.00],null,errorCB);
+    tx.executeSql(sqlInsert,["444444","4","sku444444","img/item4.gif","4807788058850","with freechocolate","Iron Supplement",99.99],null,errorCB);
+    tx.executeSql(sqlInsert,["555555","1","sku555555","img/item5.jpg","12345","free Soy Sauce","Used Monggol Pencil",31.99],null,errorCB);
+    tx.executeSql(sqlInsert,["666666","1","sku666666","img/item6.jpg","795144075167","BUY 1 TAKE 1","Strawberry Kiss Intimate Secret",15.00],null,errorCB);
+	tx.executeSql(sqlInsert,["777777","1","sku777777","img/item7.jpg","4005401548218","with free baby poweder","Faber Castell TextLiner 48",232.25],null,errorCB);
   
 	
 	
-	tx.executeSql(sqlInsert,["222222","3","img/item2.gif","4801010127215","with free milk","GIF sample",63.00],null,errorCB);
-	tx.executeSql(sqlInsert,["888888","3","img/item8.jpg","123","Free Cookies","Pocky Strawberry",232.00],null,errorCB);
-    tx.executeSql(sqlInsert,["999999","3","img/item9.jpg","11223344","Mentos","Pocky Set",232.00],null,errorCB);
+	tx.executeSql(sqlInsert,["222222","3","sku222222","img/item2.gif","4801010127215","with free milk","GIF sample",63.00],null,errorCB);
+	tx.executeSql(sqlInsert,["888888","3","sku888888","img/item8.jpg","123","Free Cookies","Pocky Strawberry",232.00],null,errorCB);
+    tx.executeSql(sqlInsert,["999999","3","sku999999","img/item9.jpg","11223344","Mentos","Pocky Set",232.00],null,errorCB);
 
-    tx.executeSql(sqlInsert,["11111111","2","img/Item10.jpg","987654321098","pack of 8","40L notebooks",50.00],null,errorCB);
-    tx.executeSql(sqlInsert,["22222222","2","img/Item11.jpg","036000291452","pack of 8","Jockey Lowrise Brief",325.00],null,errorCB);
-    tx.executeSql(sqlInsert,["33333333","2","img/Item12.jpg","016000660601","(P799.75 each) save 10%","Trolley Bags",799.75],null,errorCB);
-    tx.executeSql(sqlInsert,["44444444","2","img/Item13.jpg","5010029020519","was P399","Trolley Bags",299.00],null,errorCB);
-    tx.executeSql(sqlInsert,["55555555","2","img/Item14.jpg","*9123*39","(P198.00 each)","TSport Backpacks",198.00],null,errorCB);
-    tx.executeSql(sqlInsert,["66666666","2","img/Item15.jpg","50184385","save P10","Shining East Value Pack",99.00],null,errorCB);
-    tx.executeSql(sqlInsert,["77777777","2","img/Item16.jpg","5702012000737","Buy 1 Take 1","Darlington",89.75],null,errorCB);
-    tx.executeSql(sqlInsert,["88888888","2","img/Item17.jpg","850785004003","was P1899","Sanyang Clerical Chair",1519.20],null,errorCB);
-    tx.executeSql(sqlInsert,["99999999","2","img/Item18.jpg","741360988644","was P1595","Sanyang Computer Table",1276.00],null,errorCB);
-    tx.executeSql(sqlInsert,["1111111111","2","img/Item19.jpg","123456789012","was P1695","Sanyang Office Table",1320.00],null,errorCB);
-    tx.executeSql(sqlInsert,["2222222222","2","img/Item20.jpg","042000062008","was P3750","Sanyang Study Table",3000.00],null,errorCB);
-    tx.executeSql(sqlInsert,["3333333333","2","img/Item21.jpg","012345678905","pack of 10","80L notebooks",100.00],queryForExpired,errorCB);
+    tx.executeSql(sqlInsert,["11111111","2","sku11111111","img/Item10.jpg","987654321098","pack of 8","40L notebooks",50.00],null,errorCB);
+    tx.executeSql(sqlInsert,["22222222","2","sku22222222","img/Item11.jpg","036000291452","pack of 8","Jockey Lowrise Brief",325.00],null,errorCB);
+    tx.executeSql(sqlInsert,["33333333","2","sku33333333","img/Item12.jpg","016000660601","(P799.75 each) save 10%","Trolley Bags",799.75],null,errorCB);
+    tx.executeSql(sqlInsert,["44444444","2","sku44444444","img/Item13.jpg","5010029020519","was P399","Trolley Bags",299.00],null,errorCB);
+    tx.executeSql(sqlInsert,["55555555","2","sku55555555","img/Item14.jpg","*9123*39","(P198.00 each)","TSport Backpacks",198.00],null,errorCB);
+    tx.executeSql(sqlInsert,["66666666","2","sku66666666","img/Item15.jpg","50184385","save P10","Shining East Value Pack",99.00],null,errorCB);
+    tx.executeSql(sqlInsert,["77777777","2","sku77777777","img/Item16.jpg","5702012000737","Buy 1 Take 1","Darlington",89.75],null,errorCB);
+    tx.executeSql(sqlInsert,["88888888","2","sku88888888","img/Item17.jpg","850785004003","was P1899","Sanyang Clerical Chair",1519.20],null,errorCB);
+    tx.executeSql(sqlInsert,["99999999","2","sku99999999","img/Item18.jpg","741360988644","was P1595","Sanyang Computer Table",1276.00],null,errorCB);
+    tx.executeSql(sqlInsert,["1111111111","2","sku1111111111","img/Item19.jpg","123456789012","was P1695","Sanyang Office Table",1320.00],null,errorCB);
+    tx.executeSql(sqlInsert,["2222222222","2","sku2222222222","img/Item20.jpg","042000062008","was P3750","Sanyang Study Table",3000.00],null,errorCB);
+    tx.executeSql(sqlInsert,["3333333333","2","sku3333333333","img/Item21.jpg","012345678905","pack of 10","80L notebooks",100.00],queryForExpired,errorCB);
    
 
 	//var deleteExpiredSql = "DELETE FROM INVENTORY_MASTER";
@@ -200,9 +202,7 @@ function deleteExpiredPromos(tx,results)
 	
 	
 	tx.executeSql('DELETE FROM CATALOGUE_MASTER WHERE SysPk_CatMstr IN('+ deleteString +')');
-	
-	var querydelexpd= 'DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysFk_CatMstr_InvtyCat IN('+ deleteString +')';
-	tx.executeSql(querydelexpd,[],succesTest,errorCB);
+	tx.executeSql('DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysFk_CatMstr_InvtyCat IN('+ deleteString +')',[],succesTest,errorCB);
 	
 }
 
@@ -217,10 +217,10 @@ function populateCatalogueMaster(tx)
 {
     var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,SysSeq_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) VALUES(?,?,?,?,?)";
     
-    tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2015-05-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
-    tx.executeSql(sqlInsert2,["2",1,"Back To School Catalogue","2015-06-29 24:59:59","2015-05-29 00:00:00"],null,errorCB);
-	tx.executeSql(sqlInsert2,["3",3,"Expired Catalogue","2014-05-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
-	tx.executeSql(sqlInsert2,["4",4,"NOOOTOOSHOO Catalogue","2015-05-11 24:59:59","2015-05-11 00:00:00"],null,errorCB);
+    tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2015-05-12 24:59:59","2015-05-11 00:00:00"],null,errorCB);
+    tx.executeSql(sqlInsert2,["2",1,"Back To School Catalogue","2015-05-29 24:59:59","2015-05-29 00:00:00"],null,errorCB);
+	tx.executeSql(sqlInsert2,["3",3,"Expired Catalogue","2014-05-13 24:59:59","2015-05-11 00:00:00"],null,errorCB);
+	tx.executeSql(sqlInsert2,["4",4,"NOOOTOOSHOO Catalogue","2015-05-14 24:59:59","2015-05-11 00:00:00"],null,errorCB);
 }
 
 
@@ -459,7 +459,7 @@ function queryCartSettings(tx)
 function renderCartList(tx,results)
 {
     var orderAllTotal = 0;
-    
+    var SKUForArr = localStorage.sku.replace(/,\s*$/,'');
 	var picturefilenameForArr = localStorage.picturefilename.replace(/,\s*$/,'');
 	var BarcodeInvtyCatForArr = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
 	var fulldescriptionForArr = localStorage.fulldescription.replace(/,\s*$/,'');
@@ -468,6 +468,7 @@ function renderCartList(tx,results)
 	var quantityForArr = localStorage.quantity.replace(/,\s*$/,'');
 	var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
     
+    cartSKUArr = SKUForArr.split(',');
 	cartpicturefilenameArr =  picturefilenameForArr.split(',');
 	cartbarcodeArr =  BarcodeInvtyCatForArr.split(',');
 	cartfulldescriptionArr =  fulldescriptionForArr.split(',');
@@ -514,7 +515,7 @@ function renderCartList(tx,results)
     if((orderAllTotal >= results.rows.item(0).MinimumPrice_Settings))
     {
 		$('.orderAll-cont').empty();
-        $('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-promoname="' + cartpromonameArr.toString() +'" data-picturefilename="'+ cartpicturefilenameArr.toString() +'" data-fulldescription="'+ cartfulldescriptionArr.toString() +'" data-promoPrice="'+ cartpromoPriceArr.toString()+'" data-barcode="'+cartbarcodeArr.toString()+'" data-quantity= "'+cartQuantityArr.toString() +'"  data-subtotal="'+ cartsubtotalArr.toString()+'">Order All</a>');
+        $('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ cartSKUArr.toString() +'" data-picturefilename="'+ cartpicturefilenameArr.toString() +'"  data-promoname="' + cartpromonameArr.toString() +'" data-fulldescription="'+ cartfulldescriptionArr.toString() +'" data-promoPrice="'+ cartpromoPriceArr.toString()+'" data-barcode="'+cartbarcodeArr.toString()+'" data-quantity= "'+cartQuantityArr.toString() +'"  data-subtotal="'+ cartsubtotalArr.toString()+'">Order All</a>');
     }
     else
     {
@@ -675,7 +676,7 @@ function renderSinglePage(tx,results)
          $('.singleitemfulldescription').append(results.rows.item(0).FullDescription_InvtyCat);
          $('.singleitempromoprice').append(results.rows.item(0).PromoPrice_InvtyCat);
          $('.singleitemsubtotal').append(results.rows.item(0).PromoPrice_InvtyCat);//temporary. value will change on quantity input
-        $( '.singleitemtable' ).after( '<a href="#" class="btn btn-success btn-large placeOrder" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoname="'+ results.rows.item(0).PromoName_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'">Place Order</a>');
+        $( '.singleitemtable' ).after( '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoname="'+ results.rows.item(0).PromoName_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'">Place Order</a>');
         
         });
        
@@ -823,6 +824,7 @@ function testinput(re, str)
 
 $(document).on('click','.placeOrder', function()
 {
+    var SKU = $(this).attr('data-sku');
     var picturefilename = $(this).attr('data-picturefilename');
 	var BarcodeInvtyCat = $(this).attr('data-BarcodeInvtyCat');
 	var fulldescription = $(this).attr('data-fulldescription');
@@ -832,14 +834,16 @@ $(document).on('click','.placeOrder', function()
     var subtotal = $(this).attr('data-subtotal');
     
     //this prevents commas from promonames from being interpreted as , when localstorage string is turned into an array
-    promoname = promoname.replace(',','(xxxGLogCommaxxx)');
-	BarcodeInvtyCat = BarcodeInvtyCat.replace(',','(xxxGLogCommaxxx)');
-	fulldescription = fulldescription.replace(',','(xxxGLogCommaxxx)');
-	promoPrice = promoPrice.replace(',','(xxxGLogCommaxxx)');
+    SKU = SKU.replace(',','(xxxGLogCommaxxx)');
     picturefilename = picturefilename.replace(',','(xxxGLogCommaxxx)');
+    BarcodeInvtyCat = BarcodeInvtyCat.replace(',','(xxxGLogCommaxxx)');
+    fulldescription = fulldescription.replace(',','(xxxGLogCommaxxx)');
+    promoname = promoname.replace(',','(xxxGLogCommaxxx)');
+	promoPrice = promoPrice.replace(',','(xxxGLogCommaxxx)');
     quantity = quantity.replace(',','(xxxGLogCommaxxx)');
     subtotal = subtotal.replace(',','(xxxGLogCommaxxx)');
 
+    localStorage.sku += SKU.toString()+',';
 	localStorage.picturefilename += picturefilename.toString()+',';
 	localStorage.BarcodeInvtyCat += BarcodeInvtyCat.toString()+',';
     localStorage.fulldescription += fulldescription.toString()+',';
