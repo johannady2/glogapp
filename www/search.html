@@ -4,16 +4,19 @@
         <form method="post" id="searchForm">
 			<table class="searchtable">
 				<tr>
-					<td><label>Barcode: &nbsp; </label></td><td><input type="text" name="search-barcode"></td>
+					<td><label>Barcode: &nbsp; </label></td><td><input type="text" name="search-barcode" required="required"></td>
 				</tr>
 				<tr>
-					<td><label>Product Name: &nbsp; </label></td><td><input type="text" name="search-promoname"></td>
+					<td><label>Product Name: &nbsp; </label></td><td><input type="text" name="search-promoname" required="required"></td>
+				</tr>
+                <tr>
+					<td><label>Description: &nbsp; </label></td><td><input type="text" name="search-fulldescription" required="required"></td>
 				</tr>
 				<tr>
-					<td><label>Brand: &nbsp; </label></td><td><input type="text" name="search-brand"></td>
+					<td><label>Brand: &nbsp; </label></td><td><input type="text" name="search-brand" required="required"></td>
 				</tr>
 				<tr>
-					<td><label>Category:</label></td><td><select class="search-category"><option value="">none</option><option value="catgy1">test</option></select></td>
+					<td><label>Category:</label></td><td><select class="search-category" required="required"><option value="">none</option></select></td>
 				</tr>
 			</table>
             <input type="submit" value="search" class="btn btn-success SearchBtn">

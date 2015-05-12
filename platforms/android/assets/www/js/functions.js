@@ -256,7 +256,7 @@ function populateCatalogueMaster(tx)
 {
     var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,SysSeq_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) VALUES(?,?,?,?,?)";
     
-    tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2015-05-12 24:59:59","2015-05-11 00:00:00"],null,errorCB);
+    tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2015-05-15 24:59:59","2015-05-11 00:00:00"],null,errorCB);
     tx.executeSql(sqlInsert2,["2",1,"Back To School Catalogue","2015-05-29 24:59:59","2015-05-29 00:00:00"],null,errorCB);
 	tx.executeSql(sqlInsert2,["3",3,"Expired Catalogue","2014-05-13 24:59:59","2015-05-11 00:00:00"],null,errorCB);
 	tx.executeSql(sqlInsert2,["4",4,"NOOOTOOSHOO Catalogue","2015-05-14 24:59:59","2015-05-11 00:00:00"],null,errorCB);
@@ -469,6 +469,7 @@ function queryForSearch(tx)
 	
     var enteredBarcode = $('input[name="search-barcode"]').val();
 	var enteredPromoname = $('input[name="search-promoname"]').val();
+    var enteredfulldescription = $('input[name="search-fulldescription"]').val();
 	var enteredBrand = $('input[name="search-brand"]').val();
 	var enteredCategory = $('.search-category').val();
 	
@@ -494,6 +495,18 @@ function queryForSearch(tx)
 	{
 		var promonameWhereString = '';
 	}
+    
+    var enteredfulldescriptionlength = enteredfulldescription.length;
+	//alert('promo name length: ' + enteredfulldescriptionlength);
+	if(enteredfulldescriptionlength > 0)
+	{
+	  var fulldescriptionWhereString  = ' AND  IMC.FullDescription_InvtyCat LIKE  "%' + enteredfulldescription +'%"';
+	}
+	else
+	{
+		var fulldescriptionWhereString = '';
+	}
+    
 	
 	var enteredBrandlength = enteredBrand.length;
 	//alert('brand length: ' + enteredBrandlength);
@@ -520,13 +533,19 @@ function queryForSearch(tx)
 	
 	
 	
-	var finalqueryString = 'SELECT IMC.* , IMCC.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCC ON IMC.SysPk_InvtyCat=IMCC.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat';
+	var finalqueryString = 'SELECT IMC.* , IMCC.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCC ON IMC.SysPk_InvtyCat=IMCC.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat';
 
 	
 	
 	
 	finalqueryString = checkForWhereAnd(finalqueryString);
+    
+    if(enteredBarcodelength <= 0 && enteredPromonamelength <= 0 && enteredfulldescriptionlength <= 0 && enteredBrandlength <= 0 && enteredCategorylength <= 0)
+    {
+        finalqueryString = finalqueryString.replace("WHERE", ""); 
+    }
 
+    alert(finalqueryString);
 	tx.executeSql(finalqueryString, [], renderSearchResults, errorCB);
 
 	globalorderFromSwitch = 1;
