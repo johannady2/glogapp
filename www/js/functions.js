@@ -465,7 +465,7 @@ function queryCartSettings(tx)
 
 function renderCartList(tx,results)
 {
-	alert('settings selected successfully');
+	
 	
     var orderAllTotal = 0;
     var SKUForArr = localStorage.sku.replace(/,\s*$/,'');
@@ -479,7 +479,7 @@ function renderCartList(tx,results)
 	var quantityForArr = localStorage.quantity.replace(/,\s*$/,'');
 	var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
 	
-    alert('localStorage retrieved ' + promoEndDateForArr + ' - '+ promoStartDateForArr);
+    
 	
 	
     cartSKUArr = SKUForArr.split(',');
@@ -494,7 +494,7 @@ function renderCartList(tx,results)
 	cartsubtotalArr = subtotalForArr.split(',');
 	
 	
-	 alert('localStorage converted to array ' + cartpromoEndDateArr + ' - '+ cartpromoStartDateArr);
+		
     
     var cartLength = cartbarcodeArr.length;
     var htmlstringcart = '';
@@ -510,12 +510,20 @@ function renderCartList(tx,results)
         
      for(var ind=0; ind < cartLength; ind++)
      {
-        orderAllTotal += parseFloat(cartsubtotalArr[ind]);
+       
         
         
          
         orderid += ind.toString() + ',';
-
+		 
+		 //var validsku , validpicturefilename ,validpromoname, etc..
+		 
+		//inavlid items will not be totaled.
+		if((getDateTimeNow() >= cartpromoStartDateArr[ind]) && (getDateTimeNow()<= cartpromoEndDateArr[ind]))
+		{
+			orderAllTotal += parseFloat(cartsubtotalArr[ind]);
+		}
+		 
          //commas are toNormal because this is for display
       htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ toNormalComma(cartpromonameArr[ind]) + '</h2><p>'+toNormalComma(cartfulldescriptionArr[ind])+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
      }
@@ -527,17 +535,20 @@ function renderCartList(tx,results)
     $('#cartListCont').empty();
     $('#cartListCont').append(htmlstringcart);
   
-    alert('htmlstringcart appended');
+    
     
 
 
     //commas are not using toNormal so that string won't be interpreted as different array indexes.
     if((orderAllTotal >= results.rows.item(0).MinimumPrice_Settings))
     {
+
+		
 		$('.orderAll-cont').empty();
-      $('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ cartSKUArr.toString() +'" data-picturefilename="'+ cartpicturefilenameArr.toString() +'"  data-promoname="' + cartpromonameArr.toString() +'" data-fulldescription="'+ cartfulldescriptionArr.toString() +'" data-promoPrice="'+ cartpromoPriceArr.toString()+'" data-promoEndDate="'+cartpromoEndDateArr.toString()+'" data-promoStartDate="'+cartpromoStartDateArr.toString()+'" data-barcode="'+cartbarcodeArr.toString()+'" data-quantity= "'+cartQuantityArr.toString() +'"  data-subtotal="'+ cartsubtotalArr.toString()+'">Order All</a>');
+		//change to validArrs later
+		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ cartSKUArr.toString() +'" data-picturefilename="'+ cartpicturefilenameArr.toString() +'"  data-promoname="' + cartpromonameArr.toString() +'" data-fulldescription="'+ cartfulldescriptionArr.toString() +'" data-promoPrice="'+ cartpromoPriceArr.toString()+'" data-promoEndDate="'+cartpromoEndDateArr.toString()+'" data-promoStartDate="'+cartpromoStartDateArr.toString()+'" data-barcode="'+cartbarcodeArr.toString()+'" data-quantity= "'+cartQuantityArr.toString() +'"  data-subtotal="'+ cartsubtotalArr.toString()+'">Order All</a>');
    
-		alert('button appended to orderAll-contd');
+		
 	
 	}
     else
@@ -545,7 +556,7 @@ function renderCartList(tx,results)
 		$('.orderAll-cont').empty();
        $('.orderAll-cont').append('<a href="#" class="btn btn-large orderAllDisabledLook">Order All</a><br><small class="minimumPurchaseNote">-A minimum of P1000 worth of items is required to checkout.</small>');
     
-		alert('button appended to orderAll-contd');
+		
 	}
     
     
@@ -711,14 +722,10 @@ function renderSinglePage(tx,results)
 			alert('end date: ' + results.rows.item(0).PromoEndDate_CatMstr);
 			alert('start date: ' + results.rows.item(0).PromoStartDate_CatMstr);
 			
-			if((getDateTimeNow() >= results.rows.item(0).PromoStartDate_CatMstr) && (getDateTimeNow()<= results.rows.item(0).PromoEndDate_CatMstr))
-			{
-				$( '.singleitemtable' ).after( '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoEndDate="'+ results.rows.item(0).PromoEndDate_CatMstr +'" data-promoStartDate="'+ results.rows.item(0).PromoStartDate_CatMstr +'" data-promoname="'+ results.rows.item(0).PromoName_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'">Place Order</a>');
-			}
-			else
-			{
-				$( '.singleitemtable' ).after( 'disabled button here');
-			}
+		
+			$( '.singleitemtable' ).after( '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoEndDate="'+ results.rows.item(0).PromoEndDate_CatMstr +'" data-promoStartDate="'+ results.rows.item(0).PromoStartDate_CatMstr +'" data-promoname="'+ results.rows.item(0).PromoName_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'">Place Order</a>');
+			
+		
         });
        
         
