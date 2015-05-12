@@ -2,9 +2,20 @@
     <div class="col-md-5 col-sm-5 col-xs-12">
 		<h1>Filtered Search</h1>
         <form method="post" id="searchForm">
-            <label>Barcode: &nbsp; </label><input type="text" name="search-barcode"><br>
-            <label>Product Name: &nbsp; </label><input type="text" name="search-promoname">
-			<br>
+			<table class="searchtable">
+				<tr>
+					<td><label>Barcode: &nbsp; </label></td><td><input type="text" name="search-barcode"></td>
+				</tr>
+				<tr>
+					<td><label>Product Name: &nbsp; </label></td><td><input type="text" name="search-promoname"></td>
+				</tr>
+				<tr>
+					<td><label>Brand: &nbsp; </label></td><td><input type="text" name="search-brand"></td>
+				</tr>
+				<tr>
+					<td>Category:</td><td><select class="search-category"><option value="">none</option><option value="catgy1">test</option></select></td>
+				</tr>
+			</table>
             <input type="submit" value="search" class="btn btn-success SearchBtn">
         </form>
     </div>

@@ -436,6 +436,10 @@ body
 {
     color:#ffffff;
 }
+.SearchBtn
+{
+	margin-top:10px;
+}
 
 .orderAllDisabledLook ,.orderAllDisabledLook:visited, .orderAllDisabledLook:active
 {
@@ -570,7 +574,18 @@ body
 	display:none;
 }
 
-                            /*Masonry Stuff*/
+.searchtable
+{
+	width:100%;
+}
+
+.searchtable input[type="text"]
+{
+	width:100%;
+	border-radius:3px;
+	border: 0px;
+}
+							/*Masonry Stuff*/
                             #wrapper
                             {
                                 max-width: 60em; /* 960 px */

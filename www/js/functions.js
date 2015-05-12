@@ -13,6 +13,9 @@ var orderidtoedit;//index of cart item. for editorder page.
 var globalorderFromSwitch;//switch for catalogue or search because they use the same query
 var globalorderedFrom;//when single page is opened.
 
+
+
+
 var RecordCounter = 0;//for reccursive function  for rendering catalogue items. because for loop won't wait until select statement is successful.
 var txparam; // tx ca not be passed as a parameter to nextRecord() as callback so made this global variable.
 var resulstparam;//results ca not be passed as a parameter to nextRecord()as callback so made this global variable.
@@ -157,11 +160,11 @@ function populateInventoryMasterCatalogue(tx)
     var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
    
    
-    tx.executeSql(sqlInsert,["111111","4","111111","img/item1.jpg","101191","natasha","Sample,f Strings with commas." ,"Yotsuba , Revoltech",63.00],null,errorCB);
+    tx.executeSql(sqlInsert,["111111","4","111111","img/item1.jpg","101191","natasha","used Sample used,f used usedStrings with commas." ,"Used UsedYotsuba , Used Revoltech",63.00],null,errorCB);
     tx.executeSql(sqlInsert,["333333","4","333333","img/item3.jpg","8999999003395","natasha","with free candy","Pond\'s Pure White",14.00],null,errorCB);
     tx.executeSql(sqlInsert,["444444","4","444444","img/item4.gif","4807788058850","natasha","with freechocolate","Iron Supplement",99.99],null,errorCB);
     tx.executeSql(sqlInsert,["555555","1","555555","img/item5.jpg","12345","natasha","free Soy Sauce","Used Monggol Pencil",31.99],null,errorCB);
-    tx.executeSql(sqlInsert,["666666","1","666666","img/item6.jpg","795144075167","natasha","BUY 1 TAKE 1","Strawberry Kiss Intimate Secret",15.00],null,errorCB);
+    tx.executeSql(sqlInsert,["666666","1","666666","img/item6.jpg","795144075167","natasha","BUY 1 TAKE 1","Strawberry Used Kiss Intimate Secret",15.00],null,errorCB);
 	tx.executeSql(sqlInsert,["777777","1","777777","img/item7.jpg","4005401548218","natasha","with free baby poweder","Faber Castell TextLiner 48",232.25],null,errorCB);
   
 	
@@ -173,7 +176,7 @@ function populateInventoryMasterCatalogue(tx)
     tx.executeSql(sqlInsert,["11111111","2","11111111","img/Item10.jpg","987654321098","avon","pack of 8","40L notebooks",50.00],null,errorCB);
     tx.executeSql(sqlInsert,["22222222","2","22222222","img/Item11.jpg","036000291452","avon","pack of 8","Jockey Lowrise Brief",325.00],null,errorCB);
     tx.executeSql(sqlInsert,["33333333","2","33333333","img/Item12.jpg","016000660601","avon","(P799.75 each) save 10%","Trolley Bags",799.75],null,errorCB);
-    tx.executeSql(sqlInsert,["44444444","2","44444444","img/Item13.jpg","5010029020519","avon","was P399","Trolley Bags",299.00],null,errorCB);
+    tx.executeSql(sqlInsert,["44444444","2","44444444","img/Item13.jpg","5010029020519","avon","was P399","shoes",299.00],null,errorCB);
     tx.executeSql(sqlInsert,["55555555","2","55555555","img/Item14.jpg","*9123*39","etude house","(P198.00 each)","TSport Backpacks",198.00],null,errorCB);
     tx.executeSql(sqlInsert,["66666666","2","66666666","img/Item15.jpg","50184385","etude house","save P10","Shining East Value Pack",99.00],null,errorCB);
     tx.executeSql(sqlInsert,["77777777","2","77777777","img/Item16.jpg","5702012000737","etude house","Buy 1 Take 1","Darlington",89.75],null,errorCB);
@@ -279,11 +282,11 @@ function populateInvtyCatCatgy(tx)
 	alert('test1');
 	var sqlInsert6 = "INSERT INTO INVENTORY_MASTER_CATALOGUE_CATEGORY(SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy) VALUES(?,?)";
 	tx.executeSql(sqlInsert6,["111111","catgy1"],null,errorCB);
-	tx.executeSql(sqlInsert6,["333333","catgy1"],null,errorCB);
-	tx.executeSql(sqlInsert6,["444444","catgy1"],null,errorCB);
-	tx.executeSql(sqlInsert6,["555555","catgy2"],null,errorCB);
-	tx.executeSql(sqlInsert6,["666666","catgy2"],null,errorCB);
-	tx.executeSql(sqlInsert6,["777777","catgy2"],null,errorCB);
+	tx.executeSql(sqlInsert6,["333333","catgy2"],null,errorCB);
+	tx.executeSql(sqlInsert6,["444444","catgy3"],null,errorCB);
+	tx.executeSql(sqlInsert6,["555555","catgy4"],null,errorCB);
+	tx.executeSql(sqlInsert6,["666666","catgy5"],null,errorCB);
+	tx.executeSql(sqlInsert6,["777777","catgy6"],null,errorCB);
 
 
 	alert('test2');
@@ -449,15 +452,18 @@ function renderCatalogueItems(tx2,results)
 
 function queryForSearch(tx)
 {
-   
-    var enteredBarcode = $('#searchForm').children('[name="search-barcode"]').val();
-	var enteredPromoname = $('#searchForm').children('[name="search-promoname"]').val();
+  
+	
+    var enteredBarcode = $('input[name="search-barcode"]').val();
+	var enteredPromoname = $('input[name="search-promoname"]').val();
+	var enteredBrand = $('input[name="search-brand"]').val();
+	var enteredCategory = $('.search-category').val();
 	
 	var enteredBarcodelength = enteredBarcode.length;
 	alert('barcode length: ' + enteredBarcodelength);
 	if(enteredBarcodelength > 0)
 	{
-	  var barcodeWhereString  = 'WHERE	Barcode_InvtyCat = "' + enteredBarcode +'" ';
+	  var barcodeWhereString  = ' IMC.Barcode_InvtyCat = "' + enteredBarcode +'"';
 	}
 	else
 	{
@@ -469,24 +475,70 @@ function queryForSearch(tx)
 	alert('promo name length: ' + enteredPromonamelength);
 	if(enteredPromonamelength > 0)
 	{
-	  var promonameWhereString  = 'AND PromoName_InvtyCat = "' + enteredPromoname +'" ';
+	  var promonameWhereString  = ' AND  IMC.PromoName_InvtyCat LIKE  "%' + enteredPromoname +'%"';
 	}
 	else
 	{
 		var promonameWhereString = '';
 	}
 	
+	var enteredBrandlength = enteredBrand.length;
+	alert('brand length: ' + enteredBrandlength);
+	if(enteredBrandlength > 0)
+	{
+	  var brandWhereString  = ' AND  IMC.Brand_InvtyCat LIKE  "%' + enteredBrand +'%"';
+	}
+	else
+	{
+		var brandWhereString = '';
+	}
+		
+	var enteredCategorylength = enteredCategory.length;
+	alert('Category length: ' + enteredCategorylength);
+	if(enteredCategorylength > 0)
+	{
+	  var CategoryWhereString  = ' AND  IMCC.SysFk_CatgyMstr_InvtyCatCatgy =  "' + enteredCategory +'"';
+	}
+	else
+	{
+		var CategoryWhereString = '';
+	}
+		
 	
-	var finalqueryString = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE '+ barcodeWhereString + promonameWhereString;
-	alert(finalqueryString);
-    tx.executeSql(finalqueryString, [], renderSearchResults, errorCB);
+	
+	
+	var finalqueryString = 'SELECT IMC.* , IMCC.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCC ON IMC.SysPk_InvtyCat=IMCC.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat';
+
+	
+	
+	
+	finalqueryString = checkForWhereAnd(finalqueryString);
+
+	tx.executeSql(finalqueryString, [], renderSearchResults, errorCB);
 
 	globalorderFromSwitch = 1;
 	
 }
 
+
+function checkForWhereAnd(str)//replace all WHERE AND with WHERE
+{	
+	alert('before if ' + str);
+	alert('index before if ' + str.indexOf("WHERE AND"));
+	if(str.indexOf("WHERE AND") != -1)
+	{
+		str = str.replace("WHERE AND", "WHERE"); 
+		alert('after replace ' + str);
+		checkForWhereAnd(str);
+	}
+
+	
+	return str;
+}
+
 function renderSearchResults(tx,results)
 {
+	alert('RENDERING SEARCH RESULTS');
     var htmlstring = "";
     var len = results.rows.length;
     
@@ -495,10 +547,12 @@ function renderSearchResults(tx,results)
     {
         
         htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).PromoName_InvtyCat+'</h1><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a></div><div class="clearfix"><hr></div>';
-   
-        $('#itemsList').append(htmlstring);
+   		
+
          
     }
+	
+        $('#itemsList').append(htmlstring);
    
 }
 
