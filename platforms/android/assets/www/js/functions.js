@@ -64,10 +64,28 @@ if(localStorage.BarcodeInvtyCat == null)
 }
 
 
+	//-------------FOR API
+		//--INVENTORY_MASTER_CATALOGUE
+		var RowNumber_InvtyCatARR = [];
+		var SysPk_InvtyCatARR =[];
+		var	SysFk_CatMstr_InvtyCatARR = [];
+		var	SKU_InvtyCatARR =[];
+		var PictureFileName_InvtyCatARR= [];
+		var	Barcode_InvtyCatARR = [];
+		var	Brand_InvtyCatARR = [];
+		var	FullDescription_InvtyCatARR = [];
+		var	PromoName_InvtyCatARR = [];
+		var	PromoPrice_InvtyCatARR = [];
 
+		var InventoryMasterCataloguedataLength;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
+		var apiInvtyCatRecordCounter = 0;
+		var apiInvtyCattxparam;
+		//--//INVENTORY_MASTER_CATALOGUE
+
+	//------------//FOR API
 
 /*~~~~~~~~~~~~~~~~~~~~//GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
+getjsonForINVENTORY_MASTER_CATALOGUE();
 
 function errorCB(err)
 {
@@ -155,12 +173,31 @@ function createDB(tx)
 	
 }
 
+
+
+
 function populateInventoryMasterCatalogue(tx)
 {
- 
-	//alert('populate Inventory Master Catalogue');
+  /*
+		var RecordBeingProcessesd =  apiInvtyCatRecordCounter + 1;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
+		
+	
+		if(RecordBeingProcessesd <= InventoryMasterCataloguedataLength)
+		{
+			apiInvtyCattxparam = tx;
+	
+			
+				db.transaction(function(tx3){
+					tx3.executeSql(sqlInsert,["111111","4","111111","img/item1.jpg","101191","natasha","string part 1 of 2,string part 2 of 2." ,"string part 1 of 3 , string part 2 of 3 , string part 3 of 3",63.00],null,errorCB);
+				},errorCB,function(){  apiInvtyCatRecordCounter  += 1;  populateInventoryMasterCatalogue(apiInvtyCattxparam);});
 
-   
+		}
+		else
+		{
+			apiInvtyCatRecordCounter = 0;
+		}
+		
+  */
     var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
    
    
@@ -191,8 +228,7 @@ function populateInventoryMasterCatalogue(tx)
     tx.executeSql(sqlInsert,["3333333333","2","3333333333","img/Item21.jpg","012345678905","etude house","pack of 10","80L notebooks",100.00],queryForExpired,errorCB);
    
 
-	//var deleteExpiredSql = "DELETE FROM INVENTORY_MASTER";
-	//tx.executeSql();
+
 
 }
 
@@ -797,101 +833,96 @@ function renderCartList(tx,results)
 
 
 
-function testgetjson()
+function getjsonForINVENTORY_MASTER_CATALOGUE()
 {
 
-    var RowNumber_InvtyCatARR = [];
-    var Barcode_InvtyCatARR = [];
-    var SysFk_Freebies01_InvtyCatARR = [];
-    var SysFk_Freebies02_InvtyCatARR = [];
-    var SysFk_Freebies03_InvtyCatARR = [];
-    var FullDescription_InvtyCatARR = [];
-    var PromoPrice_InvtyCatARR = [];
-    var PromoPrice_InvtyCatARR = [];
-    var PromoEndDate_InvtyCatARR = [];
+   
 
-    $.getJSON( "http://localhost/dummyPrestashop/", function( data )
-    {/*
-        {"PEOPLE":[{"PERSON":{"id":"1","name":"johanna","city":"iligan","street":"sadasdasd","homenum":"8998908","mobilenum":"989089080"}},{"PERSON":{"id":"2","name":"ong","city":"iligan","street":"kjkjljkj","homenum":"9809009","mobilenum":"9090909"}},{"PERSON":{"id":"3","name":"eu","city":"kjkjkj","street":"kjkjkjk","homenum":"909090","mobilenum":"8989"}},{"PERSON":{"id":"4","name":"james","city":"kjkjjk","street":"jkjk","homenum":"3333333","mobilenum":"444444444"}},{"PERSON":{"id":"5","name":"jerome","city":"kjkjkj","street":"kjkjkjk","homenum":"90090","mobilenum":"909090"}},{"PERSON":{"id":"6","name":"keyki","city":"jjkj","street":"kjkjk","homenum":"2147483647","mobilenum":"2147483647"}},{"PERSON":{"id":"7","name":"p-seven","city":"jhjhjhj","street":"hjh","homenum":"909090","mobilenum":"9090"}},{"PERSON":{"id":"8","name":"p-eight","city":"kjkjkjk","street":"jkjkj","homenum":"9090909","mobilenum":"90909"}}]}
-    */
+	
+	
 
-          $.each( data, function( index, value ) 
-          {//key PEOPLE/[{"PERSON":{"id":"1","name":"johanna","city":"iligan","street":"sadasdasd","homenum":"8998908","mobilenum":"989089080"}},{"PERSON":{"id":"2","name":"ong","city":"iligan","street":"kjkjljkj","homenum":"9809009","mobilenum":"9090909"}},{"PERSON":{"id":"3","name":"eu","city":"kjkjkj","street":"kjkjkjk","homenum":"909090","mobilenum":"8989"}},{"PERSON":{"id":"4","name":"james","city":"kjkjjk","street":"jkjk","homenum":"3333333","mobilenum":"444444444"}},{"PERSON":{"id":"5","name":"jerome","city":"kjkjkj","street":"kjkjkjk","homenum":"90090","mobilenum":"909090"}},{"PERSON":{"id":"6","name":"keyki","city":"jjkj","street":"kjkjk","homenum":"2147483647","mobilenum":"2147483647"}},{"PERSON":{"id":"7","name":"p-seven","city":"jhjhjhj","street":"hjh","homenum":"909090","mobilenum":"9090"}},{"PERSON":{"id":"8","name":"p-eight","city":"kjkjkjk","street":"jkjkj","homenum":"9090909","mobilenum":"90909"}}]
+		$.getJSON( "http://viveg.net/glogapitest/", function( data )
+		{
 
-                /*var obj = JSON.stringify(value);
-                //alert(obj);*/
+			  $.each( data, function( index, value ) 
+			  {
 
-                $.each(value, function(inde, valu)
-                {
-                    //{"PERSON":{"id":"1","name":"johanna","city":"iligan","street":"sadasdasd","homenum":"8998908","mobilenum":"989089080"}}
-                    $.each(valu, function(ind, val)
-                    {//{"id":"1","name":"johanna","city":"iligan","street":"sadasdasd","homenum":"8998908","mobilenum":"989089080"}
+					$.each(value, function(inde, valu)
+					{
+						$.each(valu, function(ind, val)
+						{
+							$.each( val, function( i, v )
+							{
 
-
-
-                        $.each( val, function( i, v )
-                        {
-
-                                if(i == "SysPk_InvtyCat")
-                                {
-                                     SysPk_InvtyCatARR.push(val['SysPk_InvtyCat']);
-                                    $('.getjsontest').append(val['SysPk_InvtyCat'] + " inserted to array SysPk_InvtyCatARR<br>");
-                                }
-                                else if(i == "Barcode_InvtyCat")
-                                {
-                                    Barcode_InvtyCatARR.push(val['Barcode_InvtyCat']);
-                                    $('.getjsontest').append(val['Barcode_InvtyCat'] + " inserted to array Barcode_InvtyCatARR<br>");
-                                }
-                                else if(i == "SysFk_Freebies01_InvtyCat")
-                                {
-                                    SysFk_Freebies01_InvtyCatARR.push(val['SysFk_Freebies01_InvtyCat']);
-                                    $('.getjsontest').append(val['SysFk_Freebies01_InvtyCat'] + " inserted to array SysFk_Freebies01_InvtyCatARR<br>");
-
-                                }                                       
-                                else if(i == "SysFk_Freebies02_InvtyCat")
-                                {
-                                    SysFk_Freebies02_InvtyCatARR.push(val['SysFk_Freebies02_InvtyCat']);
-                                    $('.getjsontest').append(val['SysFk_Freebies02_InvtyCat'] + " inserted to array SysFk_Freebies02_InvtyCatARR<br>");
-
-                                }                                       
-                                else if(i == "SysFk_Freebies03_InvtyCat")
-                                {
-                                    SysFk_Freebies03_InvtyCatARR.push(val['SysFk_Freebies03_InvtyCat']);
-                                    $('.getjsontest').append(val['SysFk_Freebies03_InvtyCat'] + " inserted to array SysFk_Freebies03_InvtyCatARR<br>");
-
-                                }
-                                else if(i == "FullDescription_InvtyCat")
-                                {
-                                    FullDescription_InvtyCatARR.push(val['FullDescription_InvtyCat']);
-                                    $('.getjsontest').append(val['FullDescription_InvtyCat'] + " inserted to array FullDescription_InvtyCatARR<br>");
-                                }
-                                else if(i == "DisplayPrice_InvtyCat")
-                                {
-                                    DisplayPrice_InvtyCatARR.push(val['DisplayPrice_InvtyCat']);
-                                    $('.getjsontest').append(val['DisplayPrice_InvtyCat'] + " inserted to array DisplayPrice_InvtyCatARR<br>");
-                                }
-                                else if(i == "PromoPrice_InvtyCat")
-                                {
-                                    PromoPrice_InvtyCatARR.push(val['PromoPrice_InvtyCat']);
-                                    $('.getjsontest').append(val['PromoPrice_InvtyCat'] + " inserted to array PromoPrice_InvtyCatARR<br>");
-                                }
-                                else if(i == "PromoEndDate_InvtyCat")
-                                {
-                                    PromoEndDate_InvtyCatARR.push(val['PromoEndDate_InvtyCat']);
-                                    $('.getjsontest').append(val['PromoEndDate_InvtyCat'] + " inserted to array PromoEndDate_InvtyCatARR<br>");
-                                }
+									if(i == "RowNumber_InvtyCat")
+									{
+										RowNumber_InvtyCatARR.push(val['RowNumber_InvtyCat']);
+										$('.getjsontest').append(val['RowNumber_InvtyCat'] + " inserted to array RowNumber_InvtyCatARR<br>");
+									}
+									else if(i == "SysPk_InvtyCat")
+									{
+										SysPk_InvtyCatARR.push(val['SysPk_InvtyCat']);
+										$('.getjsontest').append(val['SysPk_InvtyCat'] + " inserted to array SysPk_InvtyCatARR<br>");
+									}
+									else if(i == "SysFk_CatMstr_InvtyCat")
+									{
+										SysFk_CatMstr_InvtyCatARR.push(val['SysFk_CatMstr_InvtyCat']);
+										$('.getjsontest').append(val['SysFk_CatMstr_InvtyCat'] + " inserted to array SysFk_CatMstr_InvtyCatARR<br>");
+									}
+									else if(i == "SKU_InvtyCat")
+									{
+										SKU_InvtyCatARR.push(val['SKU_InvtyCat']);
+										$('.getjsontest').append(val['SKU_InvtyCat'] + " inserted to array SKU_InvtyCatARR<br>");
+									}
+									else if(i == "PictureFileName_InvtyCat")
+									{
+										PictureFileName_InvtyCatARR.push(val['PictureFileName_InvtyCat']);
+										$('.getjsontest').append(val['PictureFileName_InvtyCat'] + " inserted to array PictureFileName_InvtyCatARR<br>");
+									}
+									else if(i == "Barcode_InvtyCat")
+									{
+										Barcode_InvtyCatARR.push(val['Barcode_InvtyCat']);
+										$('.getjsontest').append(val['Barcode_InvtyCat'] + " inserted to array Barcode_InvtyCatARR<br>");
+								
+									}
+									else if(i == "Brand_InvtyCat")
+									{
+										Brand_InvtyCatARR.push(val['Brand_InvtyCat']);
+										$('.getjsontest').append(val['Brand_InvtyCat'] + " inserted to array Brand_InvtyCatARR<br>");
+								
+									}
+									else if(i == "FullDescription_InvtyCat")
+									{
+										FullDescription_InvtyCatARR.push(val['FullDescription_InvtyCat']);
+										$('.getjsontest').append(val['FullDescription_InvtyCat'] + " inserted to array FullDescription_InvtyCatARR<br>");
+								
+									}
+									else if(i == "PromoName_InvtyCat")
+									{
+										PromoName_InvtyCatARR.push(val['PromoName_InvtyCat']);
+										$('.getjsontest').append(val['PromoName_InvtyCat'] + " inserted to array PromoName_InvtyCatARR<br>");
+								
+									}
+									else if(i == "PromoPrice_InvtyCat")
+									{
+										PromoPrice_InvtyCatARR.push(val['PromoPrice_InvtyCat']);
+										$('.getjsontest').append(val['PromoPrice_InvtyCat'] + " inserted to array PromoPrice_InvtyCatARR<br>");
+								
+									}
+								
 
 
-                        });	
+							});	
 
-                    });	
+						});	
 
-                });
-          });
+					});
+			  });
 
-            $('.getjsontest').append("there are " + SysPk_InvtyCatARR.length + " promo sets<br><hr><br>");
-    
-            }); 
+				InventoryMasterCataloguedataLength =  SysPk_InvtyCatARR.length;
+				$('.getjsontest').append("<br><br><b>there are " + SysPk_InvtyCatARR.length + " promos <b>");
+
+		}); 
 }
 
 /*----------------------------------------------------------------------*/
