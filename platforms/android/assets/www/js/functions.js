@@ -477,7 +477,7 @@ function queryForSearch(tx)
 	//alert('barcode length: ' + enteredBarcodelength);
 	if(enteredBarcodelength > 0)
 	{
-	  var barcodeWhereString  = ' IMC.Barcode_InvtyCat = "' + enteredBarcode +'"';
+	  var barcodeWhereString  = ' IMC.Barcode_InvtyCat = "' + escape(enteredBarcode) +'"';
 	}
 	else
 	{
@@ -489,7 +489,8 @@ function queryForSearch(tx)
 	//alert('promo name length: ' + enteredPromonamelength);
 	if(enteredPromonamelength > 0)
 	{
-	  var promonameWhereString  = ' AND  IMC.PromoName_InvtyCat LIKE  "%' + enteredPromoname +'%"';
+	  var promonameWhereString  = ' AND  IMC.PromoName_InvtyCat LIKE  "%' + escape(enteredPromoname) +'%"';
+
 	}
 	else
 	{
@@ -500,7 +501,7 @@ function queryForSearch(tx)
 	//alert('promo name length: ' + enteredfulldescriptionlength);
 	if(enteredfulldescriptionlength > 0)
 	{
-	  var fulldescriptionWhereString  = ' AND  IMC.FullDescription_InvtyCat LIKE  "%' + enteredfulldescription +'%"';
+	  var fulldescriptionWhereString  = ' AND  IMC.FullDescription_InvtyCat LIKE  "%' + escape(enteredfulldescription) +'%"';
 	}
 	else
 	{
@@ -512,7 +513,7 @@ function queryForSearch(tx)
 	//alert('brand length: ' + enteredBrandlength);
 	if(enteredBrandlength > 0)
 	{
-	  var brandWhereString  = ' AND  IMC.Brand_InvtyCat LIKE  "%' + enteredBrand +'%"';
+	  var brandWhereString  = ' AND  IMC.Brand_InvtyCat LIKE  "%' + escape(enteredBrand) +'%"';
 	}
 	else
 	{
@@ -523,7 +524,7 @@ function queryForSearch(tx)
 	//alert('Category length: ' + enteredCategorylength);
 	if(enteredCategorylength > 0)
 	{
-	  var CategoryWhereString  = ' AND  IMCC.SysFk_CatgyMstr_InvtyCatCatgy =  "' + enteredCategory +'"';
+	  var CategoryWhereString  = ' AND  IMCC.SysFk_CatgyMstr_InvtyCatCatgy =  "' + escape(enteredCategory) +'"';
 	}
 	else
 	{
@@ -1229,4 +1230,22 @@ function checkForWhereAnd(str)//replace all WHERE AND with WHERE
 
 	
 	return str;
+}
+
+
+
+/*removed addslashes for single quote because it's not needed*/
+function addslashes(str) {
+str=str.replace(/\\/g,'\\\\');
+str=str.replace(/\'/g,'\\\'');
+str=str.replace(/\"/g,'\\"');
+str=str.replace(/\0/g,'\\0');
+return str;
+}
+function stripslashes(str) {
+str=str.replace(/\\'/g,'\'');
+str=str.replace(/\\"/g,'"');
+str=str.replace(/\\0/g,'\0');
+str=str.replace(/\\\\/g,'\\');
+return str;
 }
