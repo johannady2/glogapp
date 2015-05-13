@@ -446,7 +446,7 @@ function nextRecord(tx,results)
 			resulstparam = results;
 		   
 			//alert(results.rows.item(RecordCounter).CatalogueTitle_CatMstr);
-			$('.lists-cont').append('<div class="catalogueTitle-cont"><h1 class="catalogueTitle">'+  results.rows.item(RecordCounter).CatalogueTitle_CatMstr  +'</h1><small>Valid from: ' + results.rows.item(RecordCounter).PromoStartDate_CatMstr + ' to ' + results.rows.item(RecordCounter).PromoEndDate_CatMstr +'</small></div><div class="clearfix"></div><div class="list listSet-'+results.rows.item(RecordCounter).SysPk_CatMstr+'"></div><div class="clearfix"></div>');
+			$('.lists-cont').append('<div class="catalogueTitle-cont"><h1 class="catalogueTitle">'+  results.rows.item(RecordCounter).CatalogueTitle_CatMstr  +'</h1><small>Valid from: ' + results.rows.item(RecordCounter).PromoStartDate_CatMstr + ' to ' + results.rows.item(RecordCounter).PromoEndDate_CatMstr +'</small></div><div class="clearfix"></div><div class="clearfix"></div><div class="list listSet-'+results.rows.item(RecordCounter).SysPk_CatMstr+'"></div><div class="clearfix"></div>');
 			
 			db.transaction(function(tx2){
 				tx2.executeSql('SELECT IMC.*,CM.SysPk_CatMstr AS syspkcatmstr, CM.CatalogueTitle_CatMstr, CM.PromoEndDate_CatMstr, CM.PromoStartDate_CatMstr  FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr WHERE IMC.SysFk_CatMstr_InvtyCat = ?', [results.rows.item(RecordCounter).SysPk_CatMstr], renderCatalogueItems);// WHERE IMC.SysFk_CatMstr_InvtyCat ="'+ results.rows.item(RecordCounter).CatalogueTitle_CatMstr +'"
