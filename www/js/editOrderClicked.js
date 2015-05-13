@@ -19,6 +19,8 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
 				toNormalString(cartpromonameArr[orderidtoedit]);
                 $('.edit-order-promoname').append(returnedNormal);//<h1>promoname</h1>
 				
+                toNormalString(cartbrandArr[orderidtoedit]);
+                $('.edit-order-brand').append(returnedNormal);
 				
 				$('.edit-order-promoPrice').append(cartpromoPriceArr[orderidtoedit]);//<h3>$<span>promoPrice</span></h3>
                 $('.edit-order-quantity').val(cartQuantityArr[orderidtoedit]);//<input type="text" name="quantity" id="quatity" class="edit-order-quantity" value="1">                
@@ -72,6 +74,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                     cartSKUArr.splice(orderidtoedit,1);//remove index of array
 					cartpicturefilenameArr.splice(orderidtoedit,1);
 					cartbarcodeArr.splice(orderidtoedit,1);
+					cartbrandArr.splice(orderidtoedit,1);
 					cartfulldescriptionArr.splice(orderidtoedit,1);
                     cartpromonameArr.splice(orderidtoedit,1);
                     cartpromoPriceArr.splice(orderidtoedit,1);
@@ -85,6 +88,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
 						var newarrstring_sku = cartpicturefilenameArr.toString()+",";
 						var newarrstring_picturefilename = cartpicturefilenameArr.toString()+",";
 						var newarrstring_cartbarcode = cartbarcodeArr.toString()+",";
+						var newarrstring_cartbrand = cartbrandArr.toString()+",";
 						var newarrstring_fulldescription = cartfulldescriptionArr.toString()+",";
                         var newarrstring_promoname = cartpromonameArr.toString()+",";
                         var newarrstring_promoPrice = cartpromoPriceArr.toString()+",";
@@ -98,6 +102,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                         var newarrstring_sku = '';
                         var newarrstring_picturefilename = '';
                         var newarrstring_cartbarcode = '';
+                        var newarrstring_cartbrand = '';
 						var newarrstring_fulldescription = '';
 						var newarrstring_promoname = '';
                         var newarrstring_promoPrice ='';
@@ -110,6 +115,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                     localStorage.sku = newarrstring_sku;
                     localStorage.picturefilename = newarrstring_picturefilename;
 					localStorage.BarcodeInvtyCat = newarrstring_cartbarcode;
+					localStorage.BrandInvtyCat = newarrstring_cartbrand;
                     localStorage.fulldescription = newarrstring_fulldescription;
 					localStorage.promoname = newarrstring_promoname;
                     localStorage.promoPrice = newarrstring_promoPrice;
