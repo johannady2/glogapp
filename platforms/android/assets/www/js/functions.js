@@ -166,7 +166,7 @@ function populateInventoryMasterCatalogue(tx)
     tx.executeSql(sqlInsert,["111111","4","111111","img/item1.jpg","101191","natasha","string part 1 of 2,string part 2 of 2." ,"string part 1 of 3 , string part 2 of 3 , string part 3 of 3",63.00],null,errorCB);
     tx.executeSql(sqlInsert,["333333","4","333333","img/item3.jpg","8999999003395","natasha","with free candy","Pond\'s Pure\' White",14.00],null,errorCB);
     tx.executeSql(sqlInsert,["444444","4","444444","img/item4.gif","4807788058850","natasha","with freechocolate","Iron Supplement",99.99],null,errorCB);
-    tx.executeSql(sqlInsert,["555555","1","555555","img/item5.jpg","12345","natasha","free Soy Sauce","Used Monggol Pencil",31.99],null,errorCB);
+    tx.executeSql(sqlInsert,["555555","1","555555","img/item5.jpg","12345","natasha","free Soy Sauce","Used \"Monggol\" Pencil",31.99],null,errorCB);
     tx.executeSql(sqlInsert,["666666","1","666666","img/item6.jpg","795144075167","natasha","BUY 1 TAKE 1","Strawberry Used Kiss Intimate Secret",15.00],null,errorCB);
 	tx.executeSql(sqlInsert,["777777","1","777777","img/item7.jpg","4005401548218","natasha","with free baby poweder","Faber Castell TextLiner 48",232.25],null,errorCB);
   
@@ -952,8 +952,21 @@ function renderSinglePage(tx,results)
 
 		}
 			
-			$( '.singleitemtable' ).after( '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoEndDate="'+ results.rows.item(0).PromoEndDate_CatMstr +'" data-promoStartDate="'+ results.rows.item(0).PromoStartDate_CatMstr +'" data-promoname="'+ results.rows.item(0).PromoName_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-orderedfrom="'+ globalorderedFrom +'">Place Order</a>');
 			
+			alert('RESULT ROW PROMO NAME: ' + results.rows.item(0).PromoName_InvtyCat);
+			alert('RESULT ROW FULL DESCRIPTION: ' + results.rows.item(0).FullDescription_InvtyCat);
+			
+			var placeorderbtnstring =  '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoEndDate="'+ results.rows.item(0).PromoEndDate_CatMstr +'" data-promoStartDate="'+ results.rows.item(0).PromoStartDate_CatMstr +'" ';
+				
+			toCustomString(results.rows.item(0).PromoName_InvtyCat);
+			placeorderbtnstring	+=' data-promoname="'+ returnedCustom +'" ';
+				
+			toCustomString(results.rows.item(0).FullDescription_InvtyCat);
+			placeorderbtnstring += ' data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ returnedCustom +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-orderedfrom="'+ globalorderedFrom +'">Place Order</a>';
+			
+			
+			alert(placeorderbtnstring);
+			$( '.singleitemtable' ).after(placeorderbtnstring);
 		
         });
        
@@ -1127,7 +1140,10 @@ $(document).on('click','.placeOrder', function()
 		// subtotal = toCustomString(subtotal.toString());
 		//orderedFrom = toCustomString(orderedFrom.toString());
 
-    
+    alert('ORIGINAL FULLDESCRIPTION: ' + fulldescription);
+	alert('ORIGINAL PROMONAME: ' + promoname);
+	
+	
 	localStorage.sku += SKU.toString()+',';
 	alert('LS: ' + localStorage.sku);
 	localStorage.picturefilename += picturefilename.toString()+',';
@@ -1206,16 +1222,14 @@ function editOrderPageQuantityInputListener()
 
 function toNormalString(stringWithCustomString)
 {
-	alert('toNormalStringFunction BEFORE REPLACE :' + stringWithCustomString);
-	alert('Index of (xxxGlogCommaxxx)' + stringWithCustomString.indexOf('(xxxGLogCommaxxx)'));
-	//alert('Index of (xxxGLogDoubleQxxx)' + stringWithCustomString.indexOf('(xxxGLogDoubleQxxx)'));
+
 	
-	if((stringWithCustomString.indexOf('(xxxGLogCommaxxx)') != -1))
+	if((stringWithCustomString.indexOf('(xxxGLogCommaxxx)') != -1) || (stringWithCustomString.indexOf('(xxxGLogDQxxx)') != -1))
 	{
 		stringWithCustomString = stringWithCustomString.replace('(xxxGLogCommaxxx)',',');
- 		//stringWithNormalString = stringWithNormalString.replace('(xxxGLogDoubleQxxx)','"');
+		stringWithCustomString = stringWithCustomString.replace('(xxxGLogDQxxx)','"');//double quote
+ 		
 		
-		alert('AFTER REPLACE :' + stringWithCustomString);
 		
 		toNormalString(stringWithCustomString)
 	}
@@ -1223,7 +1237,7 @@ function toNormalString(stringWithCustomString)
 	{
 		
 		returnedNormal = stringWithCustomString;
-		alert('returnedNormal VALUE :'  + stringWithCustomString);
+		
     	
 	}
 }
@@ -1231,23 +1245,20 @@ function toNormalString(stringWithCustomString)
 function toCustomString(stringWithNormalString)
 {
 	
-	alert('toCustomStringFunction BEFORE REPLACE :' + stringWithNormalString );
-	alert('Index of , :' + stringWithNormalString.indexOf(','));
-	//alert('Index of " :' + stringWithNormalString.indexOf('"'));
 
 	
-	if((stringWithNormalString.indexOf(',') != -1))
+	if((stringWithNormalString.indexOf(',') != -1) || (stringWithNormalString.indexOf('"') != -1))
 	{
 		stringWithNormalString = stringWithNormalString.replace(',','(xxxGLogCommaxxx)');
-  		//stringWithCustomString = stringWithCustomString.replace('"','(xxxGLogDoubleQxxx)');
+		stringWithNormalString = stringWithNormalString.replace('"','(xxxGLogDQxxx)');//Double Quote
+
 		
-		alert('AFTER REPLACE :' + stringWithNormalString);
 		toCustomString(stringWithNormalString)
 	}
     else
 	{
 		returnedCustom = stringWithNormalString;
-	 	alert('returnedCustom VALUE :'  + stringWithNormalString);
+	 	
 
 	}
 }
