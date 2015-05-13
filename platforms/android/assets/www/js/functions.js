@@ -148,7 +148,7 @@ function createDB(tx)
     
     tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER");
     var query3 ="";
-    query3 += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER(RowNumber_CatMstr INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_Invty,";
+    query3 += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER(RowNumber_Invty INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_Invty,";
     query3 += "UserPk_Invty, LastUpdatedBy_Invty, LastUpdatedConcurrencyID_Invty, LastUpdatedDate_Invty TIMESTAMP DEFAULT  (datetime('now','localtime')),";
     query3 += "Module_Invty,Particulars_Invty,PictureFileName_Invty, Status_Invty, Type_Invty, Barcode_Invty,";
     query3 += "Brand_Invty,Classification_Invty, Categories_Invty, Description_Invty,FullDescription_Invty,FreeDescription_Invty,";
@@ -583,7 +583,7 @@ function queryForSearch(tx)
 	//alert('Category length: ' + enteredCategorylength);
 	if(enteredCategorylength > 0)
 	{
-	  var CategoryWhereString  = ' AND  IMCC.SysFk_CatgyMstr_InvtyCatCatgy =  "' + enteredCategory +'"';
+	  var CategoryWhereString  = ' AND  IMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy =  "' + enteredCategory +'"';
 	}
 	else
 	{
@@ -593,7 +593,7 @@ function queryForSearch(tx)
 	
 	
 	
-	var finalqueryString = 'SELECT IMC.* , IMCC.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCC ON IMC.SysPk_InvtyCat=IMCC.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat';
+	var finalqueryString = 'SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat';
 
 	
 	
