@@ -18,6 +18,7 @@ var globalorderedFrom;//when single page is opened.
 var returnedNormal;//because if() return has weird results. and if()else(return) returns undefined.
 var returnedCustom;
 
+var returnedReplaceQuote;
 
 var RecordCounter = 0;//for reccursive function  for rendering catalogue items. because for loop won't wait until select statement is successful.
 var txparam; // tx ca not be passed as a parameter to nextRecord() as callback so made this global variable.
@@ -492,7 +493,8 @@ function queryForSearch(tx)
 	//alert('promo name length: ' + enteredPromonamelength);
 	if(enteredPromonamelength > 0)
 	{
-	  var promonameWhereString  = ' AND  IMC.PromoName_InvtyCat LIKE  "%' + enteredPromoname +'%"';
+		replaceQuotes(enteredPromoname);
+	  var promonameWhereString  = ' AND  IMC.PromoName_InvtyCat LIKE  "%' + returnedReplaceQuote  +'%"';
 
 	}
 	else
@@ -504,7 +506,8 @@ function queryForSearch(tx)
 	//alert('promo name length: ' + enteredfulldescriptionlength);
 	if(enteredfulldescriptionlength > 0)
 	{
-	  var fulldescriptionWhereString  = ' AND  IMC.FullDescription_InvtyCat LIKE  "%' + enteredfulldescription +'%"';
+		replaceQuotes(enteredfulldescription);
+	  var fulldescriptionWhereString  = ' AND  IMC.FullDescription_InvtyCat LIKE  "%' + returnedReplaceQuote +'%"';
 	}
 	else
 	{
@@ -1297,15 +1300,29 @@ function checkForWhereAnd(str)//replace all WHERE AND with WHERE
 	return str;
 }
 
-
+function replaceQuotes(str)
+{
+	alert('before replace: '+str);
+	if(str.indexOf('"') != -1)
+	{
+		str=str.replace('"','%');
+		alert('after replace: ' + str);
+		replaceQuotes(str);
+	}
+	else
+	{
+		returnedReplaceQuote = str;alert('return: ' +str);
+	
+	}
+}
 
 /*removed addslashes for single quote because it's not needed*/
 function addslashes(str)
 {
-	str=str.replace(/\\/g,'\\\\');
-	str=str.replace(/\'/g,'\\\'');
+	//str=str.replace(/\\/g,'\\\\');
+	//str=str.replace(/\'/g,'\\\'');
 	str=str.replace(/\"/g,'\\"');
-	str=str.replace(/\0/g,'\\0');
+	//str=str.replace(/\0/g,'\\0');
 	return str;
 }
 function stripslashes(str)
