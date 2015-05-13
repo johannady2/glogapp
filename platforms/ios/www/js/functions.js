@@ -13,7 +13,10 @@ var orderidtoedit;//index of cart item. for editorder page.
 var globalorderFromSwitch;//switch for catalogue or search because they use the same query
 var globalorderedFrom;//when single page is opened.
 
-
+//FOR toNormalString AND toCustomString
+//how to use: toNormalString(str); then put returnedNormal/returnedCustom to where str is supposed to be.
+var returnedNormal;//because if() return has weird results. and if()else(return) returns undefined.
+var returnedCustom;
 
 
 var RecordCounter = 0;//for reccursive function  for rendering catalogue items. because for loop won't wait until select statement is successful.
@@ -160,8 +163,8 @@ function populateInventoryMasterCatalogue(tx)
     var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
    
    
-    tx.executeSql(sqlInsert,["111111","4","111111","img/item1.jpg","101191","natasha","used Sample used,f used usedStrings with commas." ,"Used UsedYotsuba , Used Revoltech",63.00],null,errorCB);
-    tx.executeSql(sqlInsert,["333333","4","333333","img/item3.jpg","8999999003395","natasha","with free candy","Pond\'s Pure White",14.00],null,errorCB);
+    tx.executeSql(sqlInsert,["111111","4","111111","img/item1.jpg","101191","natasha","string part 1 of 2,string part 2 of 2." ,"string part 1 of 3 , string part 2 of 3 , string part 3 of 3",63.00],null,errorCB);
+    tx.executeSql(sqlInsert,["333333","4","333333","img/item3.jpg","8999999003395","natasha","with free candy","Pond\'s Pure\' White",14.00],null,errorCB);
     tx.executeSql(sqlInsert,["444444","4","444444","img/item4.gif","4807788058850","natasha","with freechocolate","Iron Supplement",99.99],null,errorCB);
     tx.executeSql(sqlInsert,["555555","1","555555","img/item5.jpg","12345","natasha","free Soy Sauce","Used Monggol Pencil",31.99],null,errorCB);
     tx.executeSql(sqlInsert,["666666","1","666666","img/item6.jpg","795144075167","natasha","BUY 1 TAKE 1","Strawberry Used Kiss Intimate Secret",15.00],null,errorCB);
@@ -477,7 +480,7 @@ function queryForSearch(tx)
 	//alert('barcode length: ' + enteredBarcodelength);
 	if(enteredBarcodelength > 0)
 	{
-	  var barcodeWhereString  = ' IMC.Barcode_InvtyCat = "' + escape(enteredBarcode) +'"';
+	  var barcodeWhereString  = ' IMC.Barcode_InvtyCat = "' + enteredBarcode +'"';
 	}
 	else
 	{
@@ -489,7 +492,7 @@ function queryForSearch(tx)
 	//alert('promo name length: ' + enteredPromonamelength);
 	if(enteredPromonamelength > 0)
 	{
-	  var promonameWhereString  = ' AND  IMC.PromoName_InvtyCat LIKE  "%' + escape(enteredPromoname) +'%"';
+	  var promonameWhereString  = ' AND  IMC.PromoName_InvtyCat LIKE  "%' + enteredPromoname +'%"';
 
 	}
 	else
@@ -501,7 +504,7 @@ function queryForSearch(tx)
 	//alert('promo name length: ' + enteredfulldescriptionlength);
 	if(enteredfulldescriptionlength > 0)
 	{
-	  var fulldescriptionWhereString  = ' AND  IMC.FullDescription_InvtyCat LIKE  "%' + escape(enteredfulldescription) +'%"';
+	  var fulldescriptionWhereString  = ' AND  IMC.FullDescription_InvtyCat LIKE  "%' + enteredfulldescription +'%"';
 	}
 	else
 	{
@@ -513,7 +516,7 @@ function queryForSearch(tx)
 	//alert('brand length: ' + enteredBrandlength);
 	if(enteredBrandlength > 0)
 	{
-	  var brandWhereString  = ' AND  IMC.Brand_InvtyCat LIKE  "%' + escape(enteredBrand) +'%"';
+	  var brandWhereString  = ' AND  IMC.Brand_InvtyCat LIKE  "%' + enteredBrand +'%"';
 	}
 	else
 	{
@@ -524,7 +527,7 @@ function queryForSearch(tx)
 	//alert('Category length: ' + enteredCategorylength);
 	if(enteredCategorylength > 0)
 	{
-	  var CategoryWhereString  = ' AND  IMCC.SysFk_CatgyMstr_InvtyCatCatgy =  "' + escape(enteredCategory) +'"';
+	  var CategoryWhereString  = ' AND  IMCC.SysFk_CatgyMstr_InvtyCatCatgy =  "' + enteredCategory +'"';
 	}
 	else
 	{
@@ -684,7 +687,11 @@ function renderCartList(tx,results)
 				orderAllTotal += parseFloat(cartsubtotalArr[ind]);//only valid items are totaled
 				
 				//commas are toNormal because this is for display
-				htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ toNormalComma(cartpromonameArr[ind]) + '</h2><p>'+toNormalComma(cartfulldescriptionArr[ind])+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
+				toNormalString(cartpromonameArr[ind]);
+				htmlstringcart +=  '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ returnedNormal ;
+				
+				toNormalString(cartfulldescriptionArr[ind]);
+				htmlstringcart +='</h2><p>'+returnedNormal+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
 
 				
 				
@@ -707,7 +714,7 @@ function renderCartList(tx,results)
 			}
 			else
 			{
-				htmlstringcart +=  '<div class="row cartItemCont invalid"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ toNormalComma(cartpromonameArr[ind]) + '</h2>'+'<small class="warning"> - This Item is only valid from '+ cartpromoStartDateArr[ind] + ' to ' +  cartpromoEndDateArr[ind] +'</small>'+'<br><p>'+toNormalComma(cartfulldescriptionArr[ind])+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
+				htmlstringcart +=  '<div class="row cartItemCont invalid"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11"><h2>'+ toNormalString(cartpromonameArr[ind]) + '</h2>'+'<small class="warning"> - This Item is only valid from '+ cartpromoStartDateArr[ind] + ' to ' +  cartpromoEndDateArr[ind] +'</small>'+'<br><p>'+toNormalString(cartfulldescriptionArr[ind])+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
 
 			}
 
@@ -1108,30 +1115,47 @@ $(document).on('click','.placeOrder', function()
     var orderedFrom = $(this).attr('data-orderedfrom');
 	
     //this prevents commas from promonames from being interpreted as , when localstorage string is turned into an array
-    SKU = SKU.replace(',','(xxxGLogCommaxxx)');
-    picturefilename = picturefilename.replace(',','(xxxGLogCommaxxx)');
-    BarcodeInvtyCat = BarcodeInvtyCat.replace(',','(xxxGLogCommaxxx)');
-    fulldescription = fulldescription.replace(',','(xxxGLogCommaxxx)');
-    promoname = promoname.replace(',','(xxxGLogCommaxxx)');
-	promoPrice = promoPrice.replace(',','(xxxGLogCommaxxx)');
-	promoEndDate = promoEndDate.replace(',','(xxxGLogCommaxxx)');
-	promoStartDate = promoStartDate.replace(',','(xxxGLogCommaxxx)');
-    quantity = quantity.replace(',','(xxxGLogCommaxxx)');
-    subtotal = subtotal.replace(',','(xxxGLogCommaxxx)');
-	orderedFrom = orderedFrom.replace(',','(xxxGlogCommaxxx)');
+		//SKU = toCustomString(SKU.toString());
+		// picturefilename = toCustomString(picturefilename.toString());
+		// BarcodeInvtyCat = toCustomString(BarcodeInvtyCat.toString());
+		//fulldescription = toCustomString(fulldescription);
+		//promoname = toCustomString(promoname);
+		//promoPrice = toCustomString(promoPrice.toString());
+		//promoEndDate = toCustomString(promoEndDate.toString());
+		//promoStartDate = toCustomString(promoStartDate.toString());
+		// quantity = toCustomString(quantity.toString());
+		// subtotal = toCustomString(subtotal.toString());
+		//orderedFrom = toCustomString(orderedFrom.toString());
 
-    localStorage.sku += SKU.toString()+',';
-	localStorage.picturefilename += picturefilename.toString()+',';
-	localStorage.BarcodeInvtyCat += BarcodeInvtyCat.toString()+',';
-    localStorage.fulldescription += fulldescription.toString()+',';
-	localStorage.promoname += promoname.toString()+',';
-    localStorage.promoPrice += promoPrice.toString()+',';
-	localStorage.promoenddate += promoEndDate.toString()+',';
-	localStorage.promostartdate += promoStartDate.toString()+',';
-    localStorage.quantity += quantity.toString()+',';
-    localStorage.subtotal += subtotal.toString()+',';
-	localStorage.orderedfrom += orderedFrom.toString()+',';
     
+	localStorage.sku += SKU.toString()+',';
+	alert('LS: ' + localStorage.sku);
+	localStorage.picturefilename += picturefilename.toString()+',';
+	alert('LS: ' + localStorage.picturefilename);
+	localStorage.BarcodeInvtyCat += BarcodeInvtyCat.toString()+',';
+	alert('LS: ' + localStorage.BarcodeInvtyCat);
+	
+	toCustomString(fulldescription);
+    localStorage.fulldescription += returnedCustom+',';
+	alert('LS: ' + localStorage.fulldescription);
+	
+	toCustomString(promoname);
+	localStorage.promoname += returnedCustom +',';
+	alert('LS: ' + localStorage.promoname);
+	
+	
+    localStorage.promoPrice += promoPrice+',';
+	alert('LS: ' + localStorage.promoPrice);
+	localStorage.promoenddate += promoEndDate.toString()+',';
+	alert('LS: ' + localStorage.promoenddate);
+	localStorage.promostartdate += promoStartDate.toString()+',';
+	alert('LS: ' + localStorage.promostartdate );
+    localStorage.quantity += quantity.toString()+',';
+	alert('LS: ' + localStorage.quantity);
+    localStorage.subtotal += subtotal.toString()+',';
+	alert('LS: ' + localStorage.subtotal );
+	localStorage.orderedfrom += orderedFrom.toString()+',';
+    alert('LS: ' + localStorage.orderedfrom);
     alert('item added to cart');
     
     $('.forsingleonly a').click();
@@ -1180,22 +1204,52 @@ function editOrderPageQuantityInputListener()
 }
 /*-------------------------------//editorder.html----------------------------*/
 
-function toNormalComma(stringWithCustomComma)
+function toNormalString(stringWithCustomString)
 {
-   var stringWithNormalComma = stringWithCustomComma.replace('(xxxGLogCommaxxx)',',');
-
-    
-    
-    return stringWithNormalComma;
-    
+	alert('toNormalStringFunction BEFORE REPLACE :' + stringWithCustomString);
+	alert('Index of (xxxGlogCommaxxx)' + stringWithCustomString.indexOf('(xxxGLogCommaxxx)'));
+	//alert('Index of (xxxGLogDoubleQxxx)' + stringWithCustomString.indexOf('(xxxGLogDoubleQxxx)'));
+	
+	if((stringWithCustomString.indexOf('(xxxGLogCommaxxx)') != -1))
+	{
+		stringWithCustomString = stringWithCustomString.replace('(xxxGLogCommaxxx)',',');
+ 		//stringWithNormalString = stringWithNormalString.replace('(xxxGLogDoubleQxxx)','"');
+		
+		alert('AFTER REPLACE :' + stringWithCustomString);
+		
+		toNormalString(stringWithCustomString)
+	}
+	else
+	{
+		
+		returnedNormal = stringWithCustomString;
+		alert('returnedNormal VALUE :'  + stringWithCustomString);
+    	
+	}
 }
 
-function toCustomComma(stringWithNormalComma)
+function toCustomString(stringWithNormalString)
 {
-    var stringWithCustomComma = stringWithNormalComma.replace(',','(xxxGLogCommaxxx)');
+	
+	alert('toCustomStringFunction BEFORE REPLACE :' + stringWithNormalString );
+	alert('Index of , :' + stringWithNormalString.indexOf(','));
+	//alert('Index of " :' + stringWithNormalString.indexOf('"'));
 
-    
-    return stringWithCustomComma;
+	
+	if((stringWithNormalString.indexOf(',') != -1))
+	{
+		stringWithNormalString = stringWithNormalString.replace(',','(xxxGLogCommaxxx)');
+  		//stringWithCustomString = stringWithCustomString.replace('"','(xxxGLogDoubleQxxx)');
+		
+		alert('AFTER REPLACE :' + stringWithNormalString);
+		toCustomString(stringWithNormalString)
+	}
+    else
+	{
+		returnedCustom = stringWithNormalString;
+	 	alert('returnedCustom VALUE :'  + stringWithNormalString);
+
+	}
 }
 
 
@@ -1235,17 +1289,19 @@ function checkForWhereAnd(str)//replace all WHERE AND with WHERE
 
 
 /*removed addslashes for single quote because it's not needed*/
-function addslashes(str) {
-str=str.replace(/\\/g,'\\\\');
-str=str.replace(/\'/g,'\\\'');
-str=str.replace(/\"/g,'\\"');
-str=str.replace(/\0/g,'\\0');
-return str;
+function addslashes(str)
+{
+	str=str.replace(/\\/g,'\\\\');
+	str=str.replace(/\'/g,'\\\'');
+	str=str.replace(/\"/g,'\\"');
+	str=str.replace(/\0/g,'\\0');
+	return str;
 }
-function stripslashes(str) {
-str=str.replace(/\\'/g,'\'');
-str=str.replace(/\\"/g,'"');
-str=str.replace(/\\0/g,'\0');
-str=str.replace(/\\\\/g,'\\');
-return str;
+function stripslashes(str)
+{
+	str=str.replace(/\\'/g,'\'');
+	str=str.replace(/\\"/g,'"');
+	str=str.replace(/\\0/g,'\0');
+	str=str.replace(/\\\\/g,'\\');
+	return str;
 }

@@ -12,8 +12,14 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                
                 /*INITIAL DISPLAY - BEFORE EDIT*/
                 $('.edit-order-PictureFileName').attr('src',cartpicturefilenameArr[orderidtoedit]);//<h1>promoname</h1>
-                $('.edit-order-fulldescription').append(toNormalComma(cartfulldescriptionArr[orderidtoedit]));//<p>fulldescription</p>
-                $('.edit-order-promoname').append(toNormalComma(cartpromonameArr[orderidtoedit]));//<h1>promoname</h1>
+               
+				toNormalString(cartfulldescriptionArr[orderidtoedit]);
+				$('.edit-order-fulldescription').append(returnedNormal);//<p>fulldescription</p>
+				
+				toNormalString(cartpromonameArr[orderidtoedit]);
+                $('.edit-order-promoname').append(returnedNormal);//<h1>promoname</h1>
+				
+				
 				$('.edit-order-promoPrice').append(cartpromoPriceArr[orderidtoedit]);//<h3>$<span>promoPrice</span></h3>
                 $('.edit-order-quantity').val(cartQuantityArr[orderidtoedit]);//<input type="text" name="quantity" id="quatity" class="edit-order-quantity" value="1">                
                 $('.edit-order-subtotal').append(cartsubtotalArr[orderidtoedit]);//<p><span>$</span><span class="edit-order-subtotal"></span></p>
