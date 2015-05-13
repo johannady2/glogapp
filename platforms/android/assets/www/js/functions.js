@@ -118,7 +118,8 @@ function createDB(tx)
 {
     tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE");
     var query = "";
-    query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,";
+    //query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,";
+    query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,";
     query += "SysFk_Invty_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,SysSeq_InvtyCat,UserSeq_InvtyCat, UserPk_InvtyCat,";
     query += "UserFk_Invty_InvtyCat,UserFk_CatMstr_InvtyCat,LastUpdatedBy_InvtyCat,LastUpdatedConcurrencyID_InvtyCat,LastUpdatedDate_InvtyCat TIMESTAMP DEFAULT (datetime('now','localtime')),";
     query += "Module_InvtyCat, Particulars_InvtyCat,PictureFileName_InvtyCat , Status_InvtyCat, Type_InvtyCat,";
@@ -178,17 +179,25 @@ function createDB(tx)
 
 function populateInventoryMasterCatalogue(tx)
 {
-  /*
+  
+	alert('populateInventoryMasterCatalogue(tx) STARTED');
+	alert('InventoryMasterCataloguedataLength =' + InventoryMasterCataloguedataLength);
+	alert('apiInvtyCatRecordCounter =' + apiInvtyCatRecordCounter);
+	alert('tx =' + tx);
+	
 		var RecordBeingProcessesd =  apiInvtyCatRecordCounter + 1;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
 		
 	
 		if(RecordBeingProcessesd <= InventoryMasterCataloguedataLength)
 		{
 			apiInvtyCattxparam = tx;
-	
+			var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?,?)";
+   
+			
+
 			
 				db.transaction(function(tx3){
-					tx3.executeSql(sqlInsert,["111111","4","111111","img/item1.jpg","101191","natasha","string part 1 of 2,string part 2 of 2." ,"string part 1 of 3 , string part 2 of 3 , string part 3 of 3",63.00],null,errorCB);
+					tx3.executeSql(sqlInsert,[1,"111111","4","111111","img/item1.jpg","101191","natasha","string part 1 of 2,string part 2 of 2." ,"string part 1 of 3 , string part 2 of 3 , string part 3 of 3",63.00],null,errorCB);
 				},errorCB,function(){  apiInvtyCatRecordCounter  += 1;  populateInventoryMasterCatalogue(apiInvtyCattxparam);});
 
 		}
@@ -197,7 +206,7 @@ function populateInventoryMasterCatalogue(tx)
 			apiInvtyCatRecordCounter = 0;
 		}
 		
-  */
+  /*s
     var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
    
    
@@ -227,7 +236,7 @@ function populateInventoryMasterCatalogue(tx)
     tx.executeSql(sqlInsert,["2222222222","2","2222222222","img/Item20.jpg","042000062008","etude house","was P3750","Sanyang Study Table",3000.00],null,errorCB);
     tx.executeSql(sqlInsert,["3333333333","2","3333333333","img/Item21.jpg","012345678905","etude house","pack of 10","80L notebooks",100.00],queryForExpired,errorCB);
    
-
+*/
 
 
 }
@@ -836,7 +845,7 @@ function renderCartList(tx,results)
 function getjsonForINVENTORY_MASTER_CATALOGUE()
 {
 
-   
+   alert('getjsonStarted');
 
 	
 	
@@ -922,7 +931,9 @@ function getjsonForINVENTORY_MASTER_CATALOGUE()
 				InventoryMasterCataloguedataLength =  SysPk_InvtyCatARR.length;
 				$('.getjsontest').append("<br><br><b>there are " + SysPk_InvtyCatARR.length + " promos <b>");
 
-		}); 
+		});
+	
+	   alert('getjsonComplete');
 }
 
 /*----------------------------------------------------------------------*/
