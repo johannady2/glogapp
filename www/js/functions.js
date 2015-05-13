@@ -85,7 +85,7 @@ if(localStorage.BarcodeInvtyCat == null)
 	//------------//FOR API
 
 /*~~~~~~~~~~~~~~~~~~~~//GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-getjsonForINVENTORY_MASTER_CATALOGUE();
+//getjsonForINVENTORY_MASTER_CATALOGUE();
 
 function errorCB(err)
 {
@@ -118,8 +118,8 @@ function createDB(tx)
 {
     tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE");
     var query = "";
-    //query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,";
-    query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,";
+    query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,";
+    //query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,";
     query += "SysFk_Invty_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,SysSeq_InvtyCat,UserSeq_InvtyCat, UserPk_InvtyCat,";
     query += "UserFk_Invty_InvtyCat,UserFk_CatMstr_InvtyCat,LastUpdatedBy_InvtyCat,LastUpdatedConcurrencyID_InvtyCat,LastUpdatedDate_InvtyCat TIMESTAMP DEFAULT (datetime('now','localtime')),";
     query += "Module_InvtyCat, Particulars_InvtyCat,PictureFileName_InvtyCat , Status_InvtyCat, Type_InvtyCat,";
@@ -180,24 +180,28 @@ function createDB(tx)
 function populateInventoryMasterCatalogue(tx)
 {
   
-	alert('populateInventoryMasterCatalogue(tx) STARTED');
-	alert('InventoryMasterCataloguedataLength =' + InventoryMasterCataloguedataLength);
+
+/*
 	alert('apiInvtyCatRecordCounter =' + apiInvtyCatRecordCounter);
-	alert('tx =' + tx);
+
 	
 		var RecordBeingProcessesd =  apiInvtyCatRecordCounter + 1;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
-		
-	
-		if(RecordBeingProcessesd <= InventoryMasterCataloguedataLength)
-		{
-			apiInvtyCattxparam = tx;
-			var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?,?)";
-   
-			
+		apiInvtyCattxparam = tx;
+		var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?,?)";
 
 			
+		if(RecordBeingProcessesd < InventoryMasterCataloguedataLength)// will have to make if < and else if == because last insert has a callback.
+		{
+
 				db.transaction(function(tx3){
-					tx3.executeSql(sqlInsert,[1,"111111","4","111111","img/item1.jpg","101191","natasha","string part 1 of 2,string part 2 of 2." ,"string part 1 of 3 , string part 2 of 3 , string part 3 of 3",63.00],null,errorCB);
+					tx3.executeSql(sqlInsert,[RowNumber_InvtyCatARR[apiInvtyCatRecordCounter],SysPk_InvtyCatARR[apiInvtyCatRecordCounter],SysFk_CatMstr_InvtyCatARR[apiInvtyCatRecordCounter],SKU_InvtyCatARR[apiInvtyCatRecordCounter],PictureFileName_InvtyCatARR[apiInvtyCatRecordCounter],Barcode_InvtyCatARR[apiInvtyCatRecordCounter],Brand_InvtyCatARR[apiInvtyCatRecordCounter],FullDescription_InvtyCatARR[apiInvtyCatRecordCounter] ,PromoName_InvtyCatARR[apiInvtyCatRecordCounter],PromoPrice_InvtyCatARR[apiInvtyCatRecordCounter]],null,errorCB);
+				},errorCB,function(){  apiInvtyCatRecordCounter  += 1;  populateInventoryMasterCatalogue(apiInvtyCattxparam);});
+
+		}
+		else if(RecordBeingProcessesd == InventoryMasterCataloguedataLength)//on last insert callback queryforexpired.
+		{
+				db.transaction(function(tx3){
+					tx3.executeSql(sqlInsert,[RowNumber_InvtyCatARR[apiInvtyCatRecordCounter],SysPk_InvtyCatARR[apiInvtyCatRecordCounter],SysFk_CatMstr_InvtyCatARR[apiInvtyCatRecordCounter],SKU_InvtyCatARR[apiInvtyCatRecordCounter],PictureFileName_InvtyCatARR[apiInvtyCatRecordCounter],Barcode_InvtyCatARR[apiInvtyCatRecordCounter],Brand_InvtyCatARR[apiInvtyCatRecordCounter],FullDescription_InvtyCatARR[apiInvtyCatRecordCounter] ,PromoName_InvtyCatARR[apiInvtyCatRecordCounter],PromoPrice_InvtyCatARR[apiInvtyCatRecordCounter]],queryForExpired,errorCB);
 				},errorCB,function(){  apiInvtyCatRecordCounter  += 1;  populateInventoryMasterCatalogue(apiInvtyCattxparam);});
 
 		}
@@ -206,7 +210,7 @@ function populateInventoryMasterCatalogue(tx)
 			apiInvtyCatRecordCounter = 0;
 		}
 		
-  /*s
+  */
     var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
    
    
@@ -236,7 +240,7 @@ function populateInventoryMasterCatalogue(tx)
     tx.executeSql(sqlInsert,["2222222222","2","2222222222","img/Item20.jpg","042000062008","etude house","was P3750","Sanyang Study Table",3000.00],null,errorCB);
     tx.executeSql(sqlInsert,["3333333333","2","3333333333","img/Item21.jpg","012345678905","etude house","pack of 10","80L notebooks",100.00],queryForExpired,errorCB);
    
-*/
+
 
 
 }
@@ -508,6 +512,7 @@ function renderCatalogueItems(tx2,results)
      $('.listSet-'+results.rows.item(0).syspkcatmstr).append(htmlstringCatalaogue);
     // $('#list').append(htmlstringCatalaogue);
 		
+	
 		
 }
 
@@ -845,10 +850,7 @@ function renderCartList(tx,results)
 function getjsonForINVENTORY_MASTER_CATALOGUE()
 {
 
-   alert('getjsonStarted');
 
-	
-	
 
 		$.getJSON( "http://viveg.net/glogapitest/", function( data )
 		{
@@ -932,8 +934,7 @@ function getjsonForINVENTORY_MASTER_CATALOGUE()
 				$('.getjsontest').append("<br><br><b>there are " + SysPk_InvtyCatARR.length + " promos <b>");
 
 		});
-	
-	   alert('getjsonComplete');
+
 }
 
 /*----------------------------------------------------------------------*/
@@ -998,8 +999,8 @@ function renderSinglePage(tx,results)
 		}
 			
 			
-			alert('RESULT ROW PROMO NAME: ' + results.rows.item(0).PromoName_InvtyCat);
-			alert('RESULT ROW FULL DESCRIPTION: ' + results.rows.item(0).FullDescription_InvtyCat);
+			//alert('RESULT ROW PROMO NAME: ' + results.rows.item(0).PromoName_InvtyCat);
+			//alert('RESULT ROW FULL DESCRIPTION: ' + results.rows.item(0).FullDescription_InvtyCat);
 			
 			var placeorderbtnstring =  '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoEndDate="'+ results.rows.item(0).PromoEndDate_CatMstr +'" data-promoStartDate="'+ results.rows.item(0).PromoStartDate_CatMstr +'" ';
 				
@@ -1010,7 +1011,7 @@ function renderSinglePage(tx,results)
 			placeorderbtnstring += ' data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ returnedCustom +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-orderedfrom="'+ globalorderedFrom +'">Place Order</a>';
 			
 			
-			alert(placeorderbtnstring);
+			//alert(placeorderbtnstring);
 			$( '.singleitemtable' ).after(placeorderbtnstring);
 		
         });
@@ -1185,38 +1186,29 @@ $(document).on('click','.placeOrder', function()
 		// subtotal = toCustomString(subtotal.toString());
 		//orderedFrom = toCustomString(orderedFrom.toString());
 
-    alert('ORIGINAL FULLDESCRIPTION: ' + fulldescription);
-	alert('ORIGINAL PROMONAME: ' + promoname);
+
 	
 	
 	localStorage.sku += SKU.toString()+',';
-	alert('LS: ' + localStorage.sku);
+
 	localStorage.picturefilename += picturefilename.toString()+',';
-	alert('LS: ' + localStorage.picturefilename);
+	
 	localStorage.BarcodeInvtyCat += BarcodeInvtyCat.toString()+',';
-	alert('LS: ' + localStorage.BarcodeInvtyCat);
+
 	
 	toCustomString(fulldescription);
     localStorage.fulldescription += returnedCustom+',';
-	alert('LS: ' + localStorage.fulldescription);
 	
 	toCustomString(promoname);
 	localStorage.promoname += returnedCustom +',';
-	alert('LS: ' + localStorage.promoname);
-	
 	
     localStorage.promoPrice += promoPrice+',';
-	alert('LS: ' + localStorage.promoPrice);
 	localStorage.promoenddate += promoEndDate.toString()+',';
-	alert('LS: ' + localStorage.promoenddate);
 	localStorage.promostartdate += promoStartDate.toString()+',';
-	alert('LS: ' + localStorage.promostartdate );
     localStorage.quantity += quantity.toString()+',';
-	alert('LS: ' + localStorage.quantity);
     localStorage.subtotal += subtotal.toString()+',';
-	alert('LS: ' + localStorage.subtotal );
 	localStorage.orderedfrom += orderedFrom.toString()+',';
-    alert('LS: ' + localStorage.orderedfrom);
+    
     alert('item added to cart');
     
     $('.forsingleonly a').click();

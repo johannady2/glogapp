@@ -14,6 +14,7 @@ $(document).on('navClicked',function(event,filename)
                  {
                     idForSinglePage = $(this).data('itemid');
 
+					
                     viewItemClickedContentReady(event,idForSinglePage);
                 
                  });
