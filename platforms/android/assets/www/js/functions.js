@@ -359,8 +359,7 @@ function populateCategoryMaster(tx)
 		tx.executeSql(sqlInsert5,["catgy2","Category Name 2"],null,errorCB);
 		tx.executeSql(sqlInsert5,["catgy3","Category Name 3"],null,errorCB);
 		tx.executeSql(sqlInsert5,["catgy4","Category Name 4"],null,errorCB);
-		tx.executeSql(sqlInsert5,["catgy5","Category Name 5"],null,errorCB);
-		tx.executeSql(sqlInsert5,["catgy6","Category Name 6"],null,errorCB);
+
 	
 	
 }
@@ -371,11 +370,13 @@ function populateInvtyCatCatgy(tx)
 	//alert('test1');
 	var sqlInsert6 = "INSERT INTO INVENTORY_MASTER_CATALOGUE_CATEGORY(SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy) VALUES(?,?)";
 	tx.executeSql(sqlInsert6,["111111","catgy1"],null,errorCB);
+	tx.executeSql(sqlInsert6,["111111","catgy2"],null,errorCB);
+	tx.executeSql(sqlInsert6,["111111","catgy3"],null,errorCB);
+	tx.executeSql(sqlInsert6,["111111","catgy4"],null,errorCB);
 	tx.executeSql(sqlInsert6,["333333","catgy2"],null,errorCB);
 	tx.executeSql(sqlInsert6,["444444","catgy3"],null,errorCB);
 	tx.executeSql(sqlInsert6,["555555","catgy4"],null,errorCB);
-	tx.executeSql(sqlInsert6,["666666","catgy5"],null,errorCB);
-	tx.executeSql(sqlInsert6,["777777","catgy6"],null,errorCB);
+
 
 
 	//alert('test2');
@@ -666,7 +667,8 @@ function renderSearchResults(tx,results)
     for(var ind=0; ind < len; ind++)
     {
         
-        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).PromoName_InvtyCat+'</h1><h4>'+results.rows.item(ind).Brand_InvtyCat+'</h4><br><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><br><p><b>Catalogue: </b>'+results.rows.item(ind).CatalogueTitle_CatMstr+'<br><b>Category: </b>'+results.rows.item(ind).CategoryName_CatgyMstr+'</p><small>Valid from:<br>' + results.rows.item(ind).PromoStartDate_CatMstr + ' to ' + results.rows.item(ind).PromoEndDate_CatMstr +'</small><br><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a></div><div class="clearfix"><hr></div>';
+       //displays categorgy but commented out because it will be more complex when item has more than one category// htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).PromoName_InvtyCat+'</h1><h4>'+results.rows.item(ind).Brand_InvtyCat+'</h4><br><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><br><p><b>Catalogue: </b>'+results.rows.item(ind).CatalogueTitle_CatMstr+'<br><b>Category: </b>'+results.rows.item(ind).CategoryName_CatgyMstr+'</p><small>Valid from:<br>' + results.rows.item(ind).PromoStartDate_CatMstr + ' to ' + results.rows.item(ind).PromoEndDate_CatMstr +'</small><br><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a></div><div class="clearfix"><hr></div>';
+        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).PromoName_InvtyCat+'</h1><h4>'+results.rows.item(ind).Brand_InvtyCat+'</h4><br><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><br><p><b>Catalogue: </b>'+results.rows.item(ind).CatalogueTitle_CatMstr+'</p><small>Valid from:<br>' + results.rows.item(ind).PromoStartDate_CatMstr + ' to ' + results.rows.item(ind).PromoEndDate_CatMstr +'</small><br><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a></div><div class="clearfix"><hr></div>';
    		
     }
   }
@@ -1045,12 +1047,16 @@ function renderSinglePage(tx,results)
     
     if(doesThisExist > 0)
     {
+		
+		
         $('.content-cont').load('single-item.html',null,function(){
         
          $('.singleitemPictureFileName').attr('src',results.rows.item(0).PictureFileName_InvtyCat);
          $('.singleitempromoname').append(results.rows.item(0).PromoName_InvtyCat);
          $('.singleitembrand').append(results.rows.item(0).Brand_InvtyCat);
          $('.singleitemfulldescription').append(results.rows.item(0).FullDescription_InvtyCat);
+         $('.singleitemcatalogue').append(results.rows.item(0).CatalogueTitle_CatMstr);
+        // $('.singleitemcategory').append(results.rows.item(0).CategoryName_CatgyMstr);
          $('.singleitempromoprice').append(results.rows.item(0).PromoPrice_InvtyCat);
          $('.singleitemsubtotal').append(results.rows.item(0).PromoPrice_InvtyCat);//temporary. value will change on quantity input
 			
