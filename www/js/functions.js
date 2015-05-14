@@ -250,20 +250,40 @@ function populateInventoryMasterCatalogue(tx)
 
 
 function queryCategories(tx)
-{
+{   
 	tx.executeSql('SELECT * FROM CATEGORY_MASTER', [], renderCategoriesToSelectBox);
 }
 
 function renderCategoriesToSelectBox(tx,results)
-{var categoriesString = '';
-	//alert(results.rows.length);
+{   
+    var categoriesString = '';
+	
 	for(var ind=0; ind < results.rows.length ; ind++ )
-	{//SysPk_CatgyMstr, CategoryName_CatgyMstr
+	{
 		categoriesString += '<option value="'+results.rows.item(ind).SysPk_CatgyMstr+'">'+results.rows.item(ind).CategoryName_CatgyMstr+'</option>';
 	}
 	$('.search-category').append(categoriesString);
+ 
+
 }
 
+function queryCatalogues(tx)
+{
+    alert('selecting catalogues');
+    	tx.executeSql('SELECT * FROM CATALOGUE_MASTER', [], renderCataloguesToSelectBox);
+}
+
+function renderCataloguesToSelectBox(tx,results)
+{  
+    
+    var CataloguesString = '';
+
+	for(var ind=0; ind < results.rows.length ; ind++ )
+	{
+		CataloguesString += '<option value="'+results.rows.item(ind).SysPk_CatMstr+'">'+results.rows.item(ind).CatalogueTitle_CatMstr+'</option>';
+	}
+	$('.search-catalogue').append(CataloguesString);
+}
 
 
 function queryForExpired(tx)

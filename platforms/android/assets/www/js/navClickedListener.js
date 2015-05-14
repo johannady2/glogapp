@@ -24,7 +24,9 @@ $(document).on('navClicked',function(event,filename)
     }
     else if(filename == "search.html")
     {
+           
 			db.transaction(queryCategories, errorCB);
+			
             startSearch();
        
     }
