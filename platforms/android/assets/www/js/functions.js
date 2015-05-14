@@ -38,7 +38,6 @@ if(localStorage.BarcodeInvtyCat == null)
     var cartfulldescriptionArr;
     var cartpromonameArr;
 	var cartpromoPriceArr;
-	var cartcategorynameArr;
 	var cartpromoEndDateArr;
 	var cartpromoStartDateArr;
     var cartQuantityArr;
@@ -56,7 +55,6 @@ if(localStorage.BarcodeInvtyCat == null)
 	localStorage.fulldescription = '';
     localStorage.promoname = '';
     localStorage.promoPrice = '';
-    localStorage.categoryname = '';
 	localStorage.promoenddate = '';
 	localStorage.promostartdate = '';
     localStorage.quantity = '';
@@ -81,7 +79,6 @@ if(localStorage.BarcodeInvtyCat == null)
 		var	FullDescription_InvtyCatARR = [];
 		var	PromoName_InvtyCatARR = [];
 		var	PromoPrice_InvtyCatARR = [];
-		var	CategoryName_CatgyMstrArr = [];
 
 		var InventoryMasterCataloguedataLength;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
 		var apiInvtyCatRecordCounter = 0;
@@ -731,7 +728,6 @@ function renderCartList(tx,results)
 	var validfulldescriptionArr = [];
 	var validpromonameArr = [];
 	var validpromoPriceArr = [];
-	var validCategoryNameArr = [];
 	var validpromoEndDateArr = [];
 	var validpromoStartDateArr = [];
 	var validQuantityArr = [];
@@ -746,7 +742,6 @@ function renderCartList(tx,results)
 	var BrandInvtyCatForArr = localStorage.BrandInvtyCat.replace(/,\s*$/,'');
 	var fulldescriptionForArr = localStorage.fulldescription.replace(/,\s*$/,'');
 	var promoPriceForArr = localStorage.promoPrice.replace(/,\s*$/,'');
-	var categoryNameForArr = localStorage.categoryname.replace(/,\s*$/,'');
 	var promoEndDateForArr = localStorage.promoenddate.replace(/,\s*$/,'');
 	var promoStartDateForArr = localStorage.promostartdate.replace(/,\s*$/,'');
 	var promonameForArr = localStorage.promoname.replace(/,\s*$/,'');
@@ -763,7 +758,6 @@ function renderCartList(tx,results)
 	cartbrandArr =  BrandInvtyCatForArr.split(',');
 	cartfulldescriptionArr =  fulldescriptionForArr.split(',');
 	cartpromoPriceArr =  promoPriceForArr.split(',');
-	cartcategorynameArr =  categoryNameForArr.split(',');
 	cartpromoEndDateArr = promoEndDateForArr.split(',');
 	cartpromoStartDateArr = promoStartDateForArr.split(',');
 	cartpromonameArr =  promonameForArr.split(',');
@@ -820,7 +814,6 @@ function renderCartList(tx,results)
 				validfulldescriptionArr.push(cartfulldescriptionArr[ind]);
 				validpromonameArr.push(cartpromonameArr[ind]);
 				validpromoPriceArr.push(cartpromoPriceArr[ind]);
-				validCategoryNameArr.push(cartcategorynameArr[ind]);
 				validpromoEndDateArr.push(cartpromoEndDateArr[ind]);
 				validpromoStartDateArr.push(cartpromoStartDateArr[ind]);
 				validQuantityArr.push(cartQuantityArr[ind]);
@@ -881,7 +874,7 @@ function renderCartList(tx,results)
 		
 		$('.orderAll-cont').empty();
 		//change to validArrs later
-		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-brand="'+validbrandArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-categoryname="'+ validCategoryNameArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'" data-orderedfrom="'+validorderedFromArr.toString()+'">Order All</a>');
+		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-brand="'+validbrandArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'" data-orderedfrom="'+validorderedFromArr.toString()+'">Order All</a>');
    
 		
 	
@@ -904,7 +897,6 @@ function renderCartList(tx,results)
         alert($(this).attr('data-fulldescription'));
         alert($(this).attr('data-promoname'));
         alert($(this).attr('data-promoPrice'));
-        alert($(this).attr('data-categoryname'));
         alert($(this).attr('data-promoEndDate'));
         alert($(this).attr('data-promoStartDate'));
         alert($(this).attr('data-quantity'));
@@ -1054,14 +1046,12 @@ function renderSinglePage(tx,results)
     if(doesThisExist > 0)
     {
         $('.content-cont').load('single-item.html',null,function(){
-        alert(results.rows.item(0).CategoryName_CatgyMstrArr);
+        
          $('.singleitemPictureFileName').attr('src',results.rows.item(0).PictureFileName_InvtyCat);
          $('.singleitempromoname').append(results.rows.item(0).PromoName_InvtyCat);
          $('.singleitembrand').append(results.rows.item(0).Brand_InvtyCat);
          $('.singleitemfulldescription').append(results.rows.item(0).FullDescription_InvtyCat);
-		$('.singleitemcategoryname').append(results.rows.item(0).CategoryName_CatgyMstrArr);
          $('.singleitempromoprice').append(results.rows.item(0).PromoPrice_InvtyCat);
-     
          $('.singleitemsubtotal').append(results.rows.item(0).PromoPrice_InvtyCat);//temporary. value will change on quantity input
 			
 		//STOPPED HERE
@@ -1084,19 +1074,13 @@ function renderSinglePage(tx,results)
 			//alert('RESULT ROW PROMO NAME: ' + results.rows.item(0).PromoName_InvtyCat);
 			//alert('RESULT ROW FULL DESCRIPTION: ' + results.rows.item(0).FullDescription_InvtyCat);
 			
-			var placeorderbtnstring =  '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'"'; 
-			
-			//toCustomString(results.rows.item(0).CategoryName_CatgyMstrArr);
-			//placeorderbtnstring += ' data-categoryname="'+ returnedCustom +'"';
-			
-			placeorderbtnstring += ' data-promoEndDate="'+ results.rows.item(0).PromoEndDate_CatMstr +'" data-promoStartDate="'+ results.rows.item(0).PromoStartDate_CatMstr +'" ';
+			var placeorderbtnstring =  '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoEndDate="'+ results.rows.item(0).PromoEndDate_CatMstr +'" data-promoStartDate="'+ results.rows.item(0).PromoStartDate_CatMstr +'" ';
 				
 			toCustomString(results.rows.item(0).PromoName_InvtyCat);
 			placeorderbtnstring	+=' data-promoname="'+ returnedCustom +'" ';
 				
 			toCustomString(results.rows.item(0).FullDescription_InvtyCat);
 			placeorderbtnstring += ' data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ returnedCustom +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-BrandInvtyCat="'+results.rows.item(0).Brand_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-orderedfrom="'+ globalorderedFrom +'">Place Order</a>';
-			
 			
 			
 			//alert(placeorderbtnstring);
