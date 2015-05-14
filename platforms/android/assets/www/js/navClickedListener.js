@@ -25,7 +25,8 @@ $(document).on('navClicked',function(event,filename)
     else if(filename == "search.html")
     {
            
-			db.transaction(queryCategories, errorCB);
+			db.transaction(queryCategoriesForSelectBox, errorCB);
+			db.transaction(queryCataloguesForSelectBox, errorCB);
 			
             startSearch();
        

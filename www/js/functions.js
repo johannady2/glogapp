@@ -249,7 +249,7 @@ function populateInventoryMasterCatalogue(tx)
 }
 
 
-function queryCategories(tx)
+function queryCategoriesForSelectBox(tx)
 {   
 	tx.executeSql('SELECT * FROM CATEGORY_MASTER', [], renderCategoriesToSelectBox);
 }
@@ -267,7 +267,7 @@ function renderCategoriesToSelectBox(tx,results)
 
 }
 
-function queryCatalogues(tx)
+function queryCataloguesForSelectBox(tx)
 {
     alert('selecting catalogues');
     	tx.executeSql('SELECT * FROM CATALOGUE_MASTER', [], renderCataloguesToSelectBox);
