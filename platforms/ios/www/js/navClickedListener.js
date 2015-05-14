@@ -52,7 +52,9 @@ $(document).on('navClicked',function(event,filename)
     else if(filename == "test-getjson.html")
     {      
        
-          getjsonForINVENTORY_MASTER_CATALOGUE(); 
+           //getjsondata();
+		
+		isjsonready();
     }
 
   

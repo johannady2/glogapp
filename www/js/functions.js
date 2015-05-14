@@ -69,28 +69,44 @@ if(localStorage.BarcodeInvtyCat == null)
 
 
 	//-------------FOR API
-		//--INVENTORY_MASTER_CATALOGUE
-		var RowNumber_InvtyCatARR = [];
-		var SysPk_InvtyCatARR =[];
-		var	SysFk_CatMstr_InvtyCatARR = [];
-		var	SKU_InvtyCatARR =[];
-		var PictureFileName_InvtyCatARR= [];
-		var	Barcode_InvtyCatARR = [];
-		var	Brand_InvtyCatARR = [];
-		var	Brand_InvtyCatARR = [];
-		var	FullDescription_InvtyCatARR = [];
-		var	PromoName_InvtyCatARR = [];
-		var	PromoPrice_InvtyCatARR = [];
+					//--INVENTORY_MASTER_CATALOGUE
+					var RowNumber_InvtyCatARR = [];
+					var SysPk_InvtyCatARR =[];
+					var	SysFk_CatMstr_InvtyCatARR = [];
+					var	SKU_InvtyCatARR =[];
+					var PictureFileName_InvtyCatARR= [];
+					var	Barcode_InvtyCatARR = [];
+					var	Brand_InvtyCatARR = [];
+					var	FullDescription_InvtyCatARR = [];
+					var	PromoName_InvtyCatARR = [];
+					var	PromoPrice_InvtyCatARR = [];
 
-		var InventoryMasterCataloguedataLength;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
-		var apiInvtyCatRecordCounter = 0;
-		var apiInvtyCattxparam;
-		//--//INVENTORY_MASTER_CATALOGUE
+					var InventoryMasterCataloguedataLength;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
+					var apiInvtyCatRecordCounter = 0;
+					var apiInvtyCattxparam;
+					//--//INVENTORY_MASTER_CATALOGUE
+
+
+					//--CATALOGUE_MASTER
+					var RowNumber_CatMstrARR = [];
+					var SysPk_CatMstrARR =[];
+					var	SysSeq_CatMstrARR = [];
+					var	LastUpdatedDate_CatMstrARR =[];
+					var CatalogueTitle_CatMstrARR= [];
+					var	PromoEndDate_CatMstrARR = [];
+					var	PromoStartDate_CatMstrARR = [];
+	
+
+					var CatalogueMasterLength;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
+					var apiCatMstrRecordCounter = 0;
+					var apiCatMstrtxparam;
+					//--//CATALOGUE_MASTER
+
 
 	//------------//FOR API
 
 /*~~~~~~~~~~~~~~~~~~~~//GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-//getjsonForINVENTORY_MASTER_CATALOGUE();
+
 
 function errorCB(err)
 {
@@ -112,12 +128,7 @@ function onDeviceReady()
     db.transaction(createDB, errorCB, successCB);
    
 }
-/*
-"CREATE TABLE IF NOT EXISTS sample_db(id INTEGER PRIMARY KEY AUTOINCREMENT,
-name_field TEXT NOT NULL DEFAULT "",
-interval INTEGER NOT NULL DEFAULT 0, date_added TIMESTAMP DEFAULT (datetime('now','localtime')));
-"
-*/
+
 
 function createDB(tx)
 {
@@ -141,6 +152,7 @@ function createDB(tx)
     tx.executeSql("DROP TABLE IF EXISTS CATALOGUE_MASTER");
     var query2 = "";
     query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_CatMstr,";
+    //query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr, SysPk_CatMstr,";
     query2 += "SysFk_CatMstr,SysSeq_CatMstr, UserPk_CatMstr, LastUpdatedBy_CatMstr, LastUpdatedConcurrencyID_CatMstr, LastUpdatedDate_CatMstr TIMESTAMP DEFAULT (datetime('now','localtime')), Module_CatMstr,";
     query2 += "Particulars_CatMstr,PictureFileName_CatMstr, Status_CatMstr,Type_CatMstr,";
     query2 += "CatalogueTitle_CatMstr, Description_CatMstr, FullDescription_CatMstr, FreeDescription_CatMstr,";
@@ -171,7 +183,7 @@ function createDB(tx)
 	tx.executeSql(query5,[],populateCategoryMaster,errorCB);//populateCategoryMaster
 	
 	
-	//relationship between inventory master catalogue && category master
+
 	tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY");
 	var query6 ="";
 	query6 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY(RowNumber_InvtyCatCatgy INTEGER PRIMARY KEY AUTOINCREMENT,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
@@ -185,8 +197,8 @@ function createDB(tx)
 function populateInventoryMasterCatalogue(tx)
 {
   
-
 /*
+
 	alert('apiInvtyCatRecordCounter =' + apiInvtyCatRecordCounter);
 
 	
@@ -208,14 +220,16 @@ function populateInventoryMasterCatalogue(tx)
 				db.transaction(function(tx3){
 					tx3.executeSql(sqlInsert,[RowNumber_InvtyCatARR[apiInvtyCatRecordCounter],SysPk_InvtyCatARR[apiInvtyCatRecordCounter],SysFk_CatMstr_InvtyCatARR[apiInvtyCatRecordCounter],SKU_InvtyCatARR[apiInvtyCatRecordCounter],PictureFileName_InvtyCatARR[apiInvtyCatRecordCounter],Barcode_InvtyCatARR[apiInvtyCatRecordCounter],Brand_InvtyCatARR[apiInvtyCatRecordCounter],FullDescription_InvtyCatARR[apiInvtyCatRecordCounter] ,PromoName_InvtyCatARR[apiInvtyCatRecordCounter],PromoPrice_InvtyCatARR[apiInvtyCatRecordCounter]],queryForExpired,errorCB);
 				},errorCB,function(){  apiInvtyCatRecordCounter  += 1;  populateInventoryMasterCatalogue(apiInvtyCattxparam);});
+				
 
+		
 		}
 		else
 		{
 			apiInvtyCatRecordCounter = 0;
 		}
-		
-  */
+
+*/
     var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
    
    
@@ -932,16 +946,161 @@ function renderCartList(tx,results)
 
 
 
-
-
-
-
-function getjsonForINVENTORY_MASTER_CATALOGUE()
+function isjsonready()
 {
+	$.when($.getJSON('http://viveg.net/glogapitest/index.php?table=INVENTORY_MASTER_CATALOGUE'), $.getJSON('http://viveg.net/glogapitest/index.php?table=CATALOGUE_MASTER')).done(function(invtycat, catmstr)
+	{
+		 $('.getjsontest').append("<br><br>----INVENTORY_MASTER_CATALOGUE----<br><br>");
+			$.each( invtycat[0], function( index, value ) 
+			  {
+
+					$.each(value, function(inde, valu)
+					{
+						$.each(valu, function(ind, val)
+						{
+							$.each( val, function( i, v )
+							{
+
+									if(i == "RowNumber_InvtyCat")
+									{
+										RowNumber_InvtyCatARR.push(val[i]);
+										$('.getjsontest').append(val[i] + " inserted to array RowNumber_InvtyCatARR<br>");
+									}
+									else if(i == "SysPk_InvtyCat")
+									{
+										SysPk_InvtyCatARR.push(val[i]);
+										$('.getjsontest').append(val[i] + " inserted to array SysPk_InvtyCatARR<br>");
+									}
+									else if(i == "SysFk_CatMstr_InvtyCat")
+									{
+										SysFk_CatMstr_InvtyCatARR.push(val[i]);
+										$('.getjsontest').append(val[i] + " inserted to array SysFk_CatMstr_InvtyCatARR<br>");
+									}
+									else if(i == "SKU_InvtyCat")
+									{
+										SKU_InvtyCatARR.push(val[i]);
+										$('.getjsontest').append(val[i] + " inserted to array SKU_InvtyCatARR<br>");
+									}
+									else if(i == "PictureFileName_InvtyCat")
+									{
+										PictureFileName_InvtyCatARR.push(val[i]);
+										$('.getjsontest').append(val[i] + " inserted to array PictureFileName_InvtyCatARR<br>");
+									}
+									else if(i == "Barcode_InvtyCat")
+									{
+										Barcode_InvtyCatARR.push(val[i]);
+										$('.getjsontest').append(val[i] + " inserted to array Barcode_InvtyCatARR<br>");
+								
+									}
+									else if(i == "Brand_InvtyCat")
+									{
+										Brand_InvtyCatARR.push(val[i]);
+										$('.getjsontest').append(val[i] + " inserted to array Brand_InvtyCatARR<br>");
+								
+									}
+									else if(i == "FullDescription_InvtyCat")
+									{
+										FullDescription_InvtyCatARR.push(val[i]);
+										$('.getjsontest').append(val[i] + " inserted to array FullDescription_InvtyCatARR<br>");
+								
+									}
+									else if(i == "PromoName_InvtyCat")
+									{
+										PromoName_InvtyCatARR.push(val[i]);
+										$('.getjsontest').append(val[i] + " inserted to array PromoName_InvtyCatARR<br>");
+								
+									}
+									else if(i == "PromoPrice_InvtyCat")
+									{
+										PromoPrice_InvtyCatARR.push(val[i]);
+										$('.getjsontest').append(val[i] + " inserted to array PromoPrice_InvtyCatARR<br>");
+								
+									}
+								
+
+
+							});	
+
+						});	
+
+					});
+			  });
+		 $('.getjsontest').append("<br><br>//----INVENTORY_MASTER_CATALOGUE----<br><br>");
+			
+		 $('.getjsontest').append("<br><br>----CATALOGUE_MASTER----<br><br>");
+		
+				$.each(catmstr[0], function( index, value ) 
+				 {
+					$.each(value, function(inde, valu)
+							{
+
+
+								$.each(valu, function(ind, val)
+								{
+									$.each( val, function( i, v )
+									{
+
+
+											if(i == "RowNumber_CatMstr")
+											{
+												RowNumber_CatMstrARR.push(val[i]);
+												$('.getjsontest').append(val[i] + " inserted to array RowNumber_InvtyCatARR<br>");
+											}
+											else if(i == "SysPk_CatMstr")
+											{
+												SysPk_CatMstrARR.push(val[i]);
+												$('.getjsontest').append(val[i] + " inserted to array SysPk_CatMstrARR<br>");
+											}
+											else if(i == "SysSeq_CatMstr")
+											{
+												SysPk_CatMstrARR.push(val[i]);
+												$('.getjsontest').append(val[i] + " inserted to array SysSeq_CatMstrARR<br>");
+											}
+											else if(i == "LastUpdatedDate_CatMstr")
+											{
+												LastUpdatedDate_CatMstrARR.push(val[i]);
+												$('.getjsontest').append(val[i] + " inserted to array LastUpdatedDate_CatMstrARR<br>");
+
+											}
+											else if(i == "CatalogueTitle_CatMstr")
+											{
+												CatalogueTitle_CatMstrARR.push(val[i]);
+												$('.getjsontest').append(val[i] + " inserted to array CatalogueTitle_CatMstrARR<br>");
+
+											}
+											else if(i == "PromoEndDate_CatMstr")
+											{
+												PromoEndDate_CatMstrARR.push(val[i]);
+												$('.getjsontest').append(val[i] + " inserted to array PromoEndDate_CatMstrARR<br>");
+
+											}
+											else if(i == "PromoStartDate_CatMstr")
+											{
+												PromoStartDate_CatMstrARR.push(val[i]);
+												$('.getjsontest').append(val[i] + " inserted to array PromoStartDate_CatMstrARR<br>");
+
+											}
 
 
 
-		$.getJSON( "http://viveg.net/glogapitest/", function( data )
+									});	
+
+								});	
+
+							});
+				});
+		 $('.getjsontest').append("<br><br>//----CATALOGUE_MASTER----<br><br>");
+	});
+}
+
+
+/*
+function getjsondata()
+{
+	
+
+
+		$.getJSON( "http://viveg.net/glogapitest/index.php?table=INVENTORY_MASTER_CATALOGUE", function( data )
 		{
 
 			  $.each( data, function( index, value ) 
@@ -1021,10 +1180,12 @@ function getjsonForINVENTORY_MASTER_CATALOGUE()
 
 				InventoryMasterCataloguedataLength =  SysPk_InvtyCatARR.length;
 				$('.getjsontest').append("<br><br><b>there are " + SysPk_InvtyCatARR.length + " promos <b>");
+			
+				
 
 		});
 
-}
+}*/
 
 /*----------------------------------------------------------------------*/
 /*-------------------//navClickedListener.js-------------------------------*/
@@ -1290,7 +1451,7 @@ $(document).on('click','.placeOrder', function()
     localStorage.subtotal += subtotal.toString()+',';
 	localStorage.orderedfrom += orderedFrom.toString()+',';
     
-    alert('item added to cart' + localStorage.cataloguetitle);
+    alert('item added to cart');
     
     $('.forsingleonly a').click();
 });
