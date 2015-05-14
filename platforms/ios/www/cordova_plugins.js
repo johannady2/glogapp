@@ -8,6 +8,21 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-network-information/www/network.js",
+        "id": "cordova-plugin-network-information.network",
+        "clobbers": [
+            "navigator.connection",
+            "navigator.network.connection"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+        "id": "cordova-plugin-network-information.Connection",
+        "clobbers": [
+            "Connection"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.dialogs/www/notification.js",
         "id": "org.apache.cordova.dialogs.notification",
         "merges": [
@@ -27,6 +42,7 @@ module.exports.metadata =
 {
     "cordova-plugin-whitelist": "1.0.1-dev",
     "com.manateeworks.barcodescanner": "1.5.3",
+    "cordova-plugin-network-information": "1.0.0",
     "org.apache.cordova.dialogs": "0.3.0",
     "org.apache.cordova.device": "0.3.0"
 }

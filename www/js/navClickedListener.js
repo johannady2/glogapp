@@ -51,10 +51,10 @@ $(document).on('navClicked',function(event,filename)
     }
     else if(filename == "test-getjson.html")
     {      
-       
-           //getjsondata();
-		
+        networkstatus = '';
 		isjsonready();
+        
+        
     }
 
   

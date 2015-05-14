@@ -30,6 +30,12 @@
                             "xml": false,
                             "count": 1
                         }
+                    ],
+                    "SystemConfiguration.framework": [
+                        {
+                            "xml": true,
+                            "count": 1
+                        }
                     ]
                 }
             },
@@ -47,6 +53,10 @@
                         {
                             "xml": "<feature name=\"MWBarcodeScanner\"><param name=\"ios-package\" value=\"CDVMWBarcodeScanner\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"NetworkStatus\"><param name=\"ios-package\" value=\"CDVConnection\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -58,6 +68,9 @@
             "PACKAGE_NAME": "com.glogapp.gaisano"
         },
         "com.manateeworks.barcodescanner": {
+            "PACKAGE_NAME": "com.glogapp.gaisano"
+        },
+        "cordova-plugin-network-information": {
             "PACKAGE_NAME": "com.glogapp.gaisano"
         }
     },

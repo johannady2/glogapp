@@ -1,8 +1,18 @@
 /*-----------------------------------------------------------------*/
 /*------------------------Database-----------------------------------*/
 /*------------------------------------------------------------------*/
+var networkstatus = '';
+function onBodyLoad()
+{
+  
+    document.addEventListener("offline", onDeviceOffline, false);
+    document.addEventListener("online", isjsonready, false);
 
-document.addEventListener("deviceready",onDeviceReady,false);
+
+}
+  //listen for changes
+  
+
 
 /*~~~~~~~~~~~~~~~~~~~~~~GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 var db;
@@ -80,10 +90,6 @@ if(localStorage.BarcodeInvtyCat == null)
 					var	FullDescription_InvtyCatARR = [];
 					var	PromoName_InvtyCatARR = [];
 					var	PromoPrice_InvtyCatARR = [];
-
-					var InventoryMasterCataloguedataLength;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
-					var apiInvtyCatRecordCounter = 0;
-					var apiInvtyCattxparam;
 					//--//INVENTORY_MASTER_CATALOGUE
 
 
@@ -95,12 +101,26 @@ if(localStorage.BarcodeInvtyCat == null)
 					var CatalogueTitle_CatMstrARR= [];
 					var	PromoEndDate_CatMstrARR = [];
 					var	PromoStartDate_CatMstrARR = [];
-	
-
-					var CatalogueMasterLength;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
-					var apiCatMstrRecordCounter = 0;
-					var apiCatMstrtxparam;
 					//--//CATALOGUE_MASTER
+
+
+                    //--SETTINGS
+                    var MinimumPrice_SettingsARR = [];
+                    //--//SETTINGS
+
+                    
+                    //--CATEGORY_MASTER
+                    var RowNumber_CatgyMstrARR = [];
+                    var SysPk_CatgyMstrARR = [];
+                    var CategoryName_CatgyMstrARR = [];
+                    //--//CATEGORY_MASTER 
+
+
+                    //--INVENTORY_MASTER_CATALOGUE_CATEGORY
+                    var RowNumber_InvtyCatCatgyARR = [];
+                    var SysFk_InvtyCat_InvtyCatCatgyARR = [];
+                    var SysFk_CatgyMstr_InvtyCatCatgyARR = [];
+                    //--//INVENTORY_MASTER_CATALOGUE_CATEGORY
 
 
 	//------------//FOR API
@@ -121,185 +141,483 @@ function successCB()
 }
 
 
-function onDeviceReady()
+function onDeviceOffline()
 {
-    
-    db = window.openDatabase("Database","1.0","Cordova Demo", 4*1024*1024);
-    db.transaction(createDB, errorCB, successCB);
-   
+    if(networkstatus != 'disconnected')
+    { 
+        networkstatus = 'disconnected';
+        
+        db = window.openDatabase("Database","1.0","Cordova Demo", 4*1024*1024);
+        db.transaction(createDB, errorCB, successCB);
+    }  
 }
 
 
 function createDB(tx)
 {
-    tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE");
-    var query = "";
-    query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,";
-    //query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,";
-    query += "SysFk_Invty_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,SysSeq_InvtyCat,UserSeq_InvtyCat, UserPk_InvtyCat,";
-    query += "UserFk_Invty_InvtyCat,UserFk_CatMstr_InvtyCat,LastUpdatedBy_InvtyCat,LastUpdatedConcurrencyID_InvtyCat,LastUpdatedDate_InvtyCat TIMESTAMP DEFAULT (datetime('now','localtime')),";
-    query += "Module_InvtyCat, Particulars_InvtyCat,PictureFileName_InvtyCat , Status_InvtyCat, Type_InvtyCat,";
-    query += "Barcode_Freebies01_InvtyCat,Barcode_Freebies02_InvtyCat,Barcode_Freebies03_InvtyCat,Barcode_Freebies04_InvtyCat,Barcode_Freebies05_InvtyCat,";
-    query += "Barcode_InvtyCat, Brand_InvtyCat ,CatalogueTitle_InvtyCat ,";
-    query += "CataloguePageNumber_InvtyCat,Categories_InvtyCat,Classification_InvtyCat,Description_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2),";
-    query += "FreeDescription_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat,PricePerPiece_InvtyCat,";
-    query += "PromoStartDate_InvtyCat TIMESTAMP, PromoEndDate_InvtyCat TIMESTAMP, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,";
-    query += "RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,";
-    query += "UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)";
-    tx.executeSql( query ,[],populateInventoryMasterCatalogue,errorCB);
- 
- 
-    tx.executeSql("DROP TABLE IF EXISTS CATALOGUE_MASTER");
-    var query2 = "";
-    query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_CatMstr,";
-    //query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr, SysPk_CatMstr,";
-    query2 += "SysFk_CatMstr,SysSeq_CatMstr, UserPk_CatMstr, LastUpdatedBy_CatMstr, LastUpdatedConcurrencyID_CatMstr, LastUpdatedDate_CatMstr TIMESTAMP DEFAULT (datetime('now','localtime')), Module_CatMstr,";
-    query2 += "Particulars_CatMstr,PictureFileName_CatMstr, Status_CatMstr,Type_CatMstr,";
-    query2 += "CatalogueTitle_CatMstr, Description_CatMstr, FullDescription_CatMstr, FreeDescription_CatMstr,";
-    query2 += "Principal_CatMstr,PromoEndDate_CatMstr TIMESTAMP, PromoStartDate_CatMstr TIMESTAMP)";
-    tx.executeSql( query2,[],populateCatalogueMaster,errorCB);
+   
+
+  
+     alert('creating tables if not exists');
+
+        //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE");
+        var query = "";
+        query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,";
+        //query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,";
+        query += "SysFk_Invty_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,SysSeq_InvtyCat,UserSeq_InvtyCat, UserPk_InvtyCat,";
+        query += "UserFk_Invty_InvtyCat,UserFk_CatMstr_InvtyCat,LastUpdatedBy_InvtyCat,LastUpdatedConcurrencyID_InvtyCat,LastUpdatedDate_InvtyCat TIMESTAMP DEFAULT (datetime('now','localtime')),";
+        query += "Module_InvtyCat, Particulars_InvtyCat,PictureFileName_InvtyCat , Status_InvtyCat, Type_InvtyCat,";
+        query += "Barcode_Freebies01_InvtyCat,Barcode_Freebies02_InvtyCat,Barcode_Freebies03_InvtyCat,Barcode_Freebies04_InvtyCat,Barcode_Freebies05_InvtyCat,";
+        query += "Barcode_InvtyCat, Brand_InvtyCat ,CatalogueTitle_InvtyCat ,";
+        query += "CataloguePageNumber_InvtyCat,Categories_InvtyCat,Classification_InvtyCat,Description_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2),";
+        query += "FreeDescription_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat,PricePerPiece_InvtyCat,";
+        query += "PromoStartDate_InvtyCat TIMESTAMP, PromoEndDate_InvtyCat TIMESTAMP, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,";
+        query += "RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,";
+        query += "UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)";
+        tx.executeSql( query ,[],populateInventoryMasterCatalogue,errorCB);
+
+
+       // tx.executeSql("DROP TABLE IF EXISTS CATALOGUE_MASTER");
+        var query2 = "";
+        query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_CatMstr,";
+        //query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr, SysPk_CatMstr,";
+        query2 += "SysFk_CatMstr,SysSeq_CatMstr, UserPk_CatMstr, LastUpdatedBy_CatMstr, LastUpdatedConcurrencyID_CatMstr, LastUpdatedDate_CatMstr TIMESTAMP DEFAULT (datetime('now','localtime')), Module_CatMstr,";
+        query2 += "Particulars_CatMstr,PictureFileName_CatMstr, Status_CatMstr,Type_CatMstr,";
+        query2 += "CatalogueTitle_CatMstr, Description_CatMstr, FullDescription_CatMstr, FreeDescription_CatMstr,";
+        query2 += "Principal_CatMstr,PromoEndDate_CatMstr TIMESTAMP, PromoStartDate_CatMstr TIMESTAMP)";
+        tx.executeSql( query2,[],populateCatalogueMaster,errorCB);
+
+
+        //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER");
+       // var query3 ="";
+       // query3 += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER(RowNumber_Invty INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_Invty,";
+       // query3 += "UserPk_Invty, LastUpdatedBy_Invty, LastUpdatedConcurrencyID_Invty, LastUpdatedDate_Invty TIMESTAMP DEFAULT  (datetime('now','localtime')),";
+       // query3 += "Module_Invty,Particulars_Invty,PictureFileName_Invty, Status_Invty, Type_Invty, Barcode_Invty,";
+       //// query3 += "Brand_Invty,Classification_Invty, Categories_Invty, Description_Invty,FullDescription_Invty,FreeDescription_Invty,";
+       //// query3 += "DisplayPrice_Invty, Principal_Invty, QRcode_Invty, SubCategories_Invty)";
+       // tx.executeSql(query3,[],populateInventoryMaster, errorCB);
+
+
+        //tx.executeSql("DROP TABLE IF EXISTS SETTINGS");
+        var query4 ="";
+        query4 +="CREATE TABLE IF NOT EXISTS SETTINGS(MinimumPrice_Settings)";
+        tx.executeSql(query4,[],populateSettingsTable,errorCB);
+
+
+        //tx.executeSql("DROP TABLE IF EXISTS CATEGORY_MASTER");
+        var query5= "";
+        query5 += "CREATE TABLE IF NOT EXISTS CATEGORY_MASTER ";
+        //query5 += "(RowNumber_CatgyMstr INTEGER PRIMARY KEY AUTOINCREMENT,SysPk_CatgyMstr, CategoryName_CatgyMstr)";//
+        query5 += "(RowNumber_CatgyMstr,SysPk_CatgyMstr, CategoryName_CatgyMstr)";//
+        tx.executeSql(query5,[],populateCategoryMaster,errorCB);//populateCategoryMaster
+
+
+
+        //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY");
+        var query6 ="";
+        query6 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY";
+        //query6 += "(RowNumber_InvtyCatCatgy INTEGER PRIMARY KEY AUTOINCREMENT,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
+        query6 += "(RowNumber_InvtyCatCatgy,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
+        tx.executeSql(query6,[],populateInvtyCatCatgy,errorCB);
     
     
-    tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER");
-    var query3 ="";
-    query3 += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER(RowNumber_Invty INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_Invty,";
-    query3 += "UserPk_Invty, LastUpdatedBy_Invty, LastUpdatedConcurrencyID_Invty, LastUpdatedDate_Invty TIMESTAMP DEFAULT  (datetime('now','localtime')),";
-    query3 += "Module_Invty,Particulars_Invty,PictureFileName_Invty, Status_Invty, Type_Invty, Barcode_Invty,";
-    query3 += "Brand_Invty,Classification_Invty, Categories_Invty, Description_Invty,FullDescription_Invty,FreeDescription_Invty,";
-    query3 += "DisplayPrice_Invty, Principal_Invty, QRcode_Invty, SubCategories_Invty)";
-    tx.executeSql(query3,[],populateInventoryMaster, errorCB);
-	
-	
-	tx.executeSql("DROP TABLE IF EXISTS SETTINGS");
-	var query4 ="";
-	query4 +="CREATE TABLE IF NOT EXISTS SETTINGS(MinimumPrice_Settings)";
-	tx.executeSql(query4,[],populateSettingsTable,errorCB);
-	
+        $('.slideToUnlock').show();
 
-	tx.executeSql("DROP TABLE IF EXISTS CATEGORY_MASTER");
-	var query5= "";
-	query5 += "CREATE TABLE IF NOT EXISTS CATEGORY_MASTER ";
-	query5 += "(RowNumber_CatgyMstr INTEGER PRIMARY KEY AUTOINCREMENT,SysPk_CatgyMstr, CategoryName_CatgyMstr)";//
-	tx.executeSql(query5,[],populateCategoryMaster,errorCB);//populateCategoryMaster
-	
-	
-
-	tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY");
-	var query6 ="";
-	query6 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY(RowNumber_InvtyCatCatgy INTEGER PRIMARY KEY AUTOINCREMENT,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
-	tx.executeSql(query6,[],populateInvtyCatCatgy,errorCB);
-	
 }
 
 
+
+
+
+
+
+
+function isjsonready()//i'm thinking of checking them all at once instead of by table because I can check the CATALOGUE_MASTER table first.. and batch delete multiple items from inventory_master_catalogue,and other tables. If i check only one table at a time, it'll take longger. I think.
+{//APPENDED STUFF IS FOR getjsontest page.
+
+    if(networkstatus != 'connected' || networkstatus == '')
+    {networkstatus = 'connected';
+     
+        alert('device is online. getting json info');
+
+            $.when(
+                   $.getJSON('http://viveg.net/glogapitest/index.php?table=INVENTORY_MASTER_CATALOGUE'),
+                   $.getJSON('http://viveg.net/glogapitest/index.php?table=CATALOGUE_MASTER'),
+                   $.getJSON('http://viveg.net/glogapitest/index.php?table=SETTINGS'),
+                   $.getJSON('http://viveg.net/glogapitest/index.php?table=CATEGORY_MASTER'),
+                   $.getJSON('http://viveg.net/glogapitest/index.php?table=INVENTORY_MASTER_CATALOGUE_CATEGORY')
+                  ).done(function(invtycat, catmstr,settings,catgymstr,InvtyCatCatgy)
+            {
+
+
+
+                 $('.getjsontest').append("<br><br>----INVENTORY_MASTER_CATALOGUE----<br><br>");
+                    $.each( invtycat[0], function( index, value ) 
+                      {
+
+                            $.each(value, function(inde, valu)
+                            {
+                                $.each(valu, function(ind, val)
+                                {
+                                    $.each( val, function( i, v )
+                                    {
+
+                                            if(i == "RowNumber_InvtyCat")
+                                            {
+                                                RowNumber_InvtyCatARR.push(val[i]);
+                                                $('.getjsontest').append(val[i] + " inserted to array RowNumber_InvtyCatARR<br>");
+                                            }
+                                            else if(i == "SysPk_InvtyCat")
+                                            {
+                                                SysPk_InvtyCatARR.push(val[i]);
+                                                $('.getjsontest').append(val[i] + " inserted to array SysPk_InvtyCatARR<br>");
+                                            }
+                                            else if(i == "SysFk_CatMstr_InvtyCat")
+                                            {
+                                                SysFk_CatMstr_InvtyCatARR.push(val[i]);
+                                                $('.getjsontest').append(val[i] + " inserted to array SysFk_CatMstr_InvtyCatARR<br>");
+                                            }
+                                            else if(i == "SKU_InvtyCat")
+                                            {
+                                                SKU_InvtyCatARR.push(val[i]);
+                                                $('.getjsontest').append(val[i] + " inserted to array SKU_InvtyCatARR<br>");
+                                            }
+                                            else if(i == "PictureFileName_InvtyCat")
+                                            {
+                                                PictureFileName_InvtyCatARR.push(val[i]);
+                                                $('.getjsontest').append(val[i] + " inserted to array PictureFileName_InvtyCatARR<br>");
+                                            }
+                                            else if(i == "Barcode_InvtyCat")
+                                            {
+                                                Barcode_InvtyCatARR.push(val[i]);
+                                                $('.getjsontest').append(val[i] + " inserted to array Barcode_InvtyCatARR<br>");
+
+                                            }
+                                            else if(i == "Brand_InvtyCat")
+                                            {
+                                                Brand_InvtyCatARR.push(val[i]);
+                                                $('.getjsontest').append(val[i] + " inserted to array Brand_InvtyCatARR<br>");
+
+                                            }
+                                            else if(i == "FullDescription_InvtyCat")
+                                            {
+                                                FullDescription_InvtyCatARR.push(val[i]);
+                                                $('.getjsontest').append(val[i] + " inserted to array FullDescription_InvtyCatARR<br>");
+
+                                            }
+                                            else if(i == "PromoName_InvtyCat")
+                                            {
+                                                PromoName_InvtyCatARR.push(val[i]);
+                                                $('.getjsontest').append(val[i] + " inserted to array PromoName_InvtyCatARR<br>");
+
+                                            }
+                                            else if(i == "PromoPrice_InvtyCat")
+                                            {
+                                                PromoPrice_InvtyCatARR.push(val[i]);
+                                                $('.getjsontest').append(val[i] + " inserted to array PromoPrice_InvtyCatARR<br>");
+
+                                            }
+
+
+
+                                    });	
+
+                                });	
+
+                            });
+                      });
+                 $('.getjsontest').append("<br><br>//----INVENTORY_MASTER_CATALOGUE----<br><br>");
+
+
+
+
+                 $('.getjsontest').append("<br><br>----CATALOGUE_MASTER----<br><br>");
+
+                        $.each(catmstr[0], function( index, value ) 
+                         {
+                            $.each(value, function(inde, valu)
+                                    {
+
+
+                                        $.each(valu, function(ind, val)
+                                        {
+                                            $.each( val, function( i, v )
+                                            {
+
+
+                                                    if(i == "RowNumber_CatMstr")
+                                                    {
+                                                        RowNumber_CatMstrARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array RowNumber_InvtyCatARR<br>");
+                                                    }
+                                                    else if(i == "SysPk_CatMstr")
+                                                    {
+                                                        SysPk_CatMstrARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array SysPk_CatMstrARR<br>");
+                                                    }
+                                                    else if(i == "SysSeq_CatMstr")
+                                                    {
+                                                        SysPk_CatMstrARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array SysSeq_CatMstrARR<br>");
+                                                    }
+                                                    else if(i == "LastUpdatedDate_CatMstr")
+                                                    {
+                                                        LastUpdatedDate_CatMstrARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array LastUpdatedDate_CatMstrARR<br>");
+
+                                                    }
+                                                    else if(i == "CatalogueTitle_CatMstr")
+                                                    {
+                                                        CatalogueTitle_CatMstrARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array CatalogueTitle_CatMstrARR<br>");
+
+                                                    }
+                                                    else if(i == "PromoEndDate_CatMstr")
+                                                    {
+                                                        PromoEndDate_CatMstrARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array PromoEndDate_CatMstrARR<br>");
+
+                                                    }
+                                                    else if(i == "PromoStartDate_CatMstr")
+                                                    {
+                                                        PromoStartDate_CatMstrARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array PromoStartDate_CatMstrARR<br>");
+
+                                                    }
+
+
+
+                                            });	
+
+                                        });	
+
+                                    });
+                        });
+                 $('.getjsontest').append("<br><br>//----CATALOGUE_MASTER----<br><br>");
+
+
+
+                $('.getjsontest').append("<br><br>---SETTINGS----<br><br>");
+
+                    $.each(settings[0], function( index, value ) 
+                         {
+                            $.each(value, function(inde, valu)
+                                    {
+
+
+                                        $.each(valu, function(ind, val)
+                                        {
+                                            $.each( val, function( i, v )
+                                            {
+
+
+                                                    if(i == "MinimumPrice_Settings")
+                                                    {
+                                                        MinimumPrice_SettingsARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array MinimumPrice_SettingsARR<br>");
+                                                    }
+
+                                            });	
+
+                                        });	
+
+                                    });
+                        });
+
+
+                $('.getjsontest').append("<br><br>---//SETTINGS----<br><br>");
+
+
+
+
+
+                $('.getjsontest').append("<br><br>---CATEGORY_MASTER----<br><br>");
+
+                    $.each(catgymstr[0], function( index, value ) 
+                         {
+                            $.each(value, function(inde, valu)
+                                    {
+
+
+                                        $.each(valu, function(ind, val)
+                                        {
+                                            $.each( val, function( i, v )
+                                            {
+
+
+                                                    if(i == "RowNumber_CatgyMstr")
+                                                    {
+                                                        RowNumber_CatgyMstrARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array RowNumber_CatgyMstrARR<br>");
+                                                    }
+                                                    else if(i == "SysPk_CatgyMstr")
+                                                    {
+                                                        SysPk_CatgyMstrARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array SysPk_CatgyMstrrARR<br>");
+                                                    }
+                                                    else if(i == "CategoryName_CatgyMstr")
+                                                    {
+                                                        CategoryName_CatgyMstrARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array CategoryName_CatgyMstrARR<br>");
+                                                    }
+
+                                            });	
+
+                                        });	
+
+                                    });
+                        });
+
+
+                $('.getjsontest').append("<br><br>---//CATEGORY_MASTER----<br><br>");
+
+                
+                
+                
+                
+                $('.getjsontest').append("<br><br>--- INVENTORY_MASTER_CATALOGUE_CATEGORY----<br><br>");
+
+                    $.each(InvtyCatCatgy[0], function( index, value ) 
+                         {
+                            $.each(value, function(inde, valu)
+                                    {
+
+
+                                        $.each(valu, function(ind, val)
+                                        {
+                                            $.each( val, function( i, v )
+                                            {
+
+
+                                                    if(i == "RowNumber_InvtyCatCatgy")
+                                                    {
+                                                       RowNumber_InvtyCatCatgyARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array RowNumber_InvtyCatCatgyARR<br>");
+                                                    }
+                                                    else if(i == "SysFk_InvtyCat_InvtyCatCatgy")
+                                                    {
+                                                       SysFk_InvtyCat_InvtyCatCatgyARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array SysFk_InvtyCat_InvtyCatCatgyARR<br>");
+                                                    }
+                                                    else if(i == "SysFk_CatgyMstr_InvtyCatCatgy")
+                                                    {
+                                                       SysFk_CatgyMstr_InvtyCatCatgyARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array SysFk_CatgyMstr_InvtyCatCatgyARR<br>");
+                                                    }
+
+                                            });	
+
+                                        });	
+
+                                    });
+                        });
+
+
+                $('.getjsontest').append("<br><br>---//INVENTORY_MASTER_CATALOGUE_CATEGORY----<br><br>");
+
+                
+                
+            }).then(function(objects)
+            {
+                  onDeviceOffline();
+             
+            });
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function populateCatalogueMaster(tx)
+{
+    //var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,SysSeq_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) VALUES(?,?,?,?,?)";
+   // tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2015-05-15 24:59:59","2015-05-11 00:00:00"],null,errorCB);
+   
+}
+
+
+//function populateInventoryMaster()
+//{
+     //alert('populate inventory master');
+//}
+
+function populateSettingsTable(tx)
+{
+
+	  // var sqlInsert4 = "INSERT INTO SETTINGS(MinimumPrice_Settings) VALUES(?)";
+	//	tx.executeSql(sqlInsert4,[1000],null,errorCB);
+  
+}
+
+function populateCategoryMaster(tx)
+{	
+		//var sqlInsert5 = "INSERT INTO CATEGORY_MASTER(SysPk_CatgyMstr, CategoryName_CatgyMstr) VALUES(?,?)";
+		//tx.executeSql(sqlInsert5,["catgy1","Category Name 1"],null,errorCB);
+
+}
+
+
+function populateInvtyCatCatgy(tx)
+{
+
+//	var sqlInsert6 = "INSERT INTO INVENTORY_MASTER_CATALOGUE_CATEGORY(SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy) VALUES(?,?)";
+//	tx.executeSql(sqlInsert6,["111111","catgy1"],null,errorCB);
+
+}
 
 
 function populateInventoryMasterCatalogue(tx)
 {
   
-/*
 
-	alert('apiInvtyCatRecordCounter =' + apiInvtyCatRecordCounter);
-
-	
-		var RecordBeingProcessesd =  apiInvtyCatRecordCounter + 1;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
-		apiInvtyCattxparam = tx;
-		var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?,?)";
-
-			
-		if(RecordBeingProcessesd < InventoryMasterCataloguedataLength)// will have to make if < and else if == because last insert has a callback.
-		{
-
-				db.transaction(function(tx3){
-					tx3.executeSql(sqlInsert,[RowNumber_InvtyCatARR[apiInvtyCatRecordCounter],SysPk_InvtyCatARR[apiInvtyCatRecordCounter],SysFk_CatMstr_InvtyCatARR[apiInvtyCatRecordCounter],SKU_InvtyCatARR[apiInvtyCatRecordCounter],PictureFileName_InvtyCatARR[apiInvtyCatRecordCounter],Barcode_InvtyCatARR[apiInvtyCatRecordCounter],Brand_InvtyCatARR[apiInvtyCatRecordCounter],FullDescription_InvtyCatARR[apiInvtyCatRecordCounter] ,PromoName_InvtyCatARR[apiInvtyCatRecordCounter],PromoPrice_InvtyCatARR[apiInvtyCatRecordCounter]],null,errorCB);
-				},errorCB,function(){  apiInvtyCatRecordCounter  += 1;  populateInventoryMasterCatalogue(apiInvtyCattxparam);});
-
-		}
-		else if(RecordBeingProcessesd == InventoryMasterCataloguedataLength)//on last insert callback queryforexpired.
-		{
-				db.transaction(function(tx3){
-					tx3.executeSql(sqlInsert,[RowNumber_InvtyCatARR[apiInvtyCatRecordCounter],SysPk_InvtyCatARR[apiInvtyCatRecordCounter],SysFk_CatMstr_InvtyCatARR[apiInvtyCatRecordCounter],SKU_InvtyCatARR[apiInvtyCatRecordCounter],PictureFileName_InvtyCatARR[apiInvtyCatRecordCounter],Barcode_InvtyCatARR[apiInvtyCatRecordCounter],Brand_InvtyCatARR[apiInvtyCatRecordCounter],FullDescription_InvtyCatARR[apiInvtyCatRecordCounter] ,PromoName_InvtyCatARR[apiInvtyCatRecordCounter],PromoPrice_InvtyCatARR[apiInvtyCatRecordCounter]],queryForExpired,errorCB);
-				},errorCB,function(){  apiInvtyCatRecordCounter  += 1;  populateInventoryMasterCatalogue(apiInvtyCattxparam);});
-				
-
-		
-		}
-		else
-		{
-			apiInvtyCatRecordCounter = 0;
-		}
-
-*/
-    var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
-   
-   
-    tx.executeSql(sqlInsert,["111111","4","111111","img/item1.jpg","101191","natasha","string part 1 of 2,string part 2 of 2." ,"string part 1 of 3 , string part 2 of 3 , string part 3 of 3",63.00],null,errorCB);
-    tx.executeSql(sqlInsert,["333333","4","333333","img/item3.jpg","8999999003395","natasha","with free candy","Pond\'s Pure\' White",14.00],null,errorCB);
-    tx.executeSql(sqlInsert,["444444","4","444444","img/item4.gif","4807788058850","natasha","with freechocolate","Iron Supplement",99.99],null,errorCB);
-    tx.executeSql(sqlInsert,["555555","1","555555","img/item5.jpg","12345","natasha","free Soy Sauce","Used \"Monggol\" Pencil",31.99],null,errorCB);
-    tx.executeSql(sqlInsert,["666666","1","666666","img/item6.jpg","795144075167","natasha","BUY 1 TAKE 1","Strawberry Used Kiss Intimate Secret",15.00],null,errorCB);
-	tx.executeSql(sqlInsert,["777777","1","777777","img/item7.jpg","4005401548218","natasha","with free baby poweder","Faber Castell TextLiner 48",232.25],null,errorCB);
-  
-	
-	
-	tx.executeSql(sqlInsert,["222222","3","222222","img/item2.gif","4801010127215","avon","with free milk","GIF sample",63.00],null,errorCB);
-	tx.executeSql(sqlInsert,["888888","3","888888","img/item8.jpg","123","avon","Free Cookies","Pocky Strawberry",232.00],null,errorCB);
-    tx.executeSql(sqlInsert,["999999","3","999999","img/item9.jpg","11223344","avon","Mentos","Pocky Set",232.00],null,errorCB);
-
-    tx.executeSql(sqlInsert,["11111111","2","11111111","img/Item10.jpg","987654321098","avon","pack of 8","40L notebooks",50.00],null,errorCB);
-    tx.executeSql(sqlInsert,["22222222","2","22222222","img/Item11.jpg","036000291452","avon","pack of 8","Jockey Lowrise Brief",325.00],null,errorCB);
-    tx.executeSql(sqlInsert,["33333333","2","33333333","img/Item12.jpg","016000660601","avon","(P799.75 each) save 10%","Trolley Bags",799.75],null,errorCB);
-    tx.executeSql(sqlInsert,["44444444","2","44444444","img/Item13.jpg","5010029020519","avon","was P399","shoes",299.00],null,errorCB);
-    tx.executeSql(sqlInsert,["55555555","2","55555555","img/Item14.jpg","*9123*39","etude house","(P198.00 each)","TSport Backpacks",198.00],null,errorCB);
-    tx.executeSql(sqlInsert,["66666666","2","66666666","img/Item15.jpg","50184385","etude house","save P10","Shining East Value Pack",99.00],null,errorCB);
-    tx.executeSql(sqlInsert,["77777777","2","77777777","img/Item16.jpg","5702012000737","etude house","Buy 1 Take 1","Darlington",89.75],null,errorCB);
-    tx.executeSql(sqlInsert,["88888888","2","88888888","img/Item17.jpg","850785004003","etude house","was P1899","Sanyang Clerical Chair",1519.20],null,errorCB);
-    tx.executeSql(sqlInsert,["99999999","2","99999999","img/Item18.jpg","741360988644","etude house","was P1595","Sanyang Computer Table",1276.00],null,errorCB);
-    tx.executeSql(sqlInsert,["1111111111","2","1111111111","img/Item19.jpg","123456789012","etude house","was P1695","Sanyang Office Table",1320.00],null,errorCB);
-    tx.executeSql(sqlInsert,["2222222222","2","2222222222","img/Item20.jpg","042000062008","etude house","was P3750","Sanyang Study Table",3000.00],null,errorCB);
-    tx.executeSql(sqlInsert,["3333333333","2","3333333333","img/Item21.jpg","012345678905","etude house","pack of 10","80L notebooks",100.00],queryForExpired,errorCB);
-   
-
-
+//var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
+// tx.executeSql(sqlInsert,["2222222222","2","2222222222","img/Item20.jpg","042000062008","etude house","was P3750","Sanyang Study Table",3000.00],null,errorCB);
+// tx.executeSql(sqlInsert,["3333333333","2","3333333333","img/Item21.jpg","012345678905","etude house","pack of 10","80L notebooks",100.00],queryForExpired,errorCB);
 
 }
 
 
-function queryCategoriesForSelectBox(tx)
-{   
-	tx.executeSql('SELECT * FROM CATEGORY_MASTER', [], renderCategoriesToSelectBox);
-}
 
-function renderCategoriesToSelectBox(tx,results)
-{   
-    var categoriesString = '';
-	
-	for(var ind=0; ind < results.rows.length ; ind++ )
-	{
-		categoriesString += '<option value="'+results.rows.item(ind).SysPk_CatgyMstr+'">'+results.rows.item(ind).CategoryName_CatgyMstr+'</option>';
-	}
-	$('.search-category').append(categoriesString);
- 
 
-}
-
-function queryCataloguesForSelectBox(tx)
-{
-   
-    	tx.executeSql('SELECT * FROM CATALOGUE_MASTER', [], renderCataloguesToSelectBox);
-}
-
-function renderCataloguesToSelectBox(tx,results)
-{  
-    
-    var CataloguesString = '';
-
-	for(var ind=0; ind < results.rows.length ; ind++ )
-	{
-		CataloguesString += '<option value="'+results.rows.item(ind).SysPk_CatMstr+'">'+results.rows.item(ind).CatalogueTitle_CatMstr+'</option>';
-	}
-	$('.search-catalogue').append(CataloguesString);
-}
 
 
 function queryForExpired(tx)
@@ -314,27 +632,19 @@ function queryForExpired(tx)
 
 function deleteExpiredPromos(tx,results)
 {
-	//alert(results.rows.length);
-	
-	
-	
 	var deleteString = '';
 	
 	for(var ind=0; ind < results.rows.length ; ind++ )
 	{
 		
-		//alert(results.rows.item(ind).SysFk_CatMstr_InvtyCat);
 		
 		deleteString += '"'+results.rows.item(ind).SysFk_CatMstr_InvtyCat + '",';
 		
 	}
-	
-	//deleteString
+
 	
 	deleteString = deleteString.substring(0, deleteString.length - 1);
-	
-	//var testDelString = ' ';
-	//alert(deleteString);
+
 	
 	
 	tx.executeSql('DELETE FROM CATALOGUE_MASTER WHERE SysPk_CatMstr IN('+ deleteString +')');
@@ -344,59 +654,7 @@ function deleteExpiredPromos(tx,results)
 
 
 
-function populateCatalogueMaster(tx)
-{
-    var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,SysSeq_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) VALUES(?,?,?,?,?)";
-    
-    tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2015-05-15 24:59:59","2015-05-11 00:00:00"],null,errorCB);
-    tx.executeSql(sqlInsert2,["2",1,"Back To School Catalogue","2015-05-29 24:59:59","2015-05-29 00:00:00"],null,errorCB);
-	tx.executeSql(sqlInsert2,["3",3,"Expired Catalogue","2014-05-13 24:59:59","2015-05-11 00:00:00"],null,errorCB);
-	tx.executeSql(sqlInsert2,["4",4,"NOOOTOOSHOO Catalogue","2015-05-14 24:59:59","2015-05-11 00:00:00"],null,errorCB);
-}
 
-
-function populateInventoryMaster()
-{
-     //alert('populate inventory master');
-}
-
-function populateSettingsTable(tx)
-{
-
-	   var sqlInsert4 = "INSERT INTO SETTINGS(MinimumPrice_Settings) VALUES(?)";
-		tx.executeSql(sqlInsert4,[1000],null,errorCB);
-  
-}
-
-function populateCategoryMaster(tx)
-{	
-		var sqlInsert5 = "INSERT INTO CATEGORY_MASTER(SysPk_CatgyMstr, CategoryName_CatgyMstr) VALUES(?,?)";
-		tx.executeSql(sqlInsert5,["catgy1","Category Name 1"],null,errorCB);
-		tx.executeSql(sqlInsert5,["catgy2","Category Name 2"],null,errorCB);
-		tx.executeSql(sqlInsert5,["catgy3","Category Name 3"],null,errorCB);
-		tx.executeSql(sqlInsert5,["catgy4","Category Name 4"],null,errorCB);
-
-	
-	
-}
-
-
-function populateInvtyCatCatgy(tx)
-{
-	//alert('test1');
-	var sqlInsert6 = "INSERT INTO INVENTORY_MASTER_CATALOGUE_CATEGORY(SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy) VALUES(?,?)";
-	tx.executeSql(sqlInsert6,["111111","catgy1"],null,errorCB);
-	tx.executeSql(sqlInsert6,["111111","catgy2"],null,errorCB);
-	tx.executeSql(sqlInsert6,["111111","catgy3"],null,errorCB);
-	tx.executeSql(sqlInsert6,["111111","catgy4"],null,errorCB);
-	tx.executeSql(sqlInsert6,["333333","catgy2"],null,errorCB);
-	tx.executeSql(sqlInsert6,["444444","catgy3"],null,errorCB);
-	tx.executeSql(sqlInsert6,["555555","catgy4"],null,errorCB);
-
-
-
-	//alert('test2');
-}
 /*-----------------------------------------------------------------*/
 /*------------------------//Database-----------------------------------*/
 /*------------------------------------------------------------------*/
@@ -427,9 +685,9 @@ function viewItemClickedContentReady(event,idForSinglePage)
 
 function doneScanning(event,scanResult)
 {
-    //alert('doneScanning started');
+
     $(document).trigger('itemScanned',[scanResult]);
-     //alert('trigger completed');
+    
 }
 
 function editOrderClickedContentReady(event,orderidtoedit)
@@ -472,13 +730,13 @@ function nextRecord(tx,results)
 	
 
 
-	//alert('numberOfCatalogues -' + numberOfCatalogues);
-	//alert('recordBeingProcessed -' + recordBeingProcessed);
+	       //alert('numberOfCatalogues -' + numberOfCatalogues);
+	       //alert('recordBeingProcessed -' + recordBeingProcessed);
 	   if(recordBeingProcessed <= numberOfCatalogues)
 	   {
 		   
 		   
-		   txparam = tx; // so i can pass this object to callback
+		      txparam = tx; // global so i can pass this object to callback. for some reason i can't pass tx as param.
 			resulstparam = results;
 		   
 			//alert(results.rows.item(RecordCounter).CatalogueTitle_CatMstr);
@@ -493,16 +751,12 @@ function nextRecord(tx,results)
 	   }
 	   else
 	   {
-		 //  alert('no more records');
+		  //NO MORE records to process
 		   RecordCounter = 0;//reset to zero because it's a global varibale.. so that will start counting zero again when we comeback from a different page.
 	   }
 	
 
-		/*for(var ind=0; ind < results.rows.length ; ind++)
-		{
-			$('.lists-cont').append('<h1>'+  results.rows.item(ind).CatalogueTitle_CatMstr  +'</h1><div class="list listSet-'+results.rows.item(ind).SysPk_CatMstr+'"></div>');
-	
-		}*/
+
 
 
 }
@@ -539,17 +793,12 @@ function renderCatalogueItems(tx2,results)
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '</div></div></article></div></div></div>';
 			
-			
-			
-			
-		
-			
         }
     
     
 		
      $('.listSet-'+results.rows.item(0).syspkcatmstr).append(htmlstringCatalaogue);
-    // $('#list').append(htmlstringCatalaogue);
+    
 		
 	
 		
@@ -642,14 +891,13 @@ function queryForSearch(tx)
 		
 	
 	
-	
-	//works//var finalqueryString = 'SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat';
-	//error//var finalqueryString = 'SELECT * FROM CATEGORY_MASTER AS CM RIGHT JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat)AS IMC_IMCCatgy ON IMC_IMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr ';
+
+    //works//var finalqueryString = 'SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat';
    //works//var finalqueryString = 'SELECT IMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCCatgy ON IMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr';
     //works//var finalqueryString = 'SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr ';
-   //WORKS - without category master table// var finalqueryString = 'SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat';
-  	//works- but needs to be left join//var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM CATEGORY_MASTER AS CatgyM INNER JOIN(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
-  var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
+    //WORKS - without category master table// var finalqueryString = 'SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat';
+    //works- but needs to be left join//var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM CATEGORY_MASTER AS CatgyM INNER JOIN(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
+    var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
 
 
 
@@ -710,17 +958,77 @@ function startSearch()
             db.transaction(queryForSearch, errorCB);
         }
         
-        //var searchedValue = $(this).children('[name="search-barcode"]').val();
-
-      //  localStorage.searchedValueStorage = searchedValue;
-       // $('.lastsearched').empty().append(localStorage.searchedValueStorage);
 
         return false;//prevents refresh on submit
     });
         
         
-            // $('.lastsearched').append(localStorage.searchedValueStorage);
+          
 }
+
+
+function queryCategoriesForSelectBox(tx)
+{   
+	tx.executeSql('SELECT * FROM CATEGORY_MASTER', [], renderCategoriesToSelectBox);
+}
+
+function renderCategoriesToSelectBox(tx,results)
+{   
+    var categoriesString = '';
+	
+	for(var ind=0; ind < results.rows.length ; ind++ )
+	{
+		categoriesString += '<option value="'+results.rows.item(ind).SysPk_CatgyMstr+'">'+results.rows.item(ind).CategoryName_CatgyMstr+'</option>';
+	}
+	$('.search-category').append(categoriesString);
+ 
+
+}
+
+function queryCataloguesForSelectBox(tx)
+{
+   
+    	tx.executeSql('SELECT * FROM CATALOGUE_MASTER', [], renderCataloguesToSelectBox);
+}
+
+function renderCataloguesToSelectBox(tx,results)
+{  
+    
+    var CataloguesString = '';
+
+	for(var ind=0; ind < results.rows.length ; ind++ )
+	{
+		CataloguesString += '<option value="'+results.rows.item(ind).SysPk_CatMstr+'">'+results.rows.item(ind).CatalogueTitle_CatMstr+'</option>';
+	}
+	$('.search-catalogue').append(CataloguesString);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -876,17 +1184,7 @@ function renderCartList(tx,results)
 			 
   		}//end of for loop
 		
-		
-			/*alert(validSKUArr);
-			alert(validpicturefilenameArr);
-			alert(validbarcodeArr);
-			alert(validfulldescriptionArr);
-			alert(validpromonameArr);
-			alert(validpromoPriceArr);
-			alert(validpromoEndDateArr);
-			alert(validpromoStartDateArr);
-			alert(validQuantityArr);
-			alert(validsubtotalArr);*/
+
         
     }
 
@@ -942,250 +1240,6 @@ function renderCartList(tx,results)
     });
 	
 }
-
-
-
-
-function isjsonready()
-{
-	$.when($.getJSON('http://viveg.net/glogapitest/index.php?table=INVENTORY_MASTER_CATALOGUE'), $.getJSON('http://viveg.net/glogapitest/index.php?table=CATALOGUE_MASTER')).done(function(invtycat, catmstr)
-	{
-		 $('.getjsontest').append("<br><br>----INVENTORY_MASTER_CATALOGUE----<br><br>");
-			$.each( invtycat[0], function( index, value ) 
-			  {
-
-					$.each(value, function(inde, valu)
-					{
-						$.each(valu, function(ind, val)
-						{
-							$.each( val, function( i, v )
-							{
-
-									if(i == "RowNumber_InvtyCat")
-									{
-										RowNumber_InvtyCatARR.push(val[i]);
-										$('.getjsontest').append(val[i] + " inserted to array RowNumber_InvtyCatARR<br>");
-									}
-									else if(i == "SysPk_InvtyCat")
-									{
-										SysPk_InvtyCatARR.push(val[i]);
-										$('.getjsontest').append(val[i] + " inserted to array SysPk_InvtyCatARR<br>");
-									}
-									else if(i == "SysFk_CatMstr_InvtyCat")
-									{
-										SysFk_CatMstr_InvtyCatARR.push(val[i]);
-										$('.getjsontest').append(val[i] + " inserted to array SysFk_CatMstr_InvtyCatARR<br>");
-									}
-									else if(i == "SKU_InvtyCat")
-									{
-										SKU_InvtyCatARR.push(val[i]);
-										$('.getjsontest').append(val[i] + " inserted to array SKU_InvtyCatARR<br>");
-									}
-									else if(i == "PictureFileName_InvtyCat")
-									{
-										PictureFileName_InvtyCatARR.push(val[i]);
-										$('.getjsontest').append(val[i] + " inserted to array PictureFileName_InvtyCatARR<br>");
-									}
-									else if(i == "Barcode_InvtyCat")
-									{
-										Barcode_InvtyCatARR.push(val[i]);
-										$('.getjsontest').append(val[i] + " inserted to array Barcode_InvtyCatARR<br>");
-								
-									}
-									else if(i == "Brand_InvtyCat")
-									{
-										Brand_InvtyCatARR.push(val[i]);
-										$('.getjsontest').append(val[i] + " inserted to array Brand_InvtyCatARR<br>");
-								
-									}
-									else if(i == "FullDescription_InvtyCat")
-									{
-										FullDescription_InvtyCatARR.push(val[i]);
-										$('.getjsontest').append(val[i] + " inserted to array FullDescription_InvtyCatARR<br>");
-								
-									}
-									else if(i == "PromoName_InvtyCat")
-									{
-										PromoName_InvtyCatARR.push(val[i]);
-										$('.getjsontest').append(val[i] + " inserted to array PromoName_InvtyCatARR<br>");
-								
-									}
-									else if(i == "PromoPrice_InvtyCat")
-									{
-										PromoPrice_InvtyCatARR.push(val[i]);
-										$('.getjsontest').append(val[i] + " inserted to array PromoPrice_InvtyCatARR<br>");
-								
-									}
-								
-
-
-							});	
-
-						});	
-
-					});
-			  });
-		 $('.getjsontest').append("<br><br>//----INVENTORY_MASTER_CATALOGUE----<br><br>");
-			
-		 $('.getjsontest').append("<br><br>----CATALOGUE_MASTER----<br><br>");
-		
-				$.each(catmstr[0], function( index, value ) 
-				 {
-					$.each(value, function(inde, valu)
-							{
-
-
-								$.each(valu, function(ind, val)
-								{
-									$.each( val, function( i, v )
-									{
-
-
-											if(i == "RowNumber_CatMstr")
-											{
-												RowNumber_CatMstrARR.push(val[i]);
-												$('.getjsontest').append(val[i] + " inserted to array RowNumber_InvtyCatARR<br>");
-											}
-											else if(i == "SysPk_CatMstr")
-											{
-												SysPk_CatMstrARR.push(val[i]);
-												$('.getjsontest').append(val[i] + " inserted to array SysPk_CatMstrARR<br>");
-											}
-											else if(i == "SysSeq_CatMstr")
-											{
-												SysPk_CatMstrARR.push(val[i]);
-												$('.getjsontest').append(val[i] + " inserted to array SysSeq_CatMstrARR<br>");
-											}
-											else if(i == "LastUpdatedDate_CatMstr")
-											{
-												LastUpdatedDate_CatMstrARR.push(val[i]);
-												$('.getjsontest').append(val[i] + " inserted to array LastUpdatedDate_CatMstrARR<br>");
-
-											}
-											else if(i == "CatalogueTitle_CatMstr")
-											{
-												CatalogueTitle_CatMstrARR.push(val[i]);
-												$('.getjsontest').append(val[i] + " inserted to array CatalogueTitle_CatMstrARR<br>");
-
-											}
-											else if(i == "PromoEndDate_CatMstr")
-											{
-												PromoEndDate_CatMstrARR.push(val[i]);
-												$('.getjsontest').append(val[i] + " inserted to array PromoEndDate_CatMstrARR<br>");
-
-											}
-											else if(i == "PromoStartDate_CatMstr")
-											{
-												PromoStartDate_CatMstrARR.push(val[i]);
-												$('.getjsontest').append(val[i] + " inserted to array PromoStartDate_CatMstrARR<br>");
-
-											}
-
-
-
-									});	
-
-								});	
-
-							});
-				});
-		 $('.getjsontest').append("<br><br>//----CATALOGUE_MASTER----<br><br>");
-	});
-}
-
-
-/*
-function getjsondata()
-{
-	
-
-
-		$.getJSON( "http://viveg.net/glogapitest/index.php?table=INVENTORY_MASTER_CATALOGUE", function( data )
-		{
-
-			  $.each( data, function( index, value ) 
-			  {
-
-					$.each(value, function(inde, valu)
-					{
-						$.each(valu, function(ind, val)
-						{
-							$.each( val, function( i, v )
-							{
-
-									if(i == "RowNumber_InvtyCat")
-									{
-										RowNumber_InvtyCatARR.push(val['RowNumber_InvtyCat']);
-										$('.getjsontest').append(val['RowNumber_InvtyCat'] + " inserted to array RowNumber_InvtyCatARR<br>");
-									}
-									else if(i == "SysPk_InvtyCat")
-									{
-										SysPk_InvtyCatARR.push(val['SysPk_InvtyCat']);
-										$('.getjsontest').append(val['SysPk_InvtyCat'] + " inserted to array SysPk_InvtyCatARR<br>");
-									}
-									else if(i == "SysFk_CatMstr_InvtyCat")
-									{
-										SysFk_CatMstr_InvtyCatARR.push(val['SysFk_CatMstr_InvtyCat']);
-										$('.getjsontest').append(val['SysFk_CatMstr_InvtyCat'] + " inserted to array SysFk_CatMstr_InvtyCatARR<br>");
-									}
-									else if(i == "SKU_InvtyCat")
-									{
-										SKU_InvtyCatARR.push(val['SKU_InvtyCat']);
-										$('.getjsontest').append(val['SKU_InvtyCat'] + " inserted to array SKU_InvtyCatARR<br>");
-									}
-									else if(i == "PictureFileName_InvtyCat")
-									{
-										PictureFileName_InvtyCatARR.push(val['PictureFileName_InvtyCat']);
-										$('.getjsontest').append(val['PictureFileName_InvtyCat'] + " inserted to array PictureFileName_InvtyCatARR<br>");
-									}
-									else if(i == "Barcode_InvtyCat")
-									{
-										Barcode_InvtyCatARR.push(val['Barcode_InvtyCat']);
-										$('.getjsontest').append(val['Barcode_InvtyCat'] + " inserted to array Barcode_InvtyCatARR<br>");
-								
-									}
-									else if(i == "Brand_InvtyCat")
-									{
-										Brand_InvtyCatARR.push(val['Brand_InvtyCat']);
-										$('.getjsontest').append(val['Brand_InvtyCat'] + " inserted to array Brand_InvtyCatARR<br>");
-								
-									}
-									else if(i == "FullDescription_InvtyCat")
-									{
-										FullDescription_InvtyCatARR.push(val['FullDescription_InvtyCat']);
-										$('.getjsontest').append(val['FullDescription_InvtyCat'] + " inserted to array FullDescription_InvtyCatARR<br>");
-								
-									}
-									else if(i == "PromoName_InvtyCat")
-									{
-										PromoName_InvtyCatARR.push(val['PromoName_InvtyCat']);
-										$('.getjsontest').append(val['PromoName_InvtyCat'] + " inserted to array PromoName_InvtyCatARR<br>");
-								
-									}
-									else if(i == "PromoPrice_InvtyCat")
-									{
-										PromoPrice_InvtyCatARR.push(val['PromoPrice_InvtyCat']);
-										$('.getjsontest').append(val['PromoPrice_InvtyCat'] + " inserted to array PromoPrice_InvtyCatARR<br>");
-								
-									}
-								
-
-
-							});	
-
-						});	
-
-					});
-			  });
-
-				InventoryMasterCataloguedataLength =  SysPk_InvtyCatARR.length;
-				$('.getjsontest').append("<br><br><b>there are " + SysPk_InvtyCatARR.length + " promos <b>");
-			
-				
-
-		});
-
-}*/
 
 /*----------------------------------------------------------------------*/
 /*-------------------//navClickedListener.js-------------------------------*/
@@ -1499,6 +1553,13 @@ function editOrderPageQuantityInputListener()
 }
 /*-------------------------------//editorder.html----------------------------*/
 
+
+
+
+
+
+
+//---------------------FUNCTIONS THAT DO SMALL STUFF like replace strings------------------------------
 function toNormalString(stringWithCustomString)
 {
 
@@ -1590,22 +1651,4 @@ function replaceQuotes(str)
 		returnedReplaceQuote = str;alert('return: ' +str);
 	
 	}
-}
-
-/*removed addslashes for single quote because it's not needed*/
-function addslashes(str)
-{
-	//str=str.replace(/\\/g,'\\\\');
-	//str=str.replace(/\'/g,'\\\'');
-	str=str.replace(/\"/g,'\\"');
-	//str=str.replace(/\0/g,'\\0');
-	return str;
-}
-function stripslashes(str)
-{
-	str=str.replace(/\\'/g,'\'');
-	str=str.replace(/\\"/g,'"');
-	str=str.replace(/\\0/g,'\0');
-	str=str.replace(/\\\\/g,'\\');
-	return str;
 }

@@ -57,6 +57,9 @@
 		0BD708256943419F8122F24A /* zoom.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEEE8313684EC2BDF4C641 /* zoom.png */; };
 		A4A5542F0FA943DB9DB40BF2 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2065016CCB3143D89FD8554D /* CoreVideo.framework */; };
 		9C74F851497E4346A1D11F37 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF103733BF2241FDBEDD7535 /* QuartzCore.framework */; };
+		0E3430B9CE7546BCA5B23299 /* CDVConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = D09473596AD7416CB0F519C9 /* CDVConnection.m */; };
+		4207013DC2A5486387B12CF5 /* CDVReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EC28E014CCC346AA83AA53D3 /* CDVReachability.m */; };
+		5153C904FBAF40B7BFC9DFCD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9CB7DBA1C714A95A552A30A /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +150,11 @@
 		64DEEE8313684EC2BDF4C641 /* zoom.png */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "zoom.png"; path = "Resources\zoom.png"; sourceTree = "<group>"; fileEncoding = 4; };
 		2065016CCB3143D89FD8554D /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "CoreVideo.framework"; path = "System/Library/Frameworks/CoreVideo.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 		DF103733BF2241FDBEDD7535 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "QuartzCore.framework"; path = "System/Library/Frameworks/QuartzCore.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
+		D09473596AD7416CB0F519C9 /* CDVConnection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVConnection.m"; path = "cordova-plugin-network-information/CDVConnection.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		EC28E014CCC346AA83AA53D3 /* CDVReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVReachability.m"; path = "cordova-plugin-network-information/CDVReachability.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		363832E61EC246F2B2109FC6 /* CDVConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVConnection.h"; path = "cordova-plugin-network-information/CDVConnection.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		297AE7F3AF4E49D09E03EBDA /* CDVReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVReachability.h"; path = "cordova-plugin-network-information/CDVReachability.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		F9CB7DBA1C714A95A552A30A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "SystemConfiguration.framework"; path = "System/Library/Frameworks/SystemConfiguration.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +170,7 @@
 				13D4C7D8E19041F5A28E8105 /* libBarcodeScanner.a in Frameworks */,
 				A4A5542F0FA943DB9DB40BF2 /* CoreVideo.framework in Frameworks */,
 				9C74F851497E4346A1D11F37 /* QuartzCore.framework in Frameworks */,
+				5153C904FBAF40B7BFC9DFCD /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +254,7 @@
 				E6C0D34DFEF144DDB9237FD7 /* libBarcodeScanner.a */,
 				2065016CCB3143D89FD8554D /* CoreVideo.framework */,
 				DF103733BF2241FDBEDD7535 /* QuartzCore.framework */,
+				F9CB7DBA1C714A95A552A30A /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -274,6 +284,10 @@
 				6D95BC750EC24220BC7A4E6E /* MWScannerViewController.h */,
 				84DAB643CF1C4CABAC418054 /* MWOverlay.h */,
 				CA5CC0F198F14D40BCCD8088 /* MWResult.h */,
+				D09473596AD7416CB0F519C9 /* CDVConnection.m */,
+				EC28E014CCC346AA83AA53D3 /* CDVReachability.m */,
+				363832E61EC246F2B2109FC6 /* CDVConnection.h */,
+				297AE7F3AF4E49D09E03EBDA /* CDVReachability.h */,
 			);
 			name = Plugins;
 			path = "glogapp/Plugins";
@@ -472,6 +486,8 @@
 				64917CA6664C4D039E6F2120 /* MWOverlay.m in Sources */,
 				7A18DA8AEF364876BC87F92C /* MWResult.m in Sources */,
 				C65965BA17EA4C82BC813A8E /* MWScannerViewController.xib in Resources */,
+				0E3430B9CE7546BCA5B23299 /* CDVConnection.m in Sources */,
+				4207013DC2A5486387B12CF5 /* CDVReachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
