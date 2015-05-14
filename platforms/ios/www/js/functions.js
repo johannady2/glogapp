@@ -36,6 +36,7 @@ if(localStorage.BarcodeInvtyCat == null)
     var cartbarcodeArr;
     var cartbrandArr;
     var cartfulldescriptionArr;
+	var cartcataloguetitleArr;
     var cartpromonameArr;
 	var cartpromoPriceArr;
 	var cartpromoEndDateArr;
@@ -729,6 +730,7 @@ function renderCartList(tx,results)
 	var validbarcodeArr = [];
 	var validbrandArr = [];
 	var validfulldescriptionArr = [];
+	var validcataloguetitleArr = [];
 	var validpromonameArr = [];
 	var validpromoPriceArr = [];
 	var validpromoEndDateArr = [];
@@ -744,6 +746,7 @@ function renderCartList(tx,results)
 	var BarcodeInvtyCatForArr = localStorage.BarcodeInvtyCat.replace(/,\s*$/,'');
 	var BrandInvtyCatForArr = localStorage.BrandInvtyCat.replace(/,\s*$/,'');
 	var fulldescriptionForArr = localStorage.fulldescription.replace(/,\s*$/,'');
+	var cataloguetitleForArr = localStorage.cataloguetitle.replace(/,\s*$/,'');
 	var promoPriceForArr = localStorage.promoPrice.replace(/,\s*$/,'');
 	var promoEndDateForArr = localStorage.promoenddate.replace(/,\s*$/,'');
 	var promoStartDateForArr = localStorage.promostartdate.replace(/,\s*$/,'');
@@ -760,6 +763,7 @@ function renderCartList(tx,results)
 	cartbarcodeArr =  BarcodeInvtyCatForArr.split(',');
 	cartbrandArr =  BrandInvtyCatForArr.split(',');
 	cartfulldescriptionArr =  fulldescriptionForArr.split(',');
+	cartcataloguetitleArr = cataloguetitleForArr.split(',');
 	cartpromoPriceArr =  promoPriceForArr.split(',');
 	cartpromoEndDateArr = promoEndDateForArr.split(',');
 	cartpromoStartDateArr = promoStartDateForArr.split(',');
@@ -805,7 +809,12 @@ function renderCartList(tx,results)
 				htmlstringcart +=  '<h4>'+ returnedNormal +'</h4>';
 				
 				toNormalString(cartfulldescriptionArr[ind]);
-				htmlstringcart +='<p>'+returnedNormal+'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
+				htmlstringcart +='<p><b>Description: </b><br><span>'+returnedNormal+'</span><br><br>';		
+				
+				toNormalString(cartcataloguetitleArr[ind]);
+				htmlstringcart +='<b>Catalogue :</b><span>'+returnedNormal+'</span></p>';
+				
+				htmlstringcart += '</div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
 
 
 				
@@ -815,6 +824,7 @@ function renderCartList(tx,results)
 				validbarcodeArr.push(cartbarcodeArr[ind]);
 				validbrandArr.push(cartbrandArr[ind]);
 				validfulldescriptionArr.push(cartfulldescriptionArr[ind]);
+				validcataloguetitleArr.push(cartcataloguetitleArr[ind]);
 				validpromonameArr.push(cartpromonameArr[ind]);
 				validpromoPriceArr.push(cartpromoPriceArr[ind]);
 				validpromoEndDateArr.push(cartpromoEndDateArr[ind]);
@@ -838,8 +848,13 @@ function renderCartList(tx,results)
                 
                 htmlstringcart += '<small class="warning"> - This Item is only valid from '+ cartpromoStartDateArr[ind] + ' to ' +  cartpromoEndDateArr[ind] +'</small><br>';
                 
-                toNormalString(cartfulldescriptionArr[ind]);
-                htmlstringcart +='<p>'+ returnedNormal +'</p></div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
+				toNormalString(cartfulldescriptionArr[ind]);
+				htmlstringcart +='<p><b>Description: </b><br><span>'+returnedNormal+'</span><br><br>';		
+				
+				toNormalString(cartcataloguetitleArr[ind]);
+				htmlstringcart +='<b>Catalogue :</b><span>'+returnedNormal+'</span></p>';
+				
+				htmlstringcart += '</div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
 
 			}
 
@@ -877,7 +892,7 @@ function renderCartList(tx,results)
 		
 		$('.orderAll-cont').empty();
 		//change to validArrs later
-		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-brand="'+validbrandArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'" data-orderedfrom="'+validorderedFromArr.toString()+'">Order All</a>');
+		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-brand="'+validbrandArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'"  data-cataloguetitle="'+ validcataloguetitleArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'" data-orderedfrom="'+validorderedFromArr.toString()+'">Order All</a>');
    
 		
 	
@@ -898,6 +913,7 @@ function renderCartList(tx,results)
         alert($(this).attr('data-barcode'));
         alert($(this).attr('data-brand'));
         alert($(this).attr('data-fulldescription'));
+        alert($(this).attr('data-cataloguetitle'));
         alert($(this).attr('data-promoname'));
         alert($(this).attr('data-promoPrice'));
         alert($(this).attr('data-promoEndDate'));
