@@ -269,7 +269,7 @@ function renderCategoriesToSelectBox(tx,results)
 
 function queryCataloguesForSelectBox(tx)
 {
-    alert('selecting catalogues');
+   
     	tx.executeSql('SELECT * FROM CATALOGUE_MASTER', [], renderCataloguesToSelectBox);
 }
 
@@ -548,7 +548,9 @@ function queryForSearch(tx)
 	var enteredPromoname = $('input[name="search-promoname"]').val();
     var enteredfulldescription = $('input[name="search-fulldescription"]').val();
 	var enteredBrand = $('input[name="search-brand"]').val();
+	var enteredCatalogue = $('.search-catalogue').val();
 	var enteredCategory = $('.search-category').val();
+
 	
 	var enteredBarcodelength = enteredBarcode.length;
 	//alert('barcode length: ' + enteredBarcodelength);
@@ -599,6 +601,18 @@ function queryForSearch(tx)
 		var brandWhereString = '';
 	}
 		
+	var enteredCataloguelength = enteredCatalogue.length;
+	alert('Catalogue length: ' + enteredCataloguelength);
+	/*
+	if(enteredCataloguelength > 0)
+	{
+	  var CatalogueWhereString  = ' AND  CM.SysPk_CatMstr =  "' + enteredCatalogue +'"';
+	}
+	else
+	{
+		var CategoryWhereString = '';
+	}*/
+	
 	var enteredCategorylength = enteredCategory.length;
 	//alert('Category length: ' + enteredCategorylength);
 	if(enteredCategorylength > 0)
