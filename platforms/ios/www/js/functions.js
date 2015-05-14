@@ -53,6 +53,7 @@ if(localStorage.BarcodeInvtyCat == null)
 	localStorage.BarcodeInvtyCat = '';
 	localStorage.BrandInvtyCat = '';
 	localStorage.fulldescription = '';
+	localStorage.cataloguetitle = '';
     localStorage.promoname = '';
     localStorage.promoPrice = '';
 	localStorage.promoenddate = '';
@@ -1056,14 +1057,11 @@ function renderSinglePage(tx,results)
          $('.singleitembrand').append(results.rows.item(0).Brand_InvtyCat);
          $('.singleitemfulldescription').append(results.rows.item(0).FullDescription_InvtyCat);
          $('.singleitemcatalogue').append(results.rows.item(0).CatalogueTitle_CatMstr);
-        // $('.singleitemcategory').append(results.rows.item(0).CategoryName_CatgyMstr);
+			//will be more complex than this afterall. since 1 item can belong to multiple categories // $('.singleitemcategory').append(results.rows.item(0).CategoryName_CatgyMstr);
          $('.singleitempromoprice').append(results.rows.item(0).PromoPrice_InvtyCat);
          $('.singleitemsubtotal').append(results.rows.item(0).PromoPrice_InvtyCat);//temporary. value will change on quantity input
 			
-		//STOPPED HERE
-			//alert('date now: ' + getDateTimeNow());
-			//alert('end date: ' + results.rows.item(0).PromoEndDate_CatMstr);
-			//alert('start date: ' + results.rows.item(0).PromoStartDate_CatMstr);
+
 			
 		if((getDateTimeNow() >= results.rows.item(0).PromoStartDate_CatMstr)&&(getDateTimeNow() <= results.rows.item(0).PromoEndDate_CatMstr))
 		{
@@ -1077,11 +1075,14 @@ function renderSinglePage(tx,results)
 		}
 			
 			
-			//alert('RESULT ROW PROMO NAME: ' + results.rows.item(0).PromoName_InvtyCat);
-			//alert('RESULT ROW FULL DESCRIPTION: ' + results.rows.item(0).FullDescription_InvtyCat);
+
 			
 			var placeorderbtnstring =  '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoEndDate="'+ results.rows.item(0).PromoEndDate_CatMstr +'" data-promoStartDate="'+ results.rows.item(0).PromoStartDate_CatMstr +'" ';
-				
+			
+			
+			toCustomString(results.rows.item(0).CatalogueTitle_CatMstr);
+			placeorderbtnstring	+=' data-catalogue="'+ returnedCustom +'" ';
+			
 			toCustomString(results.rows.item(0).PromoName_InvtyCat);
 			placeorderbtnstring	+=' data-promoname="'+ returnedCustom +'" ';
 				
@@ -1095,29 +1096,7 @@ function renderSinglePage(tx,results)
         });
        
         
-        /*PROBABLY NEED TO MOVE TESE TO HTML IN THE FUTURE AND load each data per element
-            var htmlstringSingle ='';
-            htmlstringSingle += '<div class="row single-cont"><div class="col-md-6 col-sm-12 col-xs-12"><div class="img-container">';   
-            htmlstringSingle += '<img src="'+ results.rows.item(0).PictureFileName_InvtyCat +'" class="responsiveImage">';
-            htmlstringSingle += '</div></div>';
-            htmlstringSingle += '<div class="col-md-6 col-sm-12 col-xs-12"><div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
-            htmlstringSingle += '<h1>'+ results.rows.item(0).PromoName_InvtyCat +'</h1>';
-            htmlstringSingle += '<p>'+ results.rows.item(0).FullDescription_InvtyCat +'</p>';
-            htmlstringSingle += '<h3 class="pull-right">$<span class="glogprice">'+ results.rows.item(0).PromoPrice_InvtyCat +'</span></h3>';
-            htmlstringSingle += '</div> </div>';
-            htmlstringSingle += '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">';
-            htmlstringSingle += '<table class="totalcounter"><tr><td>';
-            htmlstringSingle += '<label for="quantity">Quantity</label>';
-            htmlstringSingle += '</td><td class="pull-right">';
-            htmlstringSingle += '<input type="text" name="glogquantity" id="glogquantity" value="1">';
-            htmlstringSingle += '</td></tr><tr><td>';
-            htmlstringSingle += '<label for="quantity">Subtotal</label>';
-            htmlstringSingle += '</td><td class="pull-right">';
-            htmlstringSingle += '<div><p><span>$</span><span class="glogtotal">'+ results.rows.item(0).PromoPrice_InvtyCat +'</span></p></div>';
-            htmlstringSingle += '</td></tr></table>';
-            htmlstringSingle += '<a href="#" class="btn btn-success btn-large placeOrder" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoname="'+ results.rows.item(0).PromoName_InvtyCat +'" data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ results.rows.item(0).FullDescription_InvtyCat +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'">Place Order</a>';
-            htmlstringSingle += '</div></div></div></div>';
-        */
+
     }
     else
     {
@@ -1244,6 +1223,7 @@ $(document).on('click','.placeOrder', function()
 	var BarcodeInvtyCat = $(this).attr('data-BarcodeInvtyCat');
 	var BrandInvtyCat = $(this).attr('data-BrandInvtyCat');
 	var fulldescription = $(this).attr('data-fulldescription');
+	var cataloguetitle = $(this).attr('data-catalogue');
     var promoname = $(this).attr('data-promoname');
     var promoPrice = $(this).attr('data-promoPrice'); 
 	var promoEndDate = $(this).attr('data-promoEndDate'); 
@@ -1281,6 +1261,9 @@ $(document).on('click','.placeOrder', function()
 	toCustomString(fulldescription);
     localStorage.fulldescription += returnedCustom+',';
 	
+	toCustomString(cataloguetitle);
+	localStorage.cataloguetitle += returnedCustom +',';
+	
 	toCustomString(promoname);
 	localStorage.promoname += returnedCustom +',';
 	
@@ -1291,7 +1274,7 @@ $(document).on('click','.placeOrder', function()
     localStorage.subtotal += subtotal.toString()+',';
 	localStorage.orderedfrom += orderedFrom.toString()+',';
     
-    alert('item added to cart');
+    alert('item added to cart' + localStorage.cataloguetitle);
     
     $('.forsingleonly a').click();
 });
