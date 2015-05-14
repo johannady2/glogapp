@@ -16,6 +16,9 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
 				toNormalString(cartfulldescriptionArr[orderidtoedit]);
 				$('.edit-order-fulldescription').append(returnedNormal);//<p>fulldescription</p>
 				
+				toNormalString(cartcataloguetitleArr[orderidtoedit]);
+				$('.edit-order-catalogutitle').append(returnedNormal);//<p>fulldescription</p>
+				
 				toNormalString(cartpromonameArr[orderidtoedit]);
                 $('.edit-order-promoname').append(returnedNormal);//<h1>promoname</h1>
 				
@@ -76,6 +79,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
 					cartbarcodeArr.splice(orderidtoedit,1);
 					cartbrandArr.splice(orderidtoedit,1);
 					cartfulldescriptionArr.splice(orderidtoedit,1);
+					cartcataloguetitleArr.splice(orderidtoedit,1);
                     cartpromonameArr.splice(orderidtoedit,1);
                     cartpromoPriceArr.splice(orderidtoedit,1);
 					cartpromoEndDateArr.splice(orderidtoedit,1);
@@ -90,6 +94,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
 						var newarrstring_cartbarcode = cartbarcodeArr.toString()+",";
 						var newarrstring_cartbrand = cartbrandArr.toString()+",";
 						var newarrstring_fulldescription = cartfulldescriptionArr.toString()+",";
+						var newarrstring_cataloguetitle = cartcataloguetitleArr.toString()+",";
                         var newarrstring_promoname = cartpromonameArr.toString()+",";
                         var newarrstring_promoPrice = cartpromoPriceArr.toString()+",";
 						var newarrstring_promoEndDate = cartpromoEndDateArr.toString()+",";
@@ -104,6 +109,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
                         var newarrstring_cartbarcode = '';
                         var newarrstring_cartbrand = '';
 						var newarrstring_fulldescription = '';
+						var newarrstring_cataloguetitle = '';
 						var newarrstring_promoname = '';
                         var newarrstring_promoPrice ='';
 						var newarrstring_promoEndDate = '';
@@ -117,6 +123,7 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
 					localStorage.BarcodeInvtyCat = newarrstring_cartbarcode;
 					localStorage.BrandInvtyCat = newarrstring_cartbrand;
                     localStorage.fulldescription = newarrstring_fulldescription;
+                    localStorage.cataloguetitle = newarrstring_cataloguetitle;
 					localStorage.promoname = newarrstring_promoname;
                     localStorage.promoPrice = newarrstring_promoPrice;
 					localStorage.promoenddate = newarrstring_promoEndDate;
