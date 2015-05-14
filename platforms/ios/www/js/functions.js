@@ -556,7 +556,7 @@ function queryForSearch(tx)
 	//alert('barcode length: ' + enteredBarcodelength);
 	if(enteredBarcodelength > 0)
 	{
-	  var barcodeWhereString  = ' IMC.Barcode_InvtyCat = "' + enteredBarcode +'"';
+	  var barcodeWhereString  = ' IMCIMCCatgy.Barcode_InvtyCat = "' + enteredBarcode +'"';
 	}
 	else
 	{
@@ -569,7 +569,7 @@ function queryForSearch(tx)
 	if(enteredPromonamelength > 0)
 	{
 		replaceQuotes(enteredPromoname);
-	  var promonameWhereString  = ' AND  IMC.PromoName_InvtyCat LIKE  "%' + returnedReplaceQuote  +'%"';
+	  var promonameWhereString  = ' AND  IMCIMCCatgy.PromoName_InvtyCat LIKE  "%' + returnedReplaceQuote  +'%"';
 
 	}
 	else
@@ -582,7 +582,7 @@ function queryForSearch(tx)
 	if(enteredfulldescriptionlength > 0)
 	{
 		replaceQuotes(enteredfulldescription);
-	  var fulldescriptionWhereString  = ' AND  IMC.FullDescription_InvtyCat LIKE  "%' + returnedReplaceQuote +'%"';
+	  var fulldescriptionWhereString  = ' AND  IMCIMCCatgy.FullDescription_InvtyCat LIKE  "%' + returnedReplaceQuote +'%"';
 	}
 	else
 	{
@@ -594,7 +594,7 @@ function queryForSearch(tx)
 	//alert('brand length: ' + enteredBrandlength);
 	if(enteredBrandlength > 0)
 	{
-	  var brandWhereString  = ' AND  IMC.Brand_InvtyCat LIKE  "%' + enteredBrand +'%"';
+	  var brandWhereString  = ' AND  IMCIMCCatgy.Brand_InvtyCat LIKE  "%' + enteredBrand +'%"';
 	}
 	else
 	{
@@ -617,7 +617,7 @@ function queryForSearch(tx)
 	//alert('Category length: ' + enteredCategorylength);
 	if(enteredCategorylength > 0)
 	{
-	  var CategoryWhereString  = ' AND  IMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy =  "' + enteredCategory +'"';
+	  var CategoryWhereString  = ' AND  IMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy =  "' + enteredCategory +'"';
 	}
 	else
 	{
@@ -630,7 +630,8 @@ function queryForSearch(tx)
 	//works//var finalqueryString = 'SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat';
 	//error//var finalqueryString = 'SELECT * FROM CATEGORY_MASTER AS CM RIGHT JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat)AS IMC_IMCCatgy ON IMC_IMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr ';
    //works//var finalqueryString = 'SELECT IMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCCatgy ON IMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr';
-    var finalqueryString = 'SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr ';
+    //works//var finalqueryString = 'SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr ';
+    var finalqueryString = 'SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat';
 
 
 	
