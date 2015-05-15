@@ -746,9 +746,9 @@ function rendercheckExistsCatalogueMaster(tx4,results)
         
           alert(  SysPk_CatgyMstrARR[catmstrRC] +' already exists. Updating info.');
 
-       
-       var sqlupdateinvtycat = "UPDATE CATALOGUE_MASTER SET SysSeq_CatMstr = ? WHERE RowNumber_CatMstr = ? AND SysPk_CatMstr = ?";
-        tx4.executeSql(sqlupdateinvtycat,[SysSeq_CatMstrARR[catmstrRC],results.rows.item(0).RowNumber_CatMstr,results.rows.item(0).SysPk_CatMstr],function(){ alert(results.rows.item(0).SysPk_CatMstr  + ' updated'); } ,errorCB);
+       //CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr
+       var sqlupdateinvtycat = "UPDATE CATALOGUE_MASTER SET SysSeq_CatMstr = ? , CatalogueTitle_CatMstr = ?, PromoEndDate_CatMstr = ?, PromoStartDate_CatMstr = ? WHERE RowNumber_CatMstr = ? AND SysPk_CatMstr = ?";
+        tx4.executeSql(sqlupdateinvtycat,[SysSeq_CatMstrARR[catmstrRC],CatalogueTitle_CatMstrARR[catmstrRC], PromoEndDate_CatMstrARR[catmstrRC], PromoStartDate_CatMstrARR[catmstrRC],results.rows.item(0).RowNumber_CatMstr,results.rows.item(0).SysPk_CatMstr],function(){ alert(results.rows.item(0).SysPk_CatMstr  + ' updated'); } ,errorCB);
        
     }
 }
