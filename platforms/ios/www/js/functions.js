@@ -90,6 +90,9 @@ if(localStorage.BarcodeInvtyCat == null)
 					var	FullDescription_InvtyCatARR = [];
 					var	PromoName_InvtyCatARR = [];
 					var	PromoPrice_InvtyCatARR = [];
+
+                    var invtycatRecordCounter = 0;
+                    var invtycattxparam;
 					//--//INVENTORY_MASTER_CATALOGUE
 
 
@@ -136,7 +139,7 @@ function errorCB(err)
 
 function successCB()
 {
-  //alert('successful');
+  alert('successful');
 
 }
 
@@ -161,9 +164,10 @@ function createDB(tx)
      alert('creating tables if not exists');
 
         //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE");
+       
         var query = "";
-        query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,";
-        //query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,";
+        //query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,";
+        query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,";
         query += "SysFk_Invty_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,SysSeq_InvtyCat,UserSeq_InvtyCat, UserPk_InvtyCat,";
         query += "UserFk_Invty_InvtyCat,UserFk_CatMstr_InvtyCat,LastUpdatedBy_InvtyCat,LastUpdatedConcurrencyID_InvtyCat,LastUpdatedDate_InvtyCat TIMESTAMP DEFAULT (datetime('now','localtime')),";
         query += "Module_InvtyCat, Particulars_InvtyCat,PictureFileName_InvtyCat , Status_InvtyCat, Type_InvtyCat,";
@@ -174,13 +178,13 @@ function createDB(tx)
         query += "PromoStartDate_InvtyCat TIMESTAMP, PromoEndDate_InvtyCat TIMESTAMP, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,";
         query += "RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,";
         query += "UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)";
-        tx.executeSql( query ,[],populateInventoryMasterCatalogue,errorCB);
+        tx.executeSql( query ,[],checkExistsInventoryMasterCatalogue,errorCB);
 
 
        // tx.executeSql("DROP TABLE IF EXISTS CATALOGUE_MASTER");
         var query2 = "";
-        query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_CatMstr,";
-        //query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr, SysPk_CatMstr,";
+        //query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_CatMstr,";
+        query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr, SysPk_CatMstr,";
         query2 += "SysFk_CatMstr,SysSeq_CatMstr, UserPk_CatMstr, LastUpdatedBy_CatMstr, LastUpdatedConcurrencyID_CatMstr, LastUpdatedDate_CatMstr TIMESTAMP DEFAULT (datetime('now','localtime')), Module_CatMstr,";
         query2 += "Particulars_CatMstr,PictureFileName_CatMstr, Status_CatMstr,Type_CatMstr,";
         query2 += "CatalogueTitle_CatMstr, Description_CatMstr, FullDescription_CatMstr, FreeDescription_CatMstr,";
@@ -235,8 +239,8 @@ function createDB(tx)
 function isjsonready()//i'm thinking of checking them all at once instead of by table because I can check the CATALOGUE_MASTER table first.. and batch delete multiple items from inventory_master_catalogue,and other tables. If i check only one table at a time, it'll take longger. I think.
 {//APPENDED STUFF IS FOR getjsontest page.
 
-    if(networkstatus != 'connected' || networkstatus == '')
-    {networkstatus = 'connected';
+    if((networkstatus != 'connected' || networkstatus == ''))
+    {networkstatus = 'connected';//networkstatus is set back to '' when checkig inorder to see results so SysPk_CatgyMstrARR.length <= 0 is added to  prevent from pushing to array twice
      
         alert('device is online. getting json info');
 
@@ -249,8 +253,9 @@ function isjsonready()//i'm thinking of checking them all at once instead of by 
                   ).done(function(invtycat, catmstr,settings,catgymstr,InvtyCatCatgy)
             {
 
-
-
+                if(SysPk_CatgyMstrARR.length <= 0)
+                {
+                    
                  $('.getjsontest').append("<br><br>----INVENTORY_MASTER_CATALOGUE----<br><br>");
                     $.each( invtycat[0], function( index, value ) 
                       {
@@ -515,7 +520,7 @@ function isjsonready()//i'm thinking of checking them all at once instead of by 
 
                 $('.getjsontest').append("<br><br>---//INVENTORY_MASTER_CATALOGUE_CATEGORY----<br><br>");
 
-                
+                }//if(SysPk_CatgyMstrARR.length <= 0)
                 
             }).then(function(objects)
             {
@@ -565,13 +570,79 @@ function isjsonready()//i'm thinking of checking them all at once instead of by 
 
 
 
+function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMasterCatalogue()
+{
+    var RecordBeingProcessesd =  invtycatRecordCounter + 1;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
+   invtycattxparam = tx;
+    
+    
+    alert('checkExistsInventoryMasterCatalogue');
+    alert('recordcounter ' + invtycatRecordCounter);
+    alert('SysPk_InvtyCat ' + SysPk_InvtyCatARR[invtycatRecordCounter]);
+    
+    //var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
+    // tx.executeSql(sqlInsert,["2222222222","2","2222222222","img/Item20.jpg","042000062008","etude house","was P3750","Sanyang Study Table",3000.00],null,errorCB);
+    // tx.executeSql(sqlInsert,["3333333333","2","3333333333","img/Item21.jpg","012345678905","etude house","pack of 10","80L notebooks",100.00],queryForExpired,errorCB);
+
+    if(SysPk_InvtyCatARR.length > 0)
+    {
+        if(RecordBeingProcessesd <= RowNumber_InvtyCatARR.length)
+		{
+            alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_InvtyCatARR.length );
+            db.transaction(function(tx3)
+           {    var sqlselectinvtycat = "SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE SysPk_InvtyCat = ?";
+                 tx3.executeSql(sqlselectinvtycat,[SysPk_InvtyCatARR[invtycatRecordCounter]],rendercheckExistsInventoryMasterCatalogue,errorCB);
+            },errorCB,function(){  alert('now at tx3 callback'); invtycatRecordCounter +=1; checkExistsInventoryMasterCatalogue(invtycattxparam);});
+        }
+        else
+		{
+            alert('no more array data');
+			invtycatRecordCounter = 0;
+		}
+        
+    }
+    else
+    {
+        alert('arrays are empty because device was offline. procceeding  to delete query.');
+        	db.transaction(queryForExpired,errorCB);
+    }
+    
+    
+    
+}
+
+function rendercheckExistsInventoryMasterCatalogue(tx3,results)
+{   
+  
+
+    var sqlinsertinvtycat = "INSERT INTO INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat) Values(?,?)";//,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?,?)";
+    
+    
+    if(results.rows.length <= 0)
+    {
+            alert('no row with syspkinvtycat' + SysPk_InvtyCatARR[invtycatRecordCounter] +' exists.');
+            alert('inserting ' + RowNumber_InvtyCatARR[invtycatRecordCounter] + ',' + SysPk_InvtyCatARR[invtycatRecordCounter]);
+
+            
+                tx3.executeSql(sqlinsertinvtycat,[RowNumber_InvtyCatARR[invtycatRecordCounter],SysPk_InvtyCatARR[invtycatRecordCounter]],function(){ alert(SysPk_InvtyCatARR[invtycatRecordCounter]  + 'inserted');},errorCB);
+        
+    }
+    else
+    {
+        
+          alert(results.rows.item(0).SysPk_InvtyCat + ' already exists. check if should Update or not');
+        
+    }
+    
+}
 
 
 function populateCatalogueMaster(tx)
 {
     //var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,SysSeq_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) VALUES(?,?,?,?,?)";
    // tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2015-05-15 24:59:59","2015-05-11 00:00:00"],null,errorCB);
-   
+    
+
 }
 
 
@@ -605,15 +676,6 @@ function populateInvtyCatCatgy(tx)
 }
 
 
-function populateInventoryMasterCatalogue(tx)
-{
-  
-
-//var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
-// tx.executeSql(sqlInsert,["2222222222","2","2222222222","img/Item20.jpg","042000062008","etude house","was P3750","Sanyang Study Table",3000.00],null,errorCB);
-// tx.executeSql(sqlInsert,["3333333333","2","3333333333","img/Item21.jpg","012345678905","etude house","pack of 10","80L notebooks",100.00],queryForExpired,errorCB);
-
-}
 
 
 
