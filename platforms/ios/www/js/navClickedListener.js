@@ -54,7 +54,6 @@ $(document).on('navClicked',function(event,filename)
         networkstatus = '';
 		isjsonready();
         
-        
     }
 
   

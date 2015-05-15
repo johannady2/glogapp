@@ -91,7 +91,7 @@ if(localStorage.BarcodeInvtyCat == null)
 					var	PromoName_InvtyCatARR = [];
 					var	PromoPrice_InvtyCatARR = [];
 
-                    var invtycatRecordCounter = 0;
+                    var invtycatRC = 0;
                     var invtycattxparam;
 					//--//INVENTORY_MASTER_CATALOGUE
 
@@ -572,13 +572,13 @@ function isjsonready()//i'm thinking of checking them all at once instead of by 
 
 function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMasterCatalogue()
 {
-    var RecordBeingProcessesd =  invtycatRecordCounter + 1;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
+    var RecordBeingProcessesd =  invtycatRC + 1;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
    invtycattxparam = tx;
     
     
     alert('checkExistsInventoryMasterCatalogue');
-    alert('recordcounter ' + invtycatRecordCounter);
-    alert('SysPk_InvtyCat ' + SysPk_InvtyCatARR[invtycatRecordCounter]);
+    alert('recordcounter ' + invtycatRC);
+    alert('SysPk_InvtyCat ' + SysPk_InvtyCatARR[invtycatRC]);
     
     //var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
     // tx.executeSql(sqlInsert,["2222222222","2","2222222222","img/Item20.jpg","042000062008","etude house","was P3750","Sanyang Study Table",3000.00],null,errorCB);
@@ -590,14 +590,14 @@ function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMa
 		{
             alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_InvtyCatARR.length );
             db.transaction(function(tx3)
-           {    var sqlselectinvtycat = "SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE SysPk_InvtyCat = ?";
-                 tx3.executeSql(sqlselectinvtycat,[SysPk_InvtyCatARR[invtycatRecordCounter]],rendercheckExistsInventoryMasterCatalogue,errorCB);
-            },errorCB,function(){  alert('now at tx3 callback'); invtycatRecordCounter +=1; checkExistsInventoryMasterCatalogue(invtycattxparam);});
+           {    var sqlselectinvtycat = "SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE RowNumber_InvtyCat=? AND SysPk_InvtyCat = ? AND SKU_InvtyCat=?";//these three are composite primary keys
+                 tx3.executeSql(sqlselectinvtycat,[RowNumber_InvtyCatARR[invtycatRC],SysPk_InvtyCatARR[invtycatRC],SKU_InvtyCatARR[invtycatRC]],rendercheckExistsInventoryMasterCatalogue,errorCB);
+            },errorCB,function(){  alert('now at tx3 callback'); invtycatRC +=1; checkExistsInventoryMasterCatalogue(invtycattxparam);});
         }
         else
 		{
             alert('no more array data');
-			invtycatRecordCounter = 0;
+			invtycatRC = 0;
 		}
         
     }
@@ -615,22 +615,28 @@ function rendercheckExistsInventoryMasterCatalogue(tx3,results)
 {   
   
 
-    var sqlinsertinvtycat = "INSERT INTO INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat) Values(?,?)";//,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?,?)";
-    
-    
+
     if(results.rows.length <= 0)
     {
-            alert('no row with syspkinvtycat' + SysPk_InvtyCatARR[invtycatRecordCounter] +' exists.');
-            alert('inserting ' + RowNumber_InvtyCatARR[invtycatRecordCounter] + ',' + SysPk_InvtyCatARR[invtycatRecordCounter]);
+        
+            var sqlinsertinvtycat = "INSERT INTO INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) Values(?,?,?,?,?,?,?,?,?,?)";//) VALUES(?,?,?,?,?,?,?,?,?,?)";
+    
+    
+            alert('no row with syspkinvtycat' + SysPk_InvtyCatARR[invtycatRC] +' exists.');
+            alert('inserting ' + RowNumber_InvtyCatARR[invtycatRC] + ',' + SysPk_InvtyCatARR[invtycatRC]+','+SysFk_CatMstr_InvtyCatARR[invtycatRC]+','+SKU_InvtyCatARR[invtycatRC]+','+PictureFileName_InvtyCatARR[invtycatRC]+','+Barcode_InvtyCatARR[invtycatRC]+','+Brand_InvtyCatARR[invtycatRC]+','+FullDescription_InvtyCatARR[invtycatRC]+','+PromoName_InvtyCatARR[invtycatRC]+','+PromoPrice_InvtyCatARR[invtycatRC]);
 
             
-                tx3.executeSql(sqlinsertinvtycat,[RowNumber_InvtyCatARR[invtycatRecordCounter],SysPk_InvtyCatARR[invtycatRecordCounter]],function(){ alert(SysPk_InvtyCatARR[invtycatRecordCounter]  + 'inserted');},errorCB);
+                tx3.executeSql(sqlinsertinvtycat,[RowNumber_InvtyCatARR[invtycatRC],SysPk_InvtyCatARR[invtycatRC],SysFk_CatMstr_InvtyCatARR[invtycatRC],SKU_InvtyCatARR[invtycatRC],PictureFileName_InvtyCatARR[invtycatRC],Barcode_InvtyCatARR[invtycatRC],Brand_InvtyCatARR[invtycatRC],FullDescription_InvtyCatARR[invtycatRC],PromoName_InvtyCatARR[invtycatRC],PromoPrice_InvtyCatARR[invtycatRC]],function(){ alert(SysPk_InvtyCatARR[invtycatRC]  + ' inserted');},errorCB);
         
     }
     else
     {
         
-          alert(results.rows.item(0).SysPk_InvtyCat + ' already exists. check if should Update or not');
+          alert( SysPk_InvtyCatARR[invtycatRC] + ' already exists. Updating info.');
+        
+        //PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat
+        var sqlupdateinvtycat = "UPDATE INVENTORY_MASTER_CATALOGUE SET SysFk_CatMstr_InvtyCat = ? WHERE SysPk_InvtyCat = ?";
+        tx3.executeSql(sqlupdateinvtycat,[SysFk_CatMstr_InvtyCatARR[invtycatRC],results.rows.item(0).SysPk_InvtyCat],function(){ alert(SysPk_InvtyCatARR[invtycatRC]  + ' updated');} ,errorCB);
         
     }
     
