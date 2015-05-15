@@ -582,9 +582,8 @@ function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMa
    invtycattxparam = tx;
     
     
-    alert('checkExistsInventoryMasterCatalogue');
-    alert('recordcounter ' + invtycatRC);
-    alert('SysPk_InvtyCat ' + SysPk_InvtyCatARR[invtycatRC]);
+    alert('checkExistsInventoryMasterCatalogue  SysPk_InvtyCat ' + SysPk_InvtyCatARR[invtycatRC]);
+
     
     //var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
     // tx.executeSql(sqlInsert,["2222222222","2","2222222222","img/Item20.jpg","042000062008","etude house","was P3750","Sanyang Study Table",3000.00],null,errorCB);
@@ -602,7 +601,7 @@ function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMa
         }
         else
 		{
-            alert('no more array data');
+            alert('no more array data - invtycat');
 			invtycatRC = 0;
             
           
@@ -614,10 +613,10 @@ function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMa
     }
     else
     {
-        alert('arrays are empty because device was offline. procceeding  to delete query.');
+        alert('arrays are empty because device was offline. procceeding  to delete query. -invtycat');
         
-
-        db.transaction(queryForExpired,errorCB);
+        db.transaction(createTBcataloguemaster,errorCB);
+       
     }
     
     
@@ -634,9 +633,7 @@ function rendercheckExistsInventoryMasterCatalogue(tx3,results)
         
             var sqlinsertinvtycat = "INSERT INTO INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) Values(?,?,?,?,?,?,?,?,?,?)";//) VALUES(?,?,?,?,?,?,?,?,?,?)";
     
-    
-            alert('no row with syspkinvtycat' + SysPk_InvtyCatARR[invtycatRC] +' exists.');
-            alert('inserting ' + RowNumber_InvtyCatARR[invtycatRC] + ',' + SysPk_InvtyCatARR[invtycatRC]+','+SysFk_CatMstr_InvtyCatARR[invtycatRC]+','+SKU_InvtyCatARR[invtycatRC]+','+PictureFileName_InvtyCatARR[invtycatRC]+','+Barcode_InvtyCatARR[invtycatRC]+','+Brand_InvtyCatARR[invtycatRC]+','+FullDescription_InvtyCatARR[invtycatRC]+','+PromoName_InvtyCatARR[invtycatRC]+','+PromoPrice_InvtyCatARR[invtycatRC]);
+            alert('no row with syspkinvtycat' + SysPk_InvtyCatARR[invtycatRC] +' exists. inserting ' + RowNumber_InvtyCatARR[invtycatRC] + ',' + SysPk_InvtyCatARR[invtycatRC]+','+SysFk_CatMstr_InvtyCatARR[invtycatRC]+','+SKU_InvtyCatARR[invtycatRC]+','+PictureFileName_InvtyCatARR[invtycatRC]+','+Barcode_InvtyCatARR[invtycatRC]+','+Brand_InvtyCatARR[invtycatRC]+','+FullDescription_InvtyCatARR[invtycatRC]+','+PromoName_InvtyCatARR[invtycatRC]+','+PromoPrice_InvtyCatARR[invtycatRC]);
 
             
                 tx3.executeSql(sqlinsertinvtycat,[RowNumber_InvtyCatARR[invtycatRC],SysPk_InvtyCatARR[invtycatRC],SysFk_CatMstr_InvtyCatARR[invtycatRC],SKU_InvtyCatARR[invtycatRC],PictureFileName_InvtyCatARR[invtycatRC],Barcode_InvtyCatARR[invtycatRC],Brand_InvtyCatARR[invtycatRC],FullDescription_InvtyCatARR[invtycatRC],PromoName_InvtyCatARR[invtycatRC],PromoPrice_InvtyCatARR[invtycatRC]],function(){ alert(SysPk_InvtyCatARR[invtycatRC]  + ' inserted');},errorCB);
@@ -647,9 +644,9 @@ function rendercheckExistsInventoryMasterCatalogue(tx3,results)
         
           alert( SysPk_InvtyCatARR[invtycatRC] + ' already exists. Updating info.');
         
-        //PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat
-        var sqlupdateinvtycat = "UPDATE INVENTORY_MASTER_CATALOGUE SET SysFk_CatMstr_InvtyCat = ? WHERE SysPk_InvtyCat = ?";
-        tx3.executeSql(sqlupdateinvtycat,[SysFk_CatMstr_InvtyCatARR[invtycatRC],results.rows.item(0).SysPk_InvtyCat],function(){ alert(SysPk_InvtyCatARR[invtycatRC]  + ' updated'); } ,errorCB);
+        //,,
+        var sqlupdateinvtycat = "UPDATE INVENTORY_MASTER_CATALOGUE SET SysFk_CatMstr_InvtyCat = ?,PictureFileName_InvtyCat = ?, Barcode_InvtyCat = ? , Brand_InvtyCat = ? , FullDescription_InvtyCat = ? , PromoName_InvtyCat = ? , PromoPrice_InvtyCat = ? WHERE RowNumber_InvtyCat = ? AND SysPk_InvtyCat = ? AND SKU_InvtyCat = ?";
+        tx3.executeSql(sqlupdateinvtycat,[SysFk_CatMstr_InvtyCatARR[invtycatRC],PictureFileName_InvtyCatARR[invtycatRC],Barcode_InvtyCatARR[invtycatRC],Brand_InvtyCatARR[invtycatRC],FullDescription_InvtyCatARR[invtycatRC],PromoName_InvtyCatARR[invtycatRC],PromoPrice_InvtyCatARR[invtycatRC],results.rows.item(0).RowNumber_InvtyCat,results.rows.item(0).SysPk_InvtyCat,results.rows.item(0).SKU_InvtyCat],function(){ alert(SysPk_InvtyCatARR[invtycatRC]  + ' updated'); } ,errorCB);
         
     }
     
@@ -686,10 +683,9 @@ function checkExistsCatalogueMaster(tx)//previously populateCatalogueMaster(tx)
         catmstrtxparam = tx;
     
     
-    alert('checkExistsCatalogueMaster');
-    alert('recordcounter ' + catmstrRC);
-    alert('SysPk_CatMstr ' + SysPk_CatMstrARR[catmstrRC]);
- 
+    alert('checkExistsCatalogueMaster SysPk_CatMstr ' + SysPk_CatMstrARR[catmstrRC]);
+
+
     
    //var sqlInsert2 = "INSERT INTO CATALOGUE_MASTER(SysPk_CatMstr,SysSeq_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) VALUES(?,?,?,?,?)";
    // tx.executeSql(sqlInsert2,["1",2,"Johanna Catalogue","2015-05-15 24:59:59","2015-05-11 00:00:00"],null,errorCB);
@@ -707,7 +703,7 @@ function checkExistsCatalogueMaster(tx)//previously populateCatalogueMaster(tx)
         }
         else
 		{
-            alert('no more array data');
+            alert('no more array data - catmstr');
 			catmstrRC = 0;
 
             db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
@@ -717,9 +713,10 @@ function checkExistsCatalogueMaster(tx)//previously populateCatalogueMaster(tx)
     }
     else
     {
-        alert('you\'re not supposed to see this alert..');
+        alert('this is the last table created. proceed to deleting expired stuff. - catmstr');
 
-
+         db.transaction(queryForExpired,errorCB);//move to else of last created table
+        //create next table here
     }
 
 }
@@ -737,8 +734,8 @@ function rendercheckExistsCatalogueMaster(tx4,results)
             var sqlinsertcatmstr = "INSERT INTO CATALOGUE_MASTER(RowNumber_CatMstr,SysPk_CatMstr,SysSeq_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr) Values(?,?,?,?,?,?)";//RowNumber_CatMstr,SysPk_CatMstr,SysSeq_CatMstr,CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr
     
     
-            alert('no row with SysPk_CatMstr' + SysPk_CatMstrARR[catmstrRC] +' exists.');
-            alert('inserting ' +RowNumber_CatMstrARR[catmstrRC] + ','+SysPk_CatMstrARR[catmstrRC] +','+ SysSeq_CatMstrARR[catmstrRC]+','+ CatalogueTitle_CatMstrARR[catmstrRC] + ',' +  PromoEndDate_CatMstrARR[catmstrRC] +','+ PromoStartDate_CatMstrARR[catmstrRC]);
+      
+            alert('no row with SysPk_CatMstr' + SysPk_CatMstrARR[catmstrRC] +' exists. inserting ' +RowNumber_CatMstrARR[catmstrRC] + ','+SysPk_CatMstrARR[catmstrRC] +','+ SysSeq_CatMstrARR[catmstrRC]+','+ CatalogueTitle_CatMstrARR[catmstrRC] + ',' +  PromoEndDate_CatMstrARR[catmstrRC] +','+ PromoStartDate_CatMstrARR[catmstrRC]);
 
             
                 tx4.executeSql(sqlinsertcatmstr,[RowNumber_CatMstrARR[catmstrRC],SysPk_CatMstrARR[catmstrRC],SysSeq_CatMstrARR[catmstrRC],CatalogueTitle_CatMstrARR[catmstrRC],PromoEndDate_CatMstrARR[catmstrRC], PromoStartDate_CatMstrARR[catmstrRC]],function(){ alert(SysPk_CatMstrARR[catmstrRC] + ' inserted');},errorCB);
@@ -747,9 +744,12 @@ function rendercheckExistsCatalogueMaster(tx4,results)
     else
     {
         
-          alert(  ' already exists. Updating info.');
-        //update sql here
-  
+          alert(  SysPk_CatgyMstrARR[catmstrRC] +' already exists. Updating info.');
+
+       
+       var sqlupdateinvtycat = "UPDATE CATALOGUE_MASTER SET SysSeq_CatMstr = ? WHERE RowNumber_CatMstr = ? AND SysPk_CatMstr = ?";
+        tx4.executeSql(sqlupdateinvtycat,[SysSeq_CatMstrARR[catmstrRC],results.rows.item(0).RowNumber_CatMstr,results.rows.item(0).SysPk_CatMstr],function(){ alert(results.rows.item(0).SysPk_CatMstr  + ' updated'); } ,errorCB);
+       
     }
 }
 
