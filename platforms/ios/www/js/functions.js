@@ -122,6 +122,9 @@ if(localStorage.BarcodeInvtyCat == null)
                     var RowNumber_CatgyMstrARR = [];
                     var SysPk_CatgyMstrARR = [];
                     var CategoryName_CatgyMstrARR = [];
+
+                    var catgymstrRC = 0;
+                    var catgymstrtxparam;
                     //--//CATEGORY_MASTER 
 
 
@@ -135,119 +138,6 @@ if(localStorage.BarcodeInvtyCat == null)
 	//------------//FOR API
 
 /*~~~~~~~~~~~~~~~~~~~~//GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-
-function errorCB(err)
-{
-    alert("Error processing SQL: " + err.message);
-   
-}
-
-function successCB()
-{
-//  alert('successful');
-
-}
-
-
-function onDeviceOffline()
-{
-    if(networkstatus != 'disconnected')
-    { 
-        networkstatus = 'disconnected';
-        
-        db = window.openDatabase("Database","1.0","Cordova Demo", 4*1024*1024);
-        db.transaction(createTBinventorymastercatalogue, errorCB, successCB);
-    }  
-}
-
-
-function createTBinventorymastercatalogue(tx)
-{
-   
-
-  
-    // alert('creating INVENTORY_MASTER_CATALOGUE if not exists');
-
-        //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE");
-       
-        var query = "";
-        //query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,";
-        query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,";
-        query += "SysFk_Invty_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,SysSeq_InvtyCat,UserSeq_InvtyCat, UserPk_InvtyCat,";
-        query += "UserFk_Invty_InvtyCat,UserFk_CatMstr_InvtyCat,LastUpdatedBy_InvtyCat,LastUpdatedConcurrencyID_InvtyCat,LastUpdatedDate_InvtyCat TIMESTAMP DEFAULT (datetime('now','localtime')),";
-        query += "Module_InvtyCat, Particulars_InvtyCat,PictureFileName_InvtyCat , Status_InvtyCat, Type_InvtyCat,";
-        query += "Barcode_Freebies01_InvtyCat,Barcode_Freebies02_InvtyCat,Barcode_Freebies03_InvtyCat,Barcode_Freebies04_InvtyCat,Barcode_Freebies05_InvtyCat,";
-        query += "Barcode_InvtyCat, Brand_InvtyCat ,CatalogueTitle_InvtyCat ,";
-        query += "CataloguePageNumber_InvtyCat,Categories_InvtyCat,Classification_InvtyCat,Description_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2),";
-        query += "FreeDescription_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat,PricePerPiece_InvtyCat,";
-        query += "PromoStartDate_InvtyCat TIMESTAMP, PromoEndDate_InvtyCat TIMESTAMP, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,";
-        query += "RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,";
-        query += "UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)";
-        tx.executeSql( query ,[],checkExistsInventoryMasterCatalogue,errorCB);
-
-}
-
-function createTBcataloguemaster(tx)
-{  // alert('creating CATALOGUE_MASTER if not exists');
- 
-       // tx.executeSql("DROP TABLE IF EXISTS CATALOGUE_MASTER");
-        var query2 = "";
-        //query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_CatMstr,";
-        query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr, SysPk_CatMstr,";
-        query2 += "SysFk_CatMstr,SysSeq_CatMstr, UserPk_CatMstr, LastUpdatedBy_CatMstr, LastUpdatedConcurrencyID_CatMstr, LastUpdatedDate_CatMstr TIMESTAMP DEFAULT (datetime('now','localtime')), Module_CatMstr,";
-        query2 += "Particulars_CatMstr,PictureFileName_CatMstr, Status_CatMstr,Type_CatMstr,";
-        query2 += "CatalogueTitle_CatMstr, Description_CatMstr, FullDescription_CatMstr, FreeDescription_CatMstr,";
-        query2 += "Principal_CatMstr,PromoEndDate_CatMstr TIMESTAMP, PromoStartDate_CatMstr TIMESTAMP)";
-        tx.executeSql( query2,[],checkExistsCatalogueMaster,errorCB);
-}
-/*-------------CURRENTLY NOT USED-----------*/
-        //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER");
-       // var query3 ="";
-       // query3 += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER(RowNumber_Invty INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_Invty,";
-       // query3 += "UserPk_Invty, LastUpdatedBy_Invty, LastUpdatedConcurrencyID_Invty, LastUpdatedDate_Invty TIMESTAMP DEFAULT  (datetime('now','localtime')),";
-       // query3 += "Module_Invty,Particulars_Invty,PictureFileName_Invty, Status_Invty, Type_Invty, Barcode_Invty,";
-       //// query3 += "Brand_Invty,Classification_Invty, Categories_Invty, Description_Invty,FullDescription_Invty,FreeDescription_Invty,";
-       //// query3 += "DisplayPrice_Invty, Principal_Invty, QRcode_Invty, SubCategories_Invty)";
-       // tx.executeSql(query3,[],populateInventoryMaster, errorCB);
-/*-----------//CURRENTLY NOT USED-----------*/
-
-
-function createTBsettings(tx)
-{
-        ////tx.executeSql("DROP TABLE IF EXISTS SETTINGS");
-       var query4 ="";
-       query4 +="CREATE TABLE IF NOT EXISTS SETTINGS(MinimumPrice_Settings)";
-       tx.executeSql(query4,[],checkExistsSettingsTable,errorCB);
-
-}
-
-
-       // //tx.executeSql("DROP TABLE IF EXISTS CATEGORY_MASTER");
-      //  var query5= "";
-       // query5 += "CREATE TABLE IF NOT EXISTS CATEGORY_MASTER ";
-      //  //query5 += "(RowNumber_CatgyMstr INTEGER PRIMARY KEY AUTOINCREMENT,SysPk_CatgyMstr, CategoryName_CatgyMstr)";//
-       // query5 += "(RowNumber_CatgyMstr,SysPk_CatgyMstr, CategoryName_CatgyMstr)";//
-       // tx.executeSql(query5,[],populateCategoryMaster,errorCB);//populateCategoryMaster
-
-
-
-       // //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY");
-       // var query6 ="";
-       // query6 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY";
-       // //query6 += "(RowNumber_InvtyCatCatgy INTEGER PRIMARY KEY AUTOINCREMENT,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
-      //  query6 += "(RowNumber_InvtyCatCatgy,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
-      //  tx.executeSql(query6,[],populateInvtyCatCatgy,errorCB);
-    
-    
-     
-
-
-
-
-
-
-
 
 
 function isjsonready()//i'm thinking of checking them all at once instead of by table because I can check the CATALOGUE_MASTER table first.. and batch delete multiple items from inventory_master_catalogue,and other tables. If i check only one table at a time, it'll take longger. I think.
@@ -556,19 +446,112 @@ function isjsonready()//i'm thinking of checking them all at once instead of by 
 
 
 
+function errorCB(err)
+{
+    alert("Error processing SQL: " + err.message);
+   
+}
+
+function successCB()
+{
+//  alert('successful');
+
+}
 
 
+function onDeviceOffline()
+{
+    if(networkstatus != 'disconnected')
+    { 
+        networkstatus = 'disconnected';
+        
+        db = window.openDatabase("Database","1.0","Cordova Demo", 4*1024*1024);
+        db.transaction(createTBinventorymastercatalogue, errorCB, successCB);
+    }  
+}
 
 
+function createTBinventorymastercatalogue(tx)
+{
+   
+
+  
+    // alert('creating INVENTORY_MASTER_CATALOGUE if not exists');
+
+        //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE");
+       
+        var query = "";
+        //query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat INTEGER  PRIMARY KEY AUTOINCREMENT,SysPk_InvtyCat,";
+        query += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,";
+        query += "SysFk_Invty_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,SysSeq_InvtyCat,UserSeq_InvtyCat, UserPk_InvtyCat,";
+        query += "UserFk_Invty_InvtyCat,UserFk_CatMstr_InvtyCat,LastUpdatedBy_InvtyCat,LastUpdatedConcurrencyID_InvtyCat,LastUpdatedDate_InvtyCat TIMESTAMP DEFAULT (datetime('now','localtime')),";
+        query += "Module_InvtyCat, Particulars_InvtyCat,PictureFileName_InvtyCat , Status_InvtyCat, Type_InvtyCat,";
+        query += "Barcode_Freebies01_InvtyCat,Barcode_Freebies02_InvtyCat,Barcode_Freebies03_InvtyCat,Barcode_Freebies04_InvtyCat,Barcode_Freebies05_InvtyCat,";
+        query += "Barcode_InvtyCat, Brand_InvtyCat ,CatalogueTitle_InvtyCat ,";
+        query += "CataloguePageNumber_InvtyCat,Categories_InvtyCat,Classification_InvtyCat,Description_InvtyCat,DisplayPrice_InvtyCat DECIMAL(9,2),";
+        query += "FreeDescription_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat,PricePerPiece_InvtyCat,";
+        query += "PromoStartDate_InvtyCat TIMESTAMP, PromoEndDate_InvtyCat TIMESTAMP, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,";
+        query += "RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,";
+        query += "UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)";
+        tx.executeSql( query ,[],checkExistsInventoryMasterCatalogue,errorCB);
+
+}
+
+function createTBcataloguemaster(tx)
+{  // alert('creating CATALOGUE_MASTER if not exists');
+ 
+       // tx.executeSql("DROP TABLE IF EXISTS CATALOGUE_MASTER");
+        var query2 = "";
+        //query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_CatMstr,";
+        query2 += "CREATE TABLE IF NOT EXISTS CATALOGUE_MASTER( RowNumber_CatMstr, SysPk_CatMstr,";
+        query2 += "SysFk_CatMstr,SysSeq_CatMstr, UserPk_CatMstr, LastUpdatedBy_CatMstr, LastUpdatedConcurrencyID_CatMstr, LastUpdatedDate_CatMstr TIMESTAMP DEFAULT (datetime('now','localtime')), Module_CatMstr,";
+        query2 += "Particulars_CatMstr,PictureFileName_CatMstr, Status_CatMstr,Type_CatMstr,";
+        query2 += "CatalogueTitle_CatMstr, Description_CatMstr, FullDescription_CatMstr, FreeDescription_CatMstr,";
+        query2 += "Principal_CatMstr,PromoEndDate_CatMstr TIMESTAMP, PromoStartDate_CatMstr TIMESTAMP)";
+        tx.executeSql( query2,[],checkExistsCatalogueMaster,errorCB);
+}
+/*-------------CURRENTLY NOT USED-----------*/
+        //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER");
+       // var query3 ="";
+       // query3 += "CREATE TABLE IF NOT EXISTS INVENTORY_MASTER(RowNumber_Invty INTEGER PRIMARY KEY AUTOINCREMENT, SysPk_Invty,";
+       // query3 += "UserPk_Invty, LastUpdatedBy_Invty, LastUpdatedConcurrencyID_Invty, LastUpdatedDate_Invty TIMESTAMP DEFAULT  (datetime('now','localtime')),";
+       // query3 += "Module_Invty,Particulars_Invty,PictureFileName_Invty, Status_Invty, Type_Invty, Barcode_Invty,";
+       //// query3 += "Brand_Invty,Classification_Invty, Categories_Invty, Description_Invty,FullDescription_Invty,FreeDescription_Invty,";
+       //// query3 += "DisplayPrice_Invty, Principal_Invty, QRcode_Invty, SubCategories_Invty)";
+       // tx.executeSql(query3,[],populateInventoryMaster, errorCB);
+/*-----------//CURRENTLY NOT USED-----------*/
 
 
+function createTBsettings(tx)
+{
+    ////tx.executeSql("DROP TABLE IF EXISTS SETTINGS");
+    var query4 ="";
+    query4 +="CREATE TABLE IF NOT EXISTS SETTINGS(MinimumPrice_Settings)";
+    tx.executeSql(query4,[],checkExistsSettingsTable,errorCB);
+
+}
 
 
+function createTBcategorymaster(tx)
+{
+    //tx.executeSql("DROP TABLE IF EXISTS CATEGORY_MASTER");
+    var query5= "";
+    query5 += "CREATE TABLE IF NOT EXISTS CATEGORY_MASTER ";
+    //query5 += "(RowNumber_CatgyMstr INTEGER PRIMARY KEY AUTOINCREMENT,SysPk_CatgyMstr, CategoryName_CatgyMstr)";
+    query5 += "(RowNumber_CatgyMstr,SysPk_CatgyMstr, CategoryName_CatgyMstr)";
+    tx.executeSql(query5,[],checkExistsCategoryMaster,errorCB);//populateCategoryMaster
+}
 
 
-
-
-
+       // //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY");
+       // var query6 ="";
+       // query6 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY";
+       // //query6 += "(RowNumber_InvtyCatCatgy INTEGER PRIMARY KEY AUTOINCREMENT,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
+      //  query6 += "(RowNumber_InvtyCatCatgy,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
+      //  tx.executeSql(query6,[],populateInvtyCatCatgy,errorCB);
+    
+    
+     
 
 
 
@@ -784,6 +767,17 @@ function rendercheckExistsCatalogueMaster(tx4,results)
      //alert('populate inventory master');
 //}
 
+
+
+
+
+
+
+
+
+
+
+
 function checkExistsSettingsTable(tx)//populateSettingsTable(tx)
 {
 
@@ -794,7 +788,7 @@ function checkExistsSettingsTable(tx)//populateSettingsTable(tx)
     
     
     
-        var RecordBeingProcessesd =  settingsRC + 1;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
+        var RecordBeingProcessesd =  settingsRC + 1;
         settingstxparam = tx;
     
     
@@ -817,8 +811,10 @@ function checkExistsSettingsTable(tx)//populateSettingsTable(tx)
             alert('no more array data - settings');
 			settingsRC = 0;
 
-            db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
+            //db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
             //create table here
+            
+            db.transaction(createTBcategorymaster,errorCB);
 		}
         
     }
@@ -826,8 +822,10 @@ function checkExistsSettingsTable(tx)//populateSettingsTable(tx)
     {
        alert('this is the last table created. proceed to deleting expired stuff. - settings');
 
-        db.transaction(queryForExpired,errorCB);//move to else of last created table
+        //db.transaction(queryForExpired,errorCB);//move to else of last created table
         //create table here
+        
+        db.transaction(createTBcategorymaster,errorCB);
     }
  
   
@@ -882,12 +880,121 @@ function rendercheckExistsSettingsTable(tx5,results)
 
 
 
-function populateCategoryMaster(tx)
+
+
+
+
+function checkExistsCategoryMaster(tx)//populateCategoryMaster(tx)
 {	
-		//var sqlInsert5 = "INSERT INTO CATEGORY_MASTER(SysPk_CatgyMstr, CategoryName_CatgyMstr) VALUES(?,?)";
-		//tx.executeSql(sqlInsert5,["catgy1","Category Name 1"],null,errorCB);
+
+    
+        var RecordBeingProcessesd =  catgymstrRC + 1;
+        catgymstrtxparam = tx;
+    
+    
+        alert('checkExistsCategoryMaster SysPk_CatgyMstr ' + SysPk_CatgyMstrARR[catgymstrRC]);
+
+
+
+    if(SysPk_CatgyMstrARR.length > 0)
+    {
+        if(RecordBeingProcessesd <= SysPk_CatgyMstrARR.length)
+		{
+            alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_CatgyMstrARR.length );
+            db.transaction(function(tx6)
+           {    var sqlselectcatgymstr = "SELECT * FROM CATEGORY_MASTER WHERE RowNumber_CatgyMstr = ? AND SysPk_CatgyMstr= ?";
+                 tx6.executeSql(sqlselectcatgymstr,[RowNumber_CatgyMstrARR[catgymstrRC],SysPk_CatgyMstrARR[catgymstrRC]],rendercheckExistsCategoryMaster,errorCB);
+            },errorCB,function(){   alert('now at tx6 callback');  catgymstrRC +=1; checkExistsCategoryMaster(catgymstrtxparam);});
+        }
+        else
+		{
+            alert('no more array data - catgymstr');
+			catgymstrRC = 0;
+
+            db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
+            //create table here
+            
+     
+		}
+        
+    }
+    else
+    {
+       alert('this is the last table created. proceed to deleting expired stuff. - catgymstr');
+
+        db.transaction(queryForExpired,errorCB);//move to else of last created table
+        //create table here
+        
+        
+    }
+    
 
 }
+
+
+function rendercheckExistsCategoryMaster(tx6,results)
+{		//var sqlInsert5 = "INSERT INTO CATEGORY_MASTER(SysPk_CatgyMstr, CategoryName_CatgyMstr) VALUES(?,?)";
+		//tx.executeSql(sqlInsert5,["catgy1","Category Name 1"],null,errorCB);
+    
+    
+    
+    if(results.rows.length <= 0)
+    {
+        
+        alert('rendercheckExistsCategoryMaster');
+     
+            var sqlinsertcatgymstr = "INSERT INTO CATEGORY_MASTER(RowNumber_CatgyMstr,SysPk_CatgyMstr, CategoryName_CatgyMstr) VALUES(?,?,?)";
+            
+                tx6.executeSql(sqlinsertcatgymstr,[RowNumber_CatgyMstrARR[catgymstrRC],SysPk_CatgyMstrARR[catgymstrRC],CategoryName_CatgyMstrARR[catgymstrRC]],function(){ alert(SysPk_CatgyMstrARR[catgymstrRC] + ' inserted');},errorCB);
+       
+        
+    }
+    else
+    {
+    
+        alert(  SysPk_CatgyMstrARR[catgymstrRC] +' already exists. Updating info.');
+  
+     var sqlupdatecatgymstr = "UPDATE CATEGORY_MASTER SET CategoryName_CatgyMstr=?  WHERE RowNumber_CatgyMstr = ? AND SysPk_CatgyMstr = ?";
+        tx6.executeSql(sqlupdatecatgymstr,[CategoryName_CatgyMstrARR[catgymstrRC],results.rows.item(0).RowNumber_CatgyMstr,results.rows.item(0).SysPk_CatgyMstr],function(){alert(results.rows.item(0).SysPk_CatgyMstr  + ' updated'); } ,errorCB);
+        
+       
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function populateInvtyCatCatgy(tx)
