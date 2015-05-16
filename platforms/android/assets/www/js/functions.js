@@ -112,6 +112,9 @@ if(localStorage.BarcodeInvtyCat == null)
 
                     //--SETTINGS
                     var MinimumPrice_SettingsARR = [];
+
+                    var settingsRC = 0;
+                    var settingstxparam;
                     //--//SETTINGS
 
                     
@@ -142,7 +145,7 @@ function errorCB(err)
 
 function successCB()
 {
-  alert('successful');
+//  alert('successful');
 
 }
 
@@ -164,7 +167,7 @@ function createTBinventorymastercatalogue(tx)
    
 
   
-     alert('creating INVENTORY_MASTER_CATALOGUE if not exists');
+    // alert('creating INVENTORY_MASTER_CATALOGUE if not exists');
 
         //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE");
        
@@ -186,7 +189,7 @@ function createTBinventorymastercatalogue(tx)
 }
 
 function createTBcataloguemaster(tx)
-{   alert('creating CATALOGUE_MASTER if not exists');
+{  // alert('creating CATALOGUE_MASTER if not exists');
  
        // tx.executeSql("DROP TABLE IF EXISTS CATALOGUE_MASTER");
         var query2 = "";
@@ -209,10 +212,15 @@ function createTBcataloguemaster(tx)
        // tx.executeSql(query3,[],populateInventoryMaster, errorCB);
 /*-----------//CURRENTLY NOT USED-----------*/
 
+
+function createTBsettings(tx)
+{
         ////tx.executeSql("DROP TABLE IF EXISTS SETTINGS");
-       // var query4 ="";
-       // query4 +="CREATE TABLE IF NOT EXISTS SETTINGS(MinimumPrice_Settings)";
-       // tx.executeSql(query4,[],populateSettingsTable,errorCB);
+       var query4 ="";
+       query4 +="CREATE TABLE IF NOT EXISTS SETTINGS(MinimumPrice_Settings)";
+       tx.executeSql(query4,[],checkExistsSettingsTable,errorCB);
+
+}
 
 
        // //tx.executeSql("DROP TABLE IF EXISTS CATEGORY_MASTER");
@@ -248,7 +256,7 @@ function isjsonready()//i'm thinking of checking them all at once instead of by 
     if((networkstatus != 'connected' || networkstatus == ''))
     {networkstatus = 'connected';//networkstatus is set back to '' when checkig inorder to see results so SysPk_CatgyMstrARR.length <= 0 is added to  prevent from pushing to array twice
      
-        alert('device is online. getting json info');
+     //   alert('device is online. getting json info');
 
             $.when(
                    $.getJSON('http://viveg.net/glogapitest/index.php?table=INVENTORY_MASTER_CATALOGUE'),
@@ -582,7 +590,7 @@ function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMa
    invtycattxparam = tx;
     
     
-    alert('checkExistsInventoryMasterCatalogue  SysPk_InvtyCat ' + SysPk_InvtyCatARR[invtycatRC]);
+    //alert('checkExistsInventoryMasterCatalogue  SysPk_InvtyCat ' + SysPk_InvtyCatARR[invtycatRC]);
 
     
     //var sqlInsert = "INSERT INTO INVENTORY_MASTER_CATALOGUE(SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) VALUES(?,?,?,?,?,?,?,?,?)";
@@ -593,15 +601,15 @@ function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMa
     {
         if(RecordBeingProcessesd < RowNumber_InvtyCatARR.length)
 		{
-            alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_InvtyCatARR.length );
+           // alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_InvtyCatARR.length );
             db.transaction(function(tx3)
            {    var sqlselectinvtycat = "SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE RowNumber_InvtyCat=? AND SysPk_InvtyCat = ? AND SKU_InvtyCat=?";//these three are composite primary keys
                  tx3.executeSql(sqlselectinvtycat,[RowNumber_InvtyCatARR[invtycatRC],SysPk_InvtyCatARR[invtycatRC],SKU_InvtyCatARR[invtycatRC]],rendercheckExistsInventoryMasterCatalogue,errorCB);
-            },errorCB,function(){  alert('now at tx3 callback'); invtycatRC +=1; checkExistsInventoryMasterCatalogue(invtycattxparam);});
+            },errorCB,function(){ /* alert('now at tx3 callback');*/ invtycatRC +=1; checkExistsInventoryMasterCatalogue(invtycattxparam);});
         }
         else
 		{
-            alert('no more array data - invtycat');
+         //   alert('no more array data - invtycat');
 			invtycatRC = 0;
             
           
@@ -613,7 +621,7 @@ function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMa
     }
     else
     {
-        alert('arrays are empty because device was offline. procceeding  to delete query. -invtycat');
+      //  alert('arrays are empty because device was offline. procceeding  to delete query. -invtycat');
         
         db.transaction(createTBcataloguemaster,errorCB);
        
@@ -633,20 +641,20 @@ function rendercheckExistsInventoryMasterCatalogue(tx3,results)
         
             var sqlinsertinvtycat = "INSERT INTO INVENTORY_MASTER_CATALOGUE(RowNumber_InvtyCat,SysPk_InvtyCat,SysFk_CatMstr_InvtyCat,SKU_InvtyCat,PictureFileName_InvtyCat,Barcode_InvtyCat,Brand_InvtyCat,FullDescription_InvtyCat,PromoName_InvtyCat,PromoPrice_InvtyCat) Values(?,?,?,?,?,?,?,?,?,?)";//) VALUES(?,?,?,?,?,?,?,?,?,?)";
     
-            alert('no row with syspkinvtycat' + SysPk_InvtyCatARR[invtycatRC] +' exists. inserting ' + RowNumber_InvtyCatARR[invtycatRC] + ',' + SysPk_InvtyCatARR[invtycatRC]+','+SysFk_CatMstr_InvtyCatARR[invtycatRC]+','+SKU_InvtyCatARR[invtycatRC]+','+PictureFileName_InvtyCatARR[invtycatRC]+','+Barcode_InvtyCatARR[invtycatRC]+','+Brand_InvtyCatARR[invtycatRC]+','+FullDescription_InvtyCatARR[invtycatRC]+','+PromoName_InvtyCatARR[invtycatRC]+','+PromoPrice_InvtyCatARR[invtycatRC]);
+          //  alert('no row with syspkinvtycat' + SysPk_InvtyCatARR[invtycatRC] +' exists. inserting ' + RowNumber_InvtyCatARR[invtycatRC] + ',' + SysPk_InvtyCatARR[invtycatRC]+','+SysFk_CatMstr_InvtyCatARR[invtycatRC]+','+SKU_InvtyCatARR[invtycatRC]+','+PictureFileName_InvtyCatARR[invtycatRC]+','+Barcode_InvtyCatARR[invtycatRC]+','+Brand_InvtyCatARR[invtycatRC]+','+FullDescription_InvtyCatARR[invtycatRC]+','+PromoName_InvtyCatARR[invtycatRC]+','+PromoPrice_InvtyCatARR[invtycatRC]);
 
             
-                tx3.executeSql(sqlinsertinvtycat,[RowNumber_InvtyCatARR[invtycatRC],SysPk_InvtyCatARR[invtycatRC],SysFk_CatMstr_InvtyCatARR[invtycatRC],SKU_InvtyCatARR[invtycatRC],PictureFileName_InvtyCatARR[invtycatRC],Barcode_InvtyCatARR[invtycatRC],Brand_InvtyCatARR[invtycatRC],FullDescription_InvtyCatARR[invtycatRC],PromoName_InvtyCatARR[invtycatRC],PromoPrice_InvtyCatARR[invtycatRC]],function(){ alert(SysPk_InvtyCatARR[invtycatRC]  + ' inserted');},errorCB);
+                tx3.executeSql(sqlinsertinvtycat,[RowNumber_InvtyCatARR[invtycatRC],SysPk_InvtyCatARR[invtycatRC],SysFk_CatMstr_InvtyCatARR[invtycatRC],SKU_InvtyCatARR[invtycatRC],PictureFileName_InvtyCatARR[invtycatRC],Barcode_InvtyCatARR[invtycatRC],Brand_InvtyCatARR[invtycatRC],FullDescription_InvtyCatARR[invtycatRC],PromoName_InvtyCatARR[invtycatRC],PromoPrice_InvtyCatARR[invtycatRC]],function(){ /*alert(SysPk_InvtyCatARR[invtycatRC]  + ' inserted');*/},errorCB);
         
     }
     else
     {
         
-          alert( SysPk_InvtyCatARR[invtycatRC] + ' already exists. Updating info.');
+       //   alert( SysPk_InvtyCatARR[invtycatRC] + ' already exists. Updating info.');
         
         //,,
         var sqlupdateinvtycat = "UPDATE INVENTORY_MASTER_CATALOGUE SET SysFk_CatMstr_InvtyCat = ?,PictureFileName_InvtyCat = ?, Barcode_InvtyCat = ? , Brand_InvtyCat = ? , FullDescription_InvtyCat = ? , PromoName_InvtyCat = ? , PromoPrice_InvtyCat = ? WHERE RowNumber_InvtyCat = ? AND SysPk_InvtyCat = ? AND SKU_InvtyCat = ?";
-        tx3.executeSql(sqlupdateinvtycat,[SysFk_CatMstr_InvtyCatARR[invtycatRC],PictureFileName_InvtyCatARR[invtycatRC],Barcode_InvtyCatARR[invtycatRC],Brand_InvtyCatARR[invtycatRC],FullDescription_InvtyCatARR[invtycatRC],PromoName_InvtyCatARR[invtycatRC],PromoPrice_InvtyCatARR[invtycatRC],results.rows.item(0).RowNumber_InvtyCat,results.rows.item(0).SysPk_InvtyCat,results.rows.item(0).SKU_InvtyCat],function(){ alert(SysPk_InvtyCatARR[invtycatRC]  + ' updated'); } ,errorCB);
+        tx3.executeSql(sqlupdateinvtycat,[SysFk_CatMstr_InvtyCatARR[invtycatRC],PictureFileName_InvtyCatARR[invtycatRC],Barcode_InvtyCatARR[invtycatRC],Brand_InvtyCatARR[invtycatRC],FullDescription_InvtyCatARR[invtycatRC],PromoName_InvtyCatARR[invtycatRC],PromoPrice_InvtyCatARR[invtycatRC],results.rows.item(0).RowNumber_InvtyCat,results.rows.item(0).SysPk_InvtyCat,results.rows.item(0).SKU_InvtyCat],function(){ /*alert(SysPk_InvtyCatARR[invtycatRC]  + ' updated');*/ } ,errorCB);
         
     }
     
@@ -683,7 +691,7 @@ function checkExistsCatalogueMaster(tx)//previously populateCatalogueMaster(tx)
         catmstrtxparam = tx;
     
     
-    alert('checkExistsCatalogueMaster SysPk_CatMstr ' + SysPk_CatMstrARR[catmstrRC]);
+  //  alert('checkExistsCatalogueMaster SysPk_CatMstr ' + SysPk_CatMstrARR[catmstrRC]);
 
 
     
@@ -695,28 +703,28 @@ function checkExistsCatalogueMaster(tx)//previously populateCatalogueMaster(tx)
     {
         if(RecordBeingProcessesd <= RowNumber_CatMstrARR.length)
 		{
-            alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_CatMstrARR.length );
+           // alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_CatMstrARR.length );
             db.transaction(function(tx4)
            {    var sqlselectcatmstr = "SELECT * FROM CATALOGUE_MASTER WHERE RowNumber_CatMstr=? AND SysPk_CatMstr = ?";//composite primary keys
                  tx4.executeSql(sqlselectcatmstr,[RowNumber_CatMstrARR[catmstrRC],SysPk_CatMstrARR[catmstrRC]],rendercheckExistsCatalogueMaster,errorCB);
-            },errorCB,function(){  alert('now at tx4 callback'); catmstrRC +=1; checkExistsCatalogueMaster(catmstrtxparam);});
+            },errorCB,function(){  /*alert('now at tx4 callback'); */ catmstrRC +=1; checkExistsCatalogueMaster(catmstrtxparam);});
         }
         else
 		{
-            alert('no more array data - catmstr');
+           // alert('no more array data - catmstr');
 			catmstrRC = 0;
 
-            db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
-            //create next table here
+            //db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
+            db.transaction(createTBsettings,errorCB);
 		}
         
     }
     else
     {
-        alert('this is the last table created. proceed to deleting expired stuff. - catmstr');
-
-         db.transaction(queryForExpired,errorCB);//move to else of last created table
-        //create next table here
+       // alert('this is the last table created. proceed to deleting expired stuff. - catmstr');
+    // db.transaction(queryForExpired,errorCB);//move to else of last created table
+        
+       db.transaction(createTBsettings,errorCB);
     }
 
 }
@@ -724,7 +732,7 @@ function checkExistsCatalogueMaster(tx)//previously populateCatalogueMaster(tx)
 function rendercheckExistsCatalogueMaster(tx4,results)
 {
     
-    alert('rendercheckExistsCatalogueMaster');
+   // alert('rendercheckExistsCatalogueMaster');
     
     
     
@@ -735,20 +743,20 @@ function rendercheckExistsCatalogueMaster(tx4,results)
     
     
       
-            alert('no row with SysPk_CatMstr' + SysPk_CatMstrARR[catmstrRC] +' exists. inserting ' +RowNumber_CatMstrARR[catmstrRC] + ','+SysPk_CatMstrARR[catmstrRC] +','+ SysSeq_CatMstrARR[catmstrRC]+','+ CatalogueTitle_CatMstrARR[catmstrRC] + ',' +  PromoEndDate_CatMstrARR[catmstrRC] +','+ PromoStartDate_CatMstrARR[catmstrRC]);
+       //     alert('no row with SysPk_CatMstr' + SysPk_CatMstrARR[catmstrRC] +' exists. inserting ' +RowNumber_CatMstrARR[catmstrRC] + ','+SysPk_CatMstrARR[catmstrRC] +','+ SysSeq_CatMstrARR[catmstrRC]+','+ CatalogueTitle_CatMstrARR[catmstrRC] + ',' +  PromoEndDate_CatMstrARR[catmstrRC] +','+ PromoStartDate_CatMstrARR[catmstrRC]);
 
             
-                tx4.executeSql(sqlinsertcatmstr,[RowNumber_CatMstrARR[catmstrRC],SysPk_CatMstrARR[catmstrRC],SysSeq_CatMstrARR[catmstrRC],CatalogueTitle_CatMstrARR[catmstrRC],PromoEndDate_CatMstrARR[catmstrRC], PromoStartDate_CatMstrARR[catmstrRC]],function(){ alert(SysPk_CatMstrARR[catmstrRC] + ' inserted');},errorCB);
+                tx4.executeSql(sqlinsertcatmstr,[RowNumber_CatMstrARR[catmstrRC],SysPk_CatMstrARR[catmstrRC],SysSeq_CatMstrARR[catmstrRC],CatalogueTitle_CatMstrARR[catmstrRC],PromoEndDate_CatMstrARR[catmstrRC], PromoStartDate_CatMstrARR[catmstrRC]],function(){ /*alert(SysPk_CatMstrARR[catmstrRC] + ' inserted');*/},errorCB);
         
     }
     else
     {
         
-          alert(  SysPk_CatgyMstrARR[catmstrRC] +' already exists. Updating info.');
+       //   alert(  SysPk_CatgyMstrARR[catmstrRC] +' already exists. Updating info.');
 
        //CatalogueTitle_CatMstr, PromoEndDate_CatMstr, PromoStartDate_CatMstr
        var sqlupdateinvtycat = "UPDATE CATALOGUE_MASTER SET SysSeq_CatMstr = ? , CatalogueTitle_CatMstr = ?, PromoEndDate_CatMstr = ?, PromoStartDate_CatMstr = ? WHERE RowNumber_CatMstr = ? AND SysPk_CatMstr = ?";
-        tx4.executeSql(sqlupdateinvtycat,[SysSeq_CatMstrARR[catmstrRC],CatalogueTitle_CatMstrARR[catmstrRC], PromoEndDate_CatMstrARR[catmstrRC], PromoStartDate_CatMstrARR[catmstrRC],results.rows.item(0).RowNumber_CatMstr,results.rows.item(0).SysPk_CatMstr],function(){ alert(results.rows.item(0).SysPk_CatMstr  + ' updated'); } ,errorCB);
+        tx4.executeSql(sqlupdateinvtycat,[SysSeq_CatMstrARR[catmstrRC],CatalogueTitle_CatMstrARR[catmstrRC], PromoEndDate_CatMstrARR[catmstrRC], PromoStartDate_CatMstrARR[catmstrRC],results.rows.item(0).RowNumber_CatMstr,results.rows.item(0).SysPk_CatMstr],function(){ /*alert(results.rows.item(0).SysPk_CatMstr  + ' updated');*/ } ,errorCB);
        
     }
 }
@@ -776,13 +784,103 @@ function rendercheckExistsCatalogueMaster(tx4,results)
      //alert('populate inventory master');
 //}
 
-function populateSettingsTable(tx)
+function checkExistsSettingsTable(tx)//populateSettingsTable(tx)
 {
 
 	  // var sqlInsert4 = "INSERT INTO SETTINGS(MinimumPrice_Settings) VALUES(?)";
 	//	tx.executeSql(sqlInsert4,[1000],null,errorCB);
+    
+    
+    
+    
+    
+        var RecordBeingProcessesd =  settingsRC + 1;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
+        settingstxparam = tx;
+    
+    
+        alert('checkExistsSettingsTable MinimumPrice_Settings ' + MinimumPrice_SettingsARR[settingsRC]);
+
+
+
+    if(MinimumPrice_SettingsARR.length > 0)
+    {
+        if(RecordBeingProcessesd <= MinimumPrice_SettingsARR.length)
+		{
+            alert('Processing '+ RecordBeingProcessesd +' of ' + MinimumPrice_SettingsARR.length );
+            db.transaction(function(tx5)
+           {    var sqlselectsettings = "SELECT * FROM SETTINGS WHERE MinimumPrice_Settings= ?";
+                 tx5.executeSql(sqlselectsettings,[MinimumPrice_SettingsARR[settingsRC]],rendercheckExistsSettingsTable,errorCB);
+            },errorCB,function(){   alert('now at tx5 callback');  settingsRC +=1; checkExistsSettingsTable(settingstxparam);});
+        }
+        else
+		{
+            alert('no more array data - settings');
+			settingsRC = 0;
+
+            db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
+            //create table here
+		}
+        
+    }
+    else
+    {
+       alert('this is the last table created. proceed to deleting expired stuff. - settings');
+
+        db.transaction(queryForExpired,errorCB);//move to else of last created table
+        //create table here
+    }
+ 
   
 }
+
+
+
+function rendercheckExistsSettingsTable(tx5,results)
+{
+        alert('rendercheckExistsSettingsTable');
+
+   
+    
+    
+    if(results.rows.length <= 0)
+    {
+        
+            var sqlinsertsettings = "INSERT INTO SETTINGS(MinimumPrice_Settings) VALUES(?)";
+    
+      
+                alert('no row with MinimumPrice_Settings' + MinimumPrice_SettingsARR[settingsRC] +' exists. inserting ' +MinimumPrice_SettingsARR[settingsRC]);
+            
+                tx5.executeSql(sqlinsertsettings,[MinimumPrice_SettingsARR[settingsRC]],function(){ alert(MinimumPrice_SettingsARR[settingsRC] + ' inserted');},errorCB);
+        
+    }
+    else
+    {
+        
+            alert(  MinimumPrice_SettingsARR[settingsRC] +' already exists. Updating info.');
+
+       
+       var sqlupdatesettings = "UPDATE SETTINGS SET MinimumPrice_Settings = ?  WHERE MinimumPrice_Settings = ?";
+        tx5.executeSql(sqlupdatesettings,[MinimumPrice_SettingsARR[settingsRC],results.rows.item(0).MinimumPrice_Settings],function(){alert(results.rows.item(0).MinimumPrice_Settings  + ' updated'); } ,errorCB);
+       
+    }   
+       
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function populateCategoryMaster(tx)
 {	
