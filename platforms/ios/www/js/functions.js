@@ -998,8 +998,6 @@ function checkExistsInvtyCatCatgy(tx)//populateInvtyCatCatgy(tx)
 {
 
 
-///RowNumber_InvtyCatCatgy,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy
-    
          var RecordBeingProcessesd =  invtycatcatgyRC + 1;
         invtycatcatgytxparam = tx;
     
@@ -1045,7 +1043,30 @@ function checkExistsInvtyCatCatgy(tx)//populateInvtyCatCatgy(tx)
 
 function rendercheckExistsInvtyCatCatgy(tx7,results)
 {
-    alert('rendercheckExistsInvtyCatCatgy');
+   
+    if(results.rows.length <= 0)
+    {
+        
+        alert('rendercheckExistsCategoryMaster');
+     
+///RowNumber_InvtyCatCatgy,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy
+    
+            var sqlinsertinvtycatcatgy = "INSERT INTO INVENTORY_MASTER_CATALOGUE_CATEGORY(RowNumber_InvtyCatCatgy,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy) VALUES(?,?,?)";
+            
+                tx7.executeSql(sqlinsertinvtycatcatgy,[RowNumber_InvtyCatCatgyARR[invtycatcatgyRC],SysFk_InvtyCat_InvtyCatCatgyARR[invtycatcatgyRC],SysFk_CatgyMstr_InvtyCatCatgyARR[invtycatcatgyRC]],function(){ alert(RowNumber_InvtyCatCatgyARR[invtycatcatgyRC] + ' inserted');},errorCB);
+       
+        
+    }
+    else
+    {
+    
+        alert(RowNumber_InvtyCatCatgyARR[invtycatcatgyRC] +' already exists. Updating info.');
+  
+  var sqlupdateinvtycatcatgy = "UPDATE INVENTORY_MASTER_CATALOGUE_CATEGORY SET SysFk_InvtyCat_InvtyCatCatgy = ?, SysFk_CatgyMstr_InvtyCatCatgy =?  WHERE RowNumber_InvtyCatCatgy = ?";
+    tx7.executeSql(sqlupdateinvtycatcatgy,[SysFk_InvtyCat_InvtyCatCatgyARR[invtycatcatgyRC],SysFk_CatgyMstr_InvtyCatCatgyARR[invtycatcatgyRC],results.rows.item(0).RowNumber_InvtyCatCatgy],function(){alert(results.rows.item(0).RowNumber_InvtyCatCatgy  + ' updated'); } ,errorCB);
+        
+       
+    }
 }
 
 
