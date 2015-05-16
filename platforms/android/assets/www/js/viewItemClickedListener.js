@@ -7,8 +7,7 @@ $(document).on('viewItemClicked',function(event,idForSinglePage)
         $('.forsingleonly').show();
         db.transaction(function(tx){queryItemDetails(tx,idForSinglePage)},errorCB);
         
-
-
+        
 
     }
 });

@@ -12,7 +12,9 @@ $(document).on('navClicked',function(event,filename)
                 //off click is fix for event trigger multiple times.There are many other solutions if needed to change this in the future.
                  $('body').off('click', '.viewItem').on("click",".viewItem", function(event,idForSinglePage) 
                  {
-                    idForSinglePage = $(this).data('itemid');
+                    idForSinglePage = $(this).attr('data-itemid');
+                     
+                     
 
 					
                     viewItemClickedContentReady(event,idForSinglePage);

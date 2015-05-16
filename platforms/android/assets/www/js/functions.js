@@ -640,7 +640,7 @@ function rendercheckExistsInventoryMasterCatalogue(tx3,results)
           //  alert('no row with syspkinvtycat' + SysPk_InvtyCatARR[invtycatRC] +' exists. inserting ' + RowNumber_InvtyCatARR[invtycatRC] + ',' + SysPk_InvtyCatARR[invtycatRC]+','+SysFk_CatMstr_InvtyCatARR[invtycatRC]+','+SKU_InvtyCatARR[invtycatRC]+','+PictureFileName_InvtyCatARR[invtycatRC]+','+Barcode_InvtyCatARR[invtycatRC]+','+Brand_InvtyCatARR[invtycatRC]+','+FullDescription_InvtyCatARR[invtycatRC]+','+PromoName_InvtyCatARR[invtycatRC]+','+PromoPrice_InvtyCatARR[invtycatRC]);
 
             
-                tx3.executeSql(sqlinsertinvtycat,[RowNumber_InvtyCatARR[invtycatRC],SysPk_InvtyCatARR[invtycatRC],SysFk_CatMstr_InvtyCatARR[invtycatRC],SKU_InvtyCatARR[invtycatRC],PictureFileName_InvtyCatARR[invtycatRC],Barcode_InvtyCatARR[invtycatRC],Brand_InvtyCatARR[invtycatRC],FullDescription_InvtyCatARR[invtycatRC],PromoName_InvtyCatARR[invtycatRC],PromoPrice_InvtyCatARR[invtycatRC]],function(){ /*alert(SysPk_InvtyCatARR[invtycatRC]  + ' inserted');*/},errorCB);
+                tx3.executeSql(sqlinsertinvtycat,[RowNumber_InvtyCatARR[invtycatRC],SysPk_InvtyCatARR[invtycatRC],SysFk_CatMstr_InvtyCatARR[invtycatRC],SKU_InvtyCatARR[invtycatRC],PictureFileName_InvtyCatARR[invtycatRC],Barcode_InvtyCatARR[invtycatRC],Brand_InvtyCatARR[invtycatRC],FullDescription_InvtyCatARR[invtycatRC],PromoName_InvtyCatARR[invtycatRC],PromoPrice_InvtyCatARR[invtycatRC]],function(){ alert(RowNumber_InvtyCatARR[invtycatRC]  + ' inserted');},errorCB);
         
     }
     else
@@ -650,8 +650,10 @@ function rendercheckExistsInventoryMasterCatalogue(tx3,results)
         
         //,,
         var sqlupdateinvtycat = "UPDATE INVENTORY_MASTER_CATALOGUE SET SysFk_CatMstr_InvtyCat = ?,PictureFileName_InvtyCat = ?, Barcode_InvtyCat = ? , Brand_InvtyCat = ? , FullDescription_InvtyCat = ? , PromoName_InvtyCat = ? , PromoPrice_InvtyCat = ? WHERE RowNumber_InvtyCat = ? AND SysPk_InvtyCat = ? AND SKU_InvtyCat = ?";
-        tx3.executeSql(sqlupdateinvtycat,[SysFk_CatMstr_InvtyCatARR[invtycatRC],PictureFileName_InvtyCatARR[invtycatRC],Barcode_InvtyCatARR[invtycatRC],Brand_InvtyCatARR[invtycatRC],FullDescription_InvtyCatARR[invtycatRC],PromoName_InvtyCatARR[invtycatRC],PromoPrice_InvtyCatARR[invtycatRC],results.rows.item(0).RowNumber_InvtyCat,results.rows.item(0).SysPk_InvtyCat,results.rows.item(0).SKU_InvtyCat],function(){ /*alert(SysPk_InvtyCatARR[invtycatRC]  + ' updated');*/ } ,errorCB);
+        tx3.executeSql(sqlupdateinvtycat,[SysFk_CatMstr_InvtyCatARR[invtycatRC],PictureFileName_InvtyCatARR[invtycatRC],Barcode_InvtyCatARR[invtycatRC],Brand_InvtyCatARR[invtycatRC],FullDescription_InvtyCatARR[invtycatRC],PromoName_InvtyCatARR[invtycatRC],PromoPrice_InvtyCatARR[invtycatRC],results.rows.item(0).RowNumber_InvtyCat,results.rows.item(0).SysPk_InvtyCat,results.rows.item(0).SKU_InvtyCat],function(){ alert(results.rows.item(0).RowNumber_InvtyCat  + ' updated'); } ,errorCB);
+       
         
+    
     }
     
 }
@@ -861,7 +863,7 @@ function rendercheckExistsSettingsTable(tx5,results)
       
             //    alert('no row with MinimumPrice_Settings' + MinimumPrice_SettingsARR[settingsRC] +' exists. inserting ' +MinimumPrice_SettingsARR[settingsRC]);
             
-                tx5.executeSql(sqlinsertsettings,[MinimumPrice_SettingsARR[settingsRC]],function(){ alert(MinimumPrice_SettingsARR[settingsRC] + ' inserted');},errorCB);
+                tx5.executeSql(sqlinsertsettings,[MinimumPrice_SettingsARR[settingsRC]],function(){ /*alert(MinimumPrice_SettingsARR[settingsRC] + ' inserted');*/},errorCB);
         
     }
     else
@@ -1722,9 +1724,9 @@ function renderCartList(tx,results)
 /*----------------------------------------------------------------------*/
 function queryItemDetails(tx,idForSinglePage)
 {
-    
-  //tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE IMC.RowNumber_InvtyCat=' + idForSinglePage , [], renderSinglePage, errorCB);  
-  tx.executeSql('SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy   WHERE CMIMCIMCCatgy.RowNumber_InvtyCat=' + idForSinglePage , [], renderSinglePage, errorCB);  
+
+//tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE IMC.RowNumber_InvtyCat=' + idForSinglePage , [], renderSinglePage, errorCB);  
+tx.executeSql('SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy   WHERE CMIMCIMCCatgy.RowNumber_InvtyCat= ?' , [idForSinglePage], renderSinglePage, errorCB);  
 
 	if(globalorderFromSwitch == 1)
 	{
@@ -1741,11 +1743,11 @@ function queryItemDetails(tx,idForSinglePage)
 
 function renderSinglePage(tx,results)
 {
-    
+   
     var doesThisExist = results.rows.length;
     
     
-    
+   
     if(doesThisExist > 0)
     {
 		
