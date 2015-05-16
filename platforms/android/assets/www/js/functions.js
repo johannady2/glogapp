@@ -479,7 +479,7 @@ function createTBinventorymastercatalogue(tx)
    
 
   
-    alert('creating INVENTORY_MASTER_CATALOGUE if not exists');
+    //alert('creating INVENTORY_MASTER_CATALOGUE if not exists');
 
         //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE");
        
@@ -503,7 +503,7 @@ function createTBinventorymastercatalogue(tx)
 }
 
 function createTBcataloguemaster(tx)
-{   alert('creating CATALOGUE_MASTER if not exists');
+{  // alert('creating CATALOGUE_MASTER if not exists');
  
        // tx.executeSql("DROP TABLE IF EXISTS CATALOGUE_MASTER");
         var query2 = "";
@@ -530,7 +530,7 @@ function createTBcataloguemaster(tx)
 function createTBsettings(tx)
 {
     
-    alert('creating SETTINGS if not exists');
+  //  alert('creating SETTINGS if not exists');
     ////tx.executeSql("DROP TABLE IF EXISTS SETTINGS");
     var query4 ="";
     query4 +="CREATE TABLE IF NOT EXISTS SETTINGS(MinimumPrice_Settings)";
@@ -542,7 +542,7 @@ function createTBsettings(tx)
 function createTBcategorymaster(tx)
 {
     
-    alert('creating CATEGORY_MASTER if not exists');
+  //  alert('creating CATEGORY_MASTER if not exists');
     //tx.executeSql("DROP TABLE IF EXISTS CATEGORY_MASTER");
     var query5= "";
     query5 += "CREATE TABLE IF NOT EXISTS CATEGORY_MASTER ";
@@ -555,7 +555,7 @@ function createTBcategorymaster(tx)
 
 function createTBinventorymastercataloguecategory(tx)
 {
-    alert('creating INVENTORY_MASTER_CATALOGUE_CATEGORY if not exists');
+  //  alert('creating INVENTORY_MASTER_CATALOGUE_CATEGORY if not exists');
     //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY");
     var query6 ="";
     query6 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY";
@@ -805,7 +805,7 @@ function checkExistsSettingsTable(tx)//populateSettingsTable(tx)
         settingstxparam = tx;
     
     
-        alert('checkExistsSettingsTable MinimumPrice_Settings ' + MinimumPrice_SettingsARR[settingsRC]);
+       // alert('checkExistsSettingsTable MinimumPrice_Settings ' + MinimumPrice_SettingsARR[settingsRC]);
 
 
 
@@ -813,15 +813,15 @@ function checkExistsSettingsTable(tx)//populateSettingsTable(tx)
     {
         if(RecordBeingProcessesd <= MinimumPrice_SettingsARR.length)
 		{
-            alert('Processing '+ RecordBeingProcessesd +' of ' + MinimumPrice_SettingsARR.length );
+            //alert('Processing '+ RecordBeingProcessesd +' of ' + MinimumPrice_SettingsARR.length );
             db.transaction(function(tx5)
            {    var sqlselectsettings = "SELECT * FROM SETTINGS WHERE MinimumPrice_Settings= ?";
                  tx5.executeSql(sqlselectsettings,[MinimumPrice_SettingsARR[settingsRC]],rendercheckExistsSettingsTable,errorCB);
-            },errorCB,function(){   alert('now at tx5 callback');  settingsRC +=1; checkExistsSettingsTable(settingstxparam);});
+            },errorCB,function(){  /* alert('now at tx5 callback'); */ settingsRC +=1; checkExistsSettingsTable(settingstxparam);});
         }
         else
 		{
-            alert('no more array data - settings');
+          //  alert('no more array data - settings');
 			settingsRC = 0;
 
             //db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
@@ -833,7 +833,7 @@ function checkExistsSettingsTable(tx)//populateSettingsTable(tx)
     }
     else
     {
-       alert('this is the last table created. proceed to deleting expired stuff. - settings');
+       //alert('this is the last table created. proceed to deleting expired stuff. - settings');
 
         //db.transaction(queryForExpired,errorCB);//move to else of last created table
         //create table here
@@ -848,7 +848,7 @@ function checkExistsSettingsTable(tx)//populateSettingsTable(tx)
 
 function rendercheckExistsSettingsTable(tx5,results)
 {
-        alert('rendercheckExistsSettingsTable');
+      //  alert('rendercheckExistsSettingsTable');
 
    
     
@@ -859,7 +859,7 @@ function rendercheckExistsSettingsTable(tx5,results)
             var sqlinsertsettings = "INSERT INTO SETTINGS(MinimumPrice_Settings) VALUES(?)";
     
       
-                alert('no row with MinimumPrice_Settings' + MinimumPrice_SettingsARR[settingsRC] +' exists. inserting ' +MinimumPrice_SettingsARR[settingsRC]);
+            //    alert('no row with MinimumPrice_Settings' + MinimumPrice_SettingsARR[settingsRC] +' exists. inserting ' +MinimumPrice_SettingsARR[settingsRC]);
             
                 tx5.executeSql(sqlinsertsettings,[MinimumPrice_SettingsARR[settingsRC]],function(){ alert(MinimumPrice_SettingsARR[settingsRC] + ' inserted');},errorCB);
         
@@ -867,11 +867,11 @@ function rendercheckExistsSettingsTable(tx5,results)
     else
     {
         
-            alert(  MinimumPrice_SettingsARR[settingsRC] +' already exists. Updating info.');
+         //   alert(  MinimumPrice_SettingsARR[settingsRC] +' already exists. Updating info.');
 
        
        var sqlupdatesettings = "UPDATE SETTINGS SET MinimumPrice_Settings = ?  WHERE MinimumPrice_Settings = ?";
-        tx5.executeSql(sqlupdatesettings,[MinimumPrice_SettingsARR[settingsRC],results.rows.item(0).MinimumPrice_Settings],function(){alert(results.rows.item(0).MinimumPrice_Settings  + ' updated'); } ,errorCB);
+        tx5.executeSql(sqlupdatesettings,[MinimumPrice_SettingsARR[settingsRC],results.rows.item(0).MinimumPrice_Settings],function(){/*alert(results.rows.item(0).MinimumPrice_Settings  + ' updated');*/ } ,errorCB);
        
     }   
        
@@ -905,7 +905,7 @@ function checkExistsCategoryMaster(tx)//populateCategoryMaster(tx)
         catgymstrtxparam = tx;
     
     
-        alert('checkExistsCategoryMaster SysPk_CatgyMstr ' + SysPk_CatgyMstrARR[catgymstrRC]);
+    //    alert('checkExistsCategoryMaster SysPk_CatgyMstr ' + SysPk_CatgyMstrARR[catgymstrRC]);
 
 
 
@@ -913,15 +913,15 @@ function checkExistsCategoryMaster(tx)//populateCategoryMaster(tx)
     {
         if(RecordBeingProcessesd <= SysPk_CatgyMstrARR.length)
 		{
-            alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_CatgyMstrARR.length );
+           // alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_CatgyMstrARR.length );
             db.transaction(function(tx6)
            {    var sqlselectcatgymstr = "SELECT * FROM CATEGORY_MASTER WHERE RowNumber_CatgyMstr = ? AND SysPk_CatgyMstr= ?";
                  tx6.executeSql(sqlselectcatgymstr,[RowNumber_CatgyMstrARR[catgymstrRC],SysPk_CatgyMstrARR[catgymstrRC]],rendercheckExistsCategoryMaster,errorCB);
-            },errorCB,function(){   alert('now at tx6 callback');  catgymstrRC +=1; checkExistsCategoryMaster(catgymstrtxparam);});
+            },errorCB,function(){/*  alert('now at tx6 callback'); */ catgymstrRC +=1; checkExistsCategoryMaster(catgymstrtxparam);});
         }
         else
 		{
-            alert('no more array data - catgymstr');
+          //  alert('no more array data - catgymstr');
 			catgymstrRC = 0;
 
            // db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
@@ -934,7 +934,7 @@ function checkExistsCategoryMaster(tx)//populateCategoryMaster(tx)
     }
     else
     {
-       alert('this is the last table created. proceed to deleting expired stuff. - catgymstr');
+      // alert('this is the last table created. proceed to deleting expired stuff. - catgymstr');
 
        // db.transaction(queryForExpired,errorCB);//move to else of last created table
         //create table here
@@ -955,21 +955,21 @@ function rendercheckExistsCategoryMaster(tx6,results)
     if(results.rows.length <= 0)
     {
         
-        alert('rendercheckExistsCategoryMaster');
+        //alert('rendercheckExistsCategoryMaster');
      
             var sqlinsertcatgymstr = "INSERT INTO CATEGORY_MASTER(RowNumber_CatgyMstr,SysPk_CatgyMstr, CategoryName_CatgyMstr) VALUES(?,?,?)";
             
-                tx6.executeSql(sqlinsertcatgymstr,[RowNumber_CatgyMstrARR[catgymstrRC],SysPk_CatgyMstrARR[catgymstrRC],CategoryName_CatgyMstrARR[catgymstrRC]],function(){ alert(SysPk_CatgyMstrARR[catgymstrRC] + ' inserted');},errorCB);
+                tx6.executeSql(sqlinsertcatgymstr,[RowNumber_CatgyMstrARR[catgymstrRC],SysPk_CatgyMstrARR[catgymstrRC],CategoryName_CatgyMstrARR[catgymstrRC]],function(){ /*alert(SysPk_CatgyMstrARR[catgymstrRC] + ' inserted');*/},errorCB);
        
         
     }
     else
     {
     
-        alert(  SysPk_CatgyMstrARR[catgymstrRC] +' already exists. Updating info.');
+       // alert(  SysPk_CatgyMstrARR[catgymstrRC] +' already exists. Updating info.');
   
      var sqlupdatecatgymstr = "UPDATE CATEGORY_MASTER SET CategoryName_CatgyMstr=?  WHERE RowNumber_CatgyMstr = ? AND SysPk_CatgyMstr = ?";
-        tx6.executeSql(sqlupdatecatgymstr,[CategoryName_CatgyMstrARR[catgymstrRC],results.rows.item(0).RowNumber_CatgyMstr,results.rows.item(0).SysPk_CatgyMstr],function(){alert(results.rows.item(0).SysPk_CatgyMstr  + ' updated'); } ,errorCB);
+        tx6.executeSql(sqlupdatecatgymstr,[CategoryName_CatgyMstrARR[catgymstrRC],results.rows.item(0).RowNumber_CatgyMstr,results.rows.item(0).SysPk_CatgyMstr],function(){/*alert(results.rows.item(0).SysPk_CatgyMstr  + ' updated'); */} ,errorCB);
         
        
     }
@@ -1002,7 +1002,7 @@ function checkExistsInvtyCatCatgy(tx)//populateInvtyCatCatgy(tx)
         invtycatcatgytxparam = tx;
     
     
-        alert('checkExistsInvtyCatCatgy SysPk_CatgyMstr ' + RowNumber_InvtyCatCatgyARR[invtycatcatgyRC]);
+        //alert('checkExistsInvtyCatCatgy SysPk_CatgyMstr ' + RowNumber_InvtyCatCatgyARR[invtycatcatgyRC]);
 
 
 
@@ -1010,15 +1010,15 @@ function checkExistsInvtyCatCatgy(tx)//populateInvtyCatCatgy(tx)
     {
         if(RecordBeingProcessesd <= RowNumber_InvtyCatCatgyARR.length)
 		{
-            alert('Processing '+ RecordBeingProcessesd +' of ' + RowNumber_InvtyCatCatgyARR.length );
+           // alert('Processing '+ RecordBeingProcessesd +' of ' + RowNumber_InvtyCatCatgyARR.length );
             db.transaction(function(tx7)
            {    var sqlselectinvtycatcatgy = "SELECT * FROM INVENTORY_MASTER_CATALOGUE_CATEGORY WHERE RowNumber_InvtyCatCatgy = ?";
                  tx7.executeSql(sqlselectinvtycatcatgy,[RowNumber_InvtyCatCatgyARR[invtycatcatgyRC]],rendercheckExistsInvtyCatCatgy,errorCB);
-            },errorCB,function(){   alert('now at tx7 callback');  invtycatcatgyRC +=1; checkExistsInvtyCatCatgy(invtycatcatgytxparam );});
+            },errorCB,function(){ /*  alert('now at tx7 callback'); */ invtycatcatgyRC +=1; checkExistsInvtyCatCatgy(invtycatcatgytxparam );});
         }
         else
 		{
-            alert('no more array data - catgymstr');
+           // alert('no more array data - catgymstr');
 			invtycatcatgyRC = 0;
 
             db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
@@ -1031,7 +1031,7 @@ function checkExistsInvtyCatCatgy(tx)//populateInvtyCatCatgy(tx)
     }
     else
     {
-       alert('this is the last table created. proceed to deleting expired stuff. - catgymstr');
+       //alert('this is the last table created. proceed to deleting expired stuff. - catgymstr');
 
         db.transaction(queryForExpired,errorCB);//move to else of last created table
         //create table here
@@ -1047,23 +1047,23 @@ function rendercheckExistsInvtyCatCatgy(tx7,results)
     if(results.rows.length <= 0)
     {
         
-        alert('rendercheckExistsCategoryMaster');
+       // alert('rendercheckExistsCategoryMaster');
      
 ///RowNumber_InvtyCatCatgy,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy
     
             var sqlinsertinvtycatcatgy = "INSERT INTO INVENTORY_MASTER_CATALOGUE_CATEGORY(RowNumber_InvtyCatCatgy,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy) VALUES(?,?,?)";
             
-                tx7.executeSql(sqlinsertinvtycatcatgy,[RowNumber_InvtyCatCatgyARR[invtycatcatgyRC],SysFk_InvtyCat_InvtyCatCatgyARR[invtycatcatgyRC],SysFk_CatgyMstr_InvtyCatCatgyARR[invtycatcatgyRC]],function(){ alert(RowNumber_InvtyCatCatgyARR[invtycatcatgyRC] + ' inserted');},errorCB);
+                tx7.executeSql(sqlinsertinvtycatcatgy,[RowNumber_InvtyCatCatgyARR[invtycatcatgyRC],SysFk_InvtyCat_InvtyCatCatgyARR[invtycatcatgyRC],SysFk_CatgyMstr_InvtyCatCatgyARR[invtycatcatgyRC]],function(){ /*alert(RowNumber_InvtyCatCatgyARR[invtycatcatgyRC] + ' inserted');*/},errorCB);
        
         
     }
     else
     {
     
-        alert(RowNumber_InvtyCatCatgyARR[invtycatcatgyRC] +' already exists. Updating info.');
+        //alert(RowNumber_InvtyCatCatgyARR[invtycatcatgyRC] +' already exists. Updating info.');
   
   var sqlupdateinvtycatcatgy = "UPDATE INVENTORY_MASTER_CATALOGUE_CATEGORY SET SysFk_InvtyCat_InvtyCatCatgy = ?, SysFk_CatgyMstr_InvtyCatCatgy =?  WHERE RowNumber_InvtyCatCatgy = ?";
-    tx7.executeSql(sqlupdateinvtycatcatgy,[SysFk_InvtyCat_InvtyCatCatgyARR[invtycatcatgyRC],SysFk_CatgyMstr_InvtyCatCatgyARR[invtycatcatgyRC],results.rows.item(0).RowNumber_InvtyCatCatgy],function(){alert(results.rows.item(0).RowNumber_InvtyCatCatgy  + ' updated'); } ,errorCB);
+    tx7.executeSql(sqlupdateinvtycatcatgy,[SysFk_InvtyCat_InvtyCatCatgyARR[invtycatcatgyRC],SysFk_CatgyMstr_InvtyCatCatgyARR[invtycatcatgyRC],results.rows.item(0).RowNumber_InvtyCatCatgy],function(){/*alert(results.rows.item(0).RowNumber_InvtyCatCatgy  + ' updated'); */} ,errorCB);
         
        
     }
