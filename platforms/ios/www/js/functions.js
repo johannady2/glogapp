@@ -132,6 +132,9 @@ if(localStorage.BarcodeInvtyCat == null)
                     var RowNumber_InvtyCatCatgyARR = [];
                     var SysFk_InvtyCat_InvtyCatCatgyARR = [];
                     var SysFk_CatgyMstr_InvtyCatCatgyARR = [];
+
+                    var invtycatcatgyRC = 0;
+                    var invtycatcatgytxparam;
                     //--//INVENTORY_MASTER_CATALOGUE_CATEGORY
 
 
@@ -476,7 +479,7 @@ function createTBinventorymastercatalogue(tx)
    
 
   
-    // alert('creating INVENTORY_MASTER_CATALOGUE if not exists');
+    alert('creating INVENTORY_MASTER_CATALOGUE if not exists');
 
         //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE");
        
@@ -494,11 +497,13 @@ function createTBinventorymastercatalogue(tx)
         query += "RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,";
         query += "UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)";
         tx.executeSql( query ,[],checkExistsInventoryMasterCatalogue,errorCB);
+    
+    
 
 }
 
 function createTBcataloguemaster(tx)
-{  // alert('creating CATALOGUE_MASTER if not exists');
+{   alert('creating CATALOGUE_MASTER if not exists');
  
        // tx.executeSql("DROP TABLE IF EXISTS CATALOGUE_MASTER");
         var query2 = "";
@@ -524,6 +529,8 @@ function createTBcataloguemaster(tx)
 
 function createTBsettings(tx)
 {
+    
+    alert('creating SETTINGS if not exists');
     ////tx.executeSql("DROP TABLE IF EXISTS SETTINGS");
     var query4 ="";
     query4 +="CREATE TABLE IF NOT EXISTS SETTINGS(MinimumPrice_Settings)";
@@ -534,6 +541,8 @@ function createTBsettings(tx)
 
 function createTBcategorymaster(tx)
 {
+    
+    alert('creating CATEGORY_MASTER if not exists');
     //tx.executeSql("DROP TABLE IF EXISTS CATEGORY_MASTER");
     var query5= "";
     query5 += "CREATE TABLE IF NOT EXISTS CATEGORY_MASTER ";
@@ -543,14 +552,18 @@ function createTBcategorymaster(tx)
 }
 
 
-       // //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY");
-       // var query6 ="";
-       // query6 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY";
-       // //query6 += "(RowNumber_InvtyCatCatgy INTEGER PRIMARY KEY AUTOINCREMENT,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
-      //  query6 += "(RowNumber_InvtyCatCatgy,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
-      //  tx.executeSql(query6,[],populateInvtyCatCatgy,errorCB);
+
+function createTBinventorymastercataloguecategory(tx)
+{
+    alert('creating INVENTORY_MASTER_CATALOGUE_CATEGORY if not exists');
+    //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY");
+    var query6 ="";
+    query6 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY";
+    //query6 += "(RowNumber_InvtyCatCatgy INTEGER PRIMARY KEY AUTOINCREMENT,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
+    query6 += "(RowNumber_InvtyCatCatgy,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
+    tx.executeSql(query6,[],checkExistsInvtyCatCatgy,errorCB);
     
-    
+}
      
 
 
@@ -911,8 +924,9 @@ function checkExistsCategoryMaster(tx)//populateCategoryMaster(tx)
             alert('no more array data - catgymstr');
 			catgymstrRC = 0;
 
-            db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
+           // db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
             //create table here
+            db.transaction(createTBinventorymastercataloguecategory,errorCB);
             
      
 		}
@@ -922,9 +936,9 @@ function checkExistsCategoryMaster(tx)//populateCategoryMaster(tx)
     {
        alert('this is the last table created. proceed to deleting expired stuff. - catgymstr');
 
-        db.transaction(queryForExpired,errorCB);//move to else of last created table
+       // db.transaction(queryForExpired,errorCB);//move to else of last created table
         //create table here
-        
+        db.transaction(createTBinventorymastercataloguecategory,errorCB);
         
     }
     
@@ -980,30 +994,69 @@ function rendercheckExistsCategoryMaster(tx6,results)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function populateInvtyCatCatgy(tx)
+function checkExistsInvtyCatCatgy(tx)//populateInvtyCatCatgy(tx)
 {
 
-//	var sqlInsert6 = "INSERT INTO INVENTORY_MASTER_CATALOGUE_CATEGORY(SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy) VALUES(?,?)";
-//	tx.executeSql(sqlInsert6,["111111","catgy1"],null,errorCB);
 
+///RowNumber_InvtyCatCatgy,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy
+    
+         var RecordBeingProcessesd =  invtycatcatgyRC + 1;
+        invtycatcatgytxparam = tx;
+    
+    
+        alert('checkExistsInvtyCatCatgy SysPk_CatgyMstr ' + RowNumber_InvtyCatCatgyARR[invtycatcatgyRC]);
+
+
+
+    if(RowNumber_InvtyCatCatgyARR.length > 0)
+    {
+        if(RecordBeingProcessesd <= RowNumber_InvtyCatCatgyARR.length)
+		{
+            alert('Processing '+ RecordBeingProcessesd +' of ' + RowNumber_InvtyCatCatgyARR.length );
+            db.transaction(function(tx7)
+           {    var sqlselectinvtycatcatgy = "SELECT * FROM INVENTORY_MASTER_CATALOGUE_CATEGORY WHERE RowNumber_InvtyCatCatgy = ?";
+                 tx7.executeSql(sqlselectinvtycatcatgy,[RowNumber_InvtyCatCatgyARR[invtycatcatgyRC]],rendercheckExistsInvtyCatCatgy,errorCB);
+            },errorCB,function(){   alert('now at tx7 callback');  invtycatcatgyRC +=1; checkExistsInvtyCatCatgy(invtycatcatgytxparam );});
+        }
+        else
+		{
+            alert('no more array data - catgymstr');
+			invtycatcatgyRC = 0;
+
+            db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
+            //create table here
+            
+            
+     
+		}
+        
+    }
+    else
+    {
+       alert('this is the last table created. proceed to deleting expired stuff. - catgymstr');
+
+        db.transaction(queryForExpired,errorCB);//move to else of last created table
+        //create table here
+        
+        
+    }
+    
 }
+
+function rendercheckExistsInvtyCatCatgy(tx7,results)
+{
+    alert('rendercheckExistsInvtyCatCatgy');
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
