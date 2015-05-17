@@ -565,7 +565,7 @@ function createTBinventorymastercataloguecategory(tx)
     query6 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY";
     //query6 += "(RowNumber_InvtyCatCatgy INTEGER PRIMARY KEY AUTOINCREMENT,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
     query6 += "(RowNumber_InvtyCatCatgy,SysFk_InvtyCat_InvtyCatCatgy, SysFk_CatgyMstr_InvtyCatCatgy)";
-    tx.executeSql(query6,[],checkExistsInvtyCatCatgy,errorCB);
+    tx.executeSql(query6,[],deleteLocalInvtyCatCatgy,errorCB);
     
 }
      
@@ -1043,19 +1043,33 @@ function rendercheckExistsCategoryMaster(tx6,results)
 
 
 
+function deleteLocalInvtyCatCatgy(tx)
+{
+    
+    // alert('deleteLocalCategoryMaster');
+    if ( isOffline )
+    {
+
+            var sqldeletedeleted = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE_CATEGORY LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
+    }
+    else
+    {
+           
+
+         var sqldeletedeleted = 'DELETE FROM INVENTORY_MASTER_CATALOGUE_CATEGORY WHERE 	RowNumber_InvtyCatCatgy NOT IN(?)';
+    }
 
 
+    
 
-
-
-
-
+	   tx.executeSql(sqldeletedeleted,[RowNumber_InvtyCatCatgyARR],checkExistsInvtyCatCatgy,errorCB);
+}
 
 
 
 function checkExistsInvtyCatCatgy(tx)//populateInvtyCatCatgy(tx)
 {
-
+alert('in checkexists');
 
          var RecordBeingProcessesd =  invtycatcatgyRC + 1;
         invtycatcatgytxparam = tx;

@@ -5,7 +5,7 @@ $(document).on('navClicked',function(event,filename)
     { 
         if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/))
         { globalorderFromSwitch = 0;
-        alert('switch =='+ globalorderFromSwitch );
+        //alert('switch =='+ globalorderFromSwitch );
             
          db.transaction(queryCatalogues, errorCB);
             
