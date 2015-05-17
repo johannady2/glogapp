@@ -1331,7 +1331,7 @@ function renderCatalogueItems(tx2,results)
             htmlstringCatalaogue += '<p>'+ results.rows.item(ind).FullDescription_InvtyCat + '</p>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '<div class="col-md-12 col-sm-12 col-xs-12">';
-            htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a>';
+            htmlstringCatalaogue += '<a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).SysPk_InvtyCat +'">View</a>';
             htmlstringCatalaogue += '</div>';
             htmlstringCatalaogue += '</div></div></article></div></div></div>';
 			
@@ -1475,7 +1475,7 @@ function renderSearchResults(tx,results)
     {
         
        //displays categorgy but commented out because it will be more complex when item has more than one category// htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).PromoName_InvtyCat+'</h1><h4>'+results.rows.item(ind).Brand_InvtyCat+'</h4><br><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><br><p><b>Catalogue: </b>'+results.rows.item(ind).CatalogueTitle_CatMstr+'<br><b>Category: </b>'+results.rows.item(ind).CategoryName_CatgyMstr+'</p><small>Valid from:<br>' + results.rows.item(ind).PromoStartDate_CatMstr + ' to ' + results.rows.item(ind).PromoEndDate_CatMstr +'</small><br><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a></div><div class="clearfix"><hr></div>';
-        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).PromoName_InvtyCat+'</h1><h4>'+results.rows.item(ind).Brand_InvtyCat+'</h4><br><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><br><p><b>Catalogue: </b>'+results.rows.item(ind).CatalogueTitle_CatMstr+'</p><small>Valid from:<br>' + results.rows.item(ind).PromoStartDate_CatMstr + ' to ' + results.rows.item(ind).PromoEndDate_CatMstr +'</small><br><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).RowNumber_InvtyCat +'">View</a></div><div class="clearfix"><hr></div>';
+        htmlstring += '<div class="col-md-4 col-sm-4 col-xs-12"><img src="'+ results.rows.item(ind).PictureFileName_InvtyCat +'" class="responsiveImage"></div><div class="col-md-8 col-sm-8 col-xs-12"><h1>'+results.rows.item(ind).PromoName_InvtyCat+'</h1><h4>'+results.rows.item(ind).Brand_InvtyCat+'</h4><br><p>'+results.rows.item(ind).FullDescription_InvtyCat+'</p><br><p><b>Catalogue: </b>'+results.rows.item(ind).CatalogueTitle_CatMstr+'</p><small>Valid from:<br>' + results.rows.item(ind).PromoStartDate_CatMstr + ' to ' + results.rows.item(ind).PromoEndDate_CatMstr +'</small><br><a href="#" class="btn btn-success btn-large viewItem" data-itemid="'+ results.rows.item(ind).SysPk_InvtyCat +'">View</a></div><div class="clearfix"><hr></div>';
    		
     }
   }
@@ -1798,7 +1798,7 @@ function queryItemDetails(tx,idForSinglePage)
 {
 
 //tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE IMC.RowNumber_InvtyCat=' + idForSinglePage , [], renderSinglePage, errorCB);  
-tx.executeSql('SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy   WHERE CMIMCIMCCatgy.RowNumber_InvtyCat= ?' , [idForSinglePage], renderSinglePage, errorCB);  
+tx.executeSql('SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy   WHERE CMIMCIMCCatgy.SysPk_InvtyCat= ?' , [idForSinglePage], renderSinglePage, errorCB);  
 
   //  alert('switch == ' + globalorderFromSwitch);
 	if(globalorderFromSwitch == 1)
@@ -1853,11 +1853,9 @@ function renderSinglePage(tx,results)
 		}
 			
 			
-
-			
+            /*----------------------------------place order button----------------------------------------*/		
 			var placeorderbtnstring =  '<a href="#" class="btn btn-success btn-large placeOrder" data-sku="'+ results.rows.item(0).SKU_InvtyCat +'" data-promoPrice="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-promoEndDate="'+ results.rows.item(0).PromoEndDate_CatMstr +'" data-promoStartDate="'+ results.rows.item(0).PromoStartDate_CatMstr +'" ';
-			
-			
+            
 			toCustomString(results.rows.item(0).CatalogueTitle_CatMstr);
 			placeorderbtnstring	+=' data-catalogue="'+ returnedCustom +'" ';
 			
@@ -1866,7 +1864,7 @@ function renderSinglePage(tx,results)
 				
 			toCustomString(results.rows.item(0).FullDescription_InvtyCat);
 			placeorderbtnstring += ' data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ returnedCustom +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-BrandInvtyCat="'+results.rows.item(0).Brand_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-orderedfrom="'+ globalorderedFrom +'">Place Order</a>';
-			
+			  /*----------------------------------//place order button----------------------------------------*/		
 			
 			//alert(placeorderbtnstring);
 			$( '.singleitemtable' ).after(placeorderbtnstring);
