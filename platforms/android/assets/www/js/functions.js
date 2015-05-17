@@ -13,7 +13,6 @@ function onBodyLoad()
   //listen for changes
   
 
-
 /*~~~~~~~~~~~~~~~~~~~~~~GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 var db;
 var idForSinglePage;//uses primary key to open singlepage
@@ -160,8 +159,7 @@ function isjsonready()//i'm thinking of checking them all at once instead of by 
                   ).done(function(invtycat, catmstr,settings,catgymstr,InvtyCatCatgy)
             {
 
-                if(SysPk_CatgyMstrARR.length <= 0)
-                {
+                //if(SysPk_CatgyMstrARR.length <= 0) {
                     
                  $('.getjsontest').append("<br><br>----INVENTORY_MASTER_CATALOGUE----<br><br>");
                     $.each( invtycat[0], function( index, value ) 
@@ -177,6 +175,7 @@ function isjsonready()//i'm thinking of checking them all at once instead of by 
                                             if(i == "RowNumber_InvtyCat")
                                             {
                                                 RowNumber_InvtyCatARR.push(val[i]);
+                                                
                                                 $('.getjsontest').append(val[i] + " inserted to array RowNumber_InvtyCatARR<br>");
                                             }
                                             else if(i == "SysPk_InvtyCat")
@@ -426,8 +425,10 @@ function isjsonready()//i'm thinking of checking them all at once instead of by 
 
 
                 $('.getjsontest').append("<br><br>---//INVENTORY_MASTER_CATALOGUE_CATEGORY----<br><br>");
-
-                }//if(SysPk_CatgyMstrARR.length <= 0)
+    
+                    
+                    
+              //  }//if(SysPk_CatgyMstrARR.length <= 0)
                 
             }).then(function(objects)
             {
@@ -474,6 +475,7 @@ function onDeviceOffline()
 }
 
 
+
 function createTBinventorymastercatalogue(tx)
 {
    
@@ -496,7 +498,7 @@ function createTBinventorymastercatalogue(tx)
         query += "PromoStartDate_InvtyCat TIMESTAMP, PromoEndDate_InvtyCat TIMESTAMP, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,";
         query += "RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,";
         query += "UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)";
-        tx.executeSql( query ,[],checkExistsInventoryMasterCatalogue,errorCB);
+        tx.executeSql( query ,[],deleteInLocalDeletedInServer,errorCB);
     
     
 
@@ -574,14 +576,36 @@ function createTBinventorymastercataloguecategory(tx)
 
 
 
+function deleteInLocalDeletedInServer(tx)//delete in local what's deleted in server
+{
+    
+var isOffline = 'onLine' in navigator && !navigator.onLine;
 
+if ( isOffline )
+{
+    
+        var sqldeletedeleted = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
+}
+else
+{
+       alert('deleting items not in' + SysPk_InvtyCatARR);
+        var sqldeletedeleted = 'DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysPk_InvtyCat NOT IN('+       SysPk_InvtyCatARR +')';
+}
+    
+
+    
+
+	   tx.executeSql(sqldeletedeleted,[],checkExistsInventoryMasterCatalogue,errorCB);
+ 
+    
+}
 
 
 
 
 
 function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMasterCatalogue()
-{
+{ 
     var RecordBeingProcessesd =  invtycatRC + 1;//get this fromgetjsonForINVENTORY_MASTER_CATALOGUE();
    invtycattxparam = tx;
     
@@ -595,9 +619,10 @@ function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMa
 
     if(SysPk_InvtyCatARR.length > 0)
     {
-        if(RecordBeingProcessesd < RowNumber_InvtyCatARR.length)
+        alert('number of items' + RowNumber_InvtyCatARR.length);
+        if(RecordBeingProcessesd <= RowNumber_InvtyCatARR.length)
 		{
-           // alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_InvtyCatARR.length );
+           alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_InvtyCatARR.length );
             db.transaction(function(tx3)
            {    var sqlselectinvtycat = "SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE RowNumber_InvtyCat=? AND SysPk_InvtyCat = ? AND SKU_InvtyCat=?";//these three are composite primary keys
                  tx3.executeSql(sqlselectinvtycat,[RowNumber_InvtyCatARR[invtycatRC],SysPk_InvtyCatARR[invtycatRC],SKU_InvtyCatARR[invtycatRC]],rendercheckExistsInventoryMasterCatalogue,errorCB);
@@ -629,7 +654,9 @@ function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMa
 
 function rendercheckExistsInventoryMasterCatalogue(tx3,results)
 {   
-  
+
+    
+    alert('rendering ' + RowNumber_InvtyCatARR[invtycatRC]);
 
 
     if(results.rows.length <= 0)
@@ -1113,8 +1140,8 @@ function deleteExpiredPromos(tx,results)
 	
 	deleteString = deleteString.substring(0, deleteString.length - 1);
 
-	
-	
+
+    
 	tx.executeSql('DELETE FROM CATALOGUE_MASTER WHERE SysPk_CatMstr IN('+ deleteString +')');
 	tx.executeSql('DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysFk_CatMstr_InvtyCat IN('+ deleteString +')',[],function(){
                 $('.splashloading').hide();//ALWAYS AT CALLBACK OF LAST DELETE STATEMENT IN THIS FUNCTION
@@ -1381,10 +1408,12 @@ function queryForSearch(tx)
         finalqueryString = finalqueryString.replace("WHERE", ""); 
     }
 
-    alert(finalqueryString);
+    //alert(finalqueryString);
 	tx.executeSql(finalqueryString, [], renderSearchResults, errorCB);
 
-
+	globalorderFromSwitch = 1;
+    alert('switch =='+ globalorderFromSwitch );
+	
 }
 
 
