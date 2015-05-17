@@ -2,6 +2,8 @@
 /*------------------------Database-----------------------------------*/
 /*------------------------------------------------------------------*/
 var networkstatus = '';
+var isOffline = 'onLine' in navigator && !navigator.onLine;
+
 function onBodyLoad()
 {
   
@@ -498,7 +500,7 @@ function createTBinventorymastercatalogue(tx)
         query += "PromoStartDate_InvtyCat TIMESTAMP, PromoEndDate_InvtyCat TIMESTAMP, Principal_InvtyCat, PercentDiscount_InvtyCat,PriceRageMin_InvtyCat,PriceRangeMax_InvtyCat, QRcode_InvtyCat,";
         query += "RecordAddedDate_InvtyCat,SavingsAmount_InvtyCat,SysFk_Freebies01_InvtyCat,SysFk_Freebies02_InvtyCat,SysFk_Freebies03_InvtyCat,SysFk_Freebies04_InvtyCat,SysFk_Freebies05_InvtyCat,";
         query += "UnitOfMeasure_InvtyCat,UserFk_Freebies01_InvtyCat,UserFk_Freebies02_InvtyCat,UserFk_Freebies03_InvtyCat,UserFk_Freebies04_InvtyCat,UserFk_Freebies05_InvtyCat)";
-        tx.executeSql( query ,[],deleteInLocalDeletedInServer,errorCB);
+        tx.executeSql( query ,[],deleteLocalInvtyCat,errorCB);
     
     
 
@@ -515,7 +517,7 @@ function createTBcataloguemaster(tx)
         query2 += "Particulars_CatMstr,PictureFileName_CatMstr, Status_CatMstr,Type_CatMstr,";
         query2 += "CatalogueTitle_CatMstr, Description_CatMstr, FullDescription_CatMstr, FreeDescription_CatMstr,";
         query2 += "Principal_CatMstr,PromoEndDate_CatMstr TIMESTAMP, PromoStartDate_CatMstr TIMESTAMP)";
-        tx.executeSql( query2,[],checkExistsCatalogueMaster,errorCB);
+        tx.executeSql( query2,[],deleteLocalCatalogueMaster,errorCB);
 }
 /*-------------CURRENTLY NOT USED-----------*/
         //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER");
@@ -576,25 +578,26 @@ function createTBinventorymastercataloguecategory(tx)
 
 
 
-function deleteInLocalDeletedInServer(tx)//delete in local what's deleted in server
+function deleteLocalInvtyCat(tx)//delete in local what's deleted in server
 {
     
-var isOffline = 'onLine' in navigator && !navigator.onLine;
 
-if ( isOffline )
-{
-    
-        var sqldeletedeleted = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
-}
-else
-{
-       alert('deleting items not in' + SysPk_InvtyCatARR);
-        var sqldeletedeleted = 'DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysPk_InvtyCat NOT IN('+       SysPk_InvtyCatARR +')';
-}
-    
+    if ( isOffline )
+    {
+
+            var sqldeletedeleted = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
+    }
+    else
+    {
+           
+
+            var sqldeletedeleted = 'DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysPk_InvtyCat NOT IN('+       SysPk_InvtyCatARR +')';
+    }
+
 
     
 
+	  
 	   tx.executeSql(sqldeletedeleted,[],checkExistsInventoryMasterCatalogue,errorCB);
  
     
@@ -619,10 +622,10 @@ function checkExistsInventoryMasterCatalogue(tx)//previously populateInventoryMa
 
     if(SysPk_InvtyCatARR.length > 0)
     {
-        alert('number of items' + RowNumber_InvtyCatARR.length);
+       // alert('number of items' + RowNumber_InvtyCatARR.length);
         if(RecordBeingProcessesd <= RowNumber_InvtyCatARR.length)
 		{
-           alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_InvtyCatARR.length );
+          // alert('Processing '+ RecordBeingProcessesd +' of ' + SysPk_InvtyCatARR.length );
             db.transaction(function(tx3)
            {    var sqlselectinvtycat = "SELECT * FROM INVENTORY_MASTER_CATALOGUE WHERE RowNumber_InvtyCat=? AND SysPk_InvtyCat = ? AND SKU_InvtyCat=?";//these three are composite primary keys
                  tx3.executeSql(sqlselectinvtycat,[RowNumber_InvtyCatARR[invtycatRC],SysPk_InvtyCatARR[invtycatRC],SKU_InvtyCatARR[invtycatRC]],rendercheckExistsInventoryMasterCatalogue,errorCB);
@@ -656,7 +659,7 @@ function rendercheckExistsInventoryMasterCatalogue(tx3,results)
 {   
 
     
-    alert('rendering ' + RowNumber_InvtyCatARR[invtycatRC]);
+  //  alert('rendering ' + RowNumber_InvtyCatARR[invtycatRC]);
 
 
     if(results.rows.length <= 0)
@@ -698,15 +701,25 @@ function rendercheckExistsInventoryMasterCatalogue(tx3,results)
 
 
 
+function deleteLocalCatalogueMaster(tx)
+{
+    if ( isOffline )
+    {
+
+            var sqldeletedeleted = 'SELECT * FROM CATALOGUE_MASTER LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
+    }
+    else
+    {
+           
+
+         var sqldeletedeleted = 'DELETE FROM CATALOGUE_MASTER WHERE SysPk_CatMstr NOT IN('+ SysPk_CatMstrARR +')';
+    }
 
 
+    
 
-
-
-
-
-
-
+	   tx.executeSql(sqldeletedeleted,[],checkExistsCatalogueMaster,errorCB);
+}
 
 
 
@@ -808,10 +821,6 @@ function rendercheckExistsCatalogueMaster(tx4,results)
 //{
      //alert('populate inventory master');
 //}
-
-
-
-
 
 
 
@@ -922,6 +931,13 @@ function rendercheckExistsSettingsTable(tx5,results)
 
 
 
+
+
+
+
+function delteLocalCategoryMaster(tx)
+{
+}
 
 
 
