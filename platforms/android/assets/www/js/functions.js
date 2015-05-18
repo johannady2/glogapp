@@ -1303,7 +1303,11 @@ alert(RowNumber_InvtyCatAttrARR);
 function checkExistsInvtyCatAttr(tx)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
    
+=======
+    alert('now in check exists');
+>>>>>>> parent of 1dc6c24... OKAY - NOW UPDATED SINGLE PAGE QUERIES TO INCLUDE attributes
 =======
     alert('now in check exists');
 >>>>>>> parent of 1dc6c24... OKAY - NOW UPDATED SINGLE PAGE QUERIES TO INCLUDE attributes
@@ -1659,6 +1663,7 @@ function queryForSearch(tx)
     //works- but needs to be left join//var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM CATEGORY_MASTER AS CatgyM INNER JOIN(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
    
     
     
@@ -1666,6 +1671,10 @@ function queryForSearch(tx)
     
     //works - with attributes
     var finalqueryString = 'SELECT IMCATTR.* , CATGYMCMIMCIMCCatgy.* FROM ( SELECT CatgyM.*, CMIMCIMCCatgy.* FROM ( SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM INNER JOIN ( SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy ) AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr GROUP BY IMCIMCCatgy.SysPk_InvtyCat ) AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy )AS CATGYMCMIMCIMCCatgy LEFT JOIN INVENTORY_MASTER_CATALOGUE_ATTRIBUTES AS IMCATTR ON SysFk_InvtyCat_InvtyCatAttr = CATGYMCMIMCIMCCatgy.SysPk_InvtyCat  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +'GROUP BY CATGYMCMIMCIMCCatgy.SysPk_InvtyCat';
+=======
+    var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
+
+>>>>>>> parent of 1dc6c24... OKAY - NOW UPDATED SINGLE PAGE QUERIES TO INCLUDE attributes
 =======
     var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
 
@@ -2038,6 +2047,7 @@ tx.executeSql('SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* F
 
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
  //THIS IS THE NEW QUERY BUT I STILL HAVE TO COPY IMCATTR TO LOCAL FROM API
 var sqlSinglePage = ' SELECT IMCATTR.* , CATGYMCMIMCIMCCatgy.* FROM ( SELECT CatgyM . * , CMIMCIMCCatgy . * FROM ( SELECT IMCIMCCatgy . * , CM . * FROM CATALOGUE_MASTER AS CM INNER JOIN ( SELECT IMC . * , IMCCatgy . * FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat = IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy ) AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr ) AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy )AS CATGYMCMIMCIMCCatgy LEFT JOIN INVENTORY_MASTER_CATALOGUE_ATTRIBUTES AS IMCATTR ON SysFk_InvtyCat_InvtyCatAttr = CATGYMCMIMCIMCCatgy.SysPk_InvtyCat WHERE CATGYMCMIMCIMCCatgy.SysPk_InvtyCat =?';
 				
@@ -2048,11 +2058,19 @@ var sqlSinglePage = ' SELECT IMCATTR.* , CATGYMCMIMCIMCCatgy.* FROM ( SELECT Cat
 /* THIS IS THE NEW QUERY BUT I STILL HAVE TO COPY IMCATTR TO LOCAL FROM API
 var sqlSinglePage = 'SELECT IMCATTR.* , CATGYMCMIMCIMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES AS IMCATTR LEFT JOIN(SELECT CatgyM . * , CMIMCIMCCatgy . * FROM(SELECT IMCIMCCatgy . * , CM . * FROM CATALOGUE_MASTER AS CM INNER JOIN ( SELECT IMC . * , IMCCatgy . * FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat = IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy) AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy)AS CATGYMCMIMCIMCCatgy ON SysFk_InvtyCat_InvtyCatAttr = CATGYMCMIMCIMCCatgy.SysPk_InvtyCat WHERE CATGYMCMIMCIMCCatgy.SysPk_InvtyCat = ?';
 
+=======
+/* THIS IS THE NEW QUERY BUT I STILL HAVE TO COPY IMCATTR TO LOCAL FROM API
+var sqlSinglePage = 'SELECT IMCATTR.* , CATGYMCMIMCIMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES AS IMCATTR LEFT JOIN(SELECT CatgyM . * , CMIMCIMCCatgy . * FROM(SELECT IMCIMCCatgy . * , CM . * FROM CATALOGUE_MASTER AS CM INNER JOIN ( SELECT IMC . * , IMCCatgy . * FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat = IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy) AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy)AS CATGYMCMIMCIMCCatgy ON SysFk_InvtyCat_InvtyCatAttr = CATGYMCMIMCIMCCatgy.SysPk_InvtyCat WHERE CATGYMCMIMCIMCCatgy.SysPk_InvtyCat = ?';
+
+>>>>>>> parent of 1dc6c24... OKAY - NOW UPDATED SINGLE PAGE QUERIES TO INCLUDE attributes
 		
 				
             
  tx.executeSql(sqlSinglePage, [idForSinglePage], renderSinglePage, errorCB);  
 */
+<<<<<<< HEAD
+>>>>>>> parent of 1dc6c24... OKAY - NOW UPDATED SINGLE PAGE QUERIES TO INCLUDE attributes
+=======
 >>>>>>> parent of 1dc6c24... OKAY - NOW UPDATED SINGLE PAGE QUERIES TO INCLUDE attributes
     
     
