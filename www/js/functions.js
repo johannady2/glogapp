@@ -680,11 +680,11 @@ function createTBinventorymastercataloguecategory(tx)
     
 
 function createTBInventoryMasterCatalogueAttributes(tx)
-{
-    var query7 ="";
-    query7 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_ATTRIBUTES";
-    query7 += "(RowNumber_InvtyCatAttr,SysFk_InvtyCat_InvtyCatAttr,color,pattern,one_size,xs,s,m,l,xl)";
-    tx.executeSql(query7,[],deleteLocalInvtyCatAttr,errorCB);
+{   alert('creating invetory_master_catalogue_attributes');
+    var q7 ="";
+    q7 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_ATTRIBUTES";
+    q7 += "(RowNumber_InvtyCatAttr,SysFk_InvtyCat_InvtyCatAttr,color,pattern,one_size,xs,s,m,l,xl)";
+    tx.executeSql(q7,[],checkExistsInvtyCatAttr,errorCB);//skipping deleteLocal because it deletes everything for some reason.
 }
 
 
@@ -1059,18 +1059,20 @@ function deleteLocalCategoryMaster(tx)
     {
 
             var sqldeletedeleted = 'SELECT * FROM CATEGORY_MASTER LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
+          tx.executeSql(sqldeletedeleted,[],checkExistsCategoryMaster,errorCB);
     }
     else
     {
            
 
          var sqldeletedeleted = 'DELETE FROM CATEGORY_MASTER WHERE SysPk_CatgyMstr NOT IN(?)';
+        	   tx.executeSql(sqldeletedeleted,[SysPk_CatgyMstrARR],checkExistsCategoryMaster,errorCB);
     }
 
 
     
 
-	   tx.executeSql(sqldeletedeleted,[SysPk_CatgyMstrARR],checkExistsCategoryMaster,errorCB);
+
 }
 
 function checkExistsCategoryMaster(tx)//populateCategoryMaster(tx)
@@ -1168,18 +1170,20 @@ function deleteLocalInvtyCatCatgy(tx)
     {
 
             var sqldeletedeleted = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE_CATEGORY LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
+            tx.executeSql(sqldeletedeleted,[],checkExistsInvtyCatCatgy,errorCB);
     }
     else
     {
            
 
          var sqldeletedeleted = 'DELETE FROM INVENTORY_MASTER_CATALOGUE_CATEGORY WHERE 	RowNumber_InvtyCatCatgy NOT IN(?)';
+         tx.executeSql(sqldeletedeleted,[RowNumber_InvtyCatCatgyARR],checkExistsInvtyCatCatgy,errorCB);
     }
 
 
     
 
-	   tx.executeSql(sqldeletedeleted,[RowNumber_InvtyCatCatgyARR],checkExistsInvtyCatCatgy,errorCB);
+	  
 }
 
 
@@ -1275,31 +1279,36 @@ function rendercheckExistsInvtyCatCatgy(tx7,results)
 
 function deleteLocalInvtyCatAttr(tx)
 {
- alert('now in deleteLocal');
+   alert('deleteLocalInvtyCatAttr');
 
     if ( isOffline )
     {
 
             var sqldeletedeletedInvtyCatAttr = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
+   	        tx.executeSql(sqldeletedeletedInvtyCatAttr,[],checkExistsInvtyCatAttr,errorCB);
     }
     else
     {
            
-alert(RowNumber_InvtyCatAttrARR);
-         var sqldeletedeletedInvtyCatAttr = 'DELETE FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES WHERE RowNumber_InvtyCatAttr NOT IN(?)';
-    
+        
+       var sqldeletedeletedInvtyCatAttr = 'DELETE FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES WHERE RowNumber_InvtyCatAttr NOT IN(?)';
+        tx.executeSql(sqldeletedeletedInvtyCatAttr,[RowNumber_InvtyCatAttrARR],checkExistsInvtyCatAttr,errorCB);
+        
+
 
     }
 
 
-    
-     
-	  tx.executeSql(sqldeletedeletedInvtyCatAttr,[RowNumber_InvtyCatAttrARR],checkExistsInvtyCatAttr,errorCB);
+   
+
+	 
+
+	  
 }
 
 
 function checkExistsInvtyCatAttr(tx)
-{
+{ alert('checkexistsinvtycatattr');
    
        var RecordBeingProcessesd =  invtycatattrRC + 1;
         invtycatattrtxparam = tx;
@@ -1308,11 +1317,11 @@ function checkExistsInvtyCatAttr(tx)
     {
         if(RecordBeingProcessesd <= RowNumber_InvtyCatAttrARR.length)
 		{
-           // alert('Processing '+ RecordBeingProcessesd +' of ' + RowNumber_InvtyCatAttrARR.length );
+           alert('Processing '+ RecordBeingProcessesd +' of ' + RowNumber_InvtyCatAttrARR.length );
             db.transaction(function(tx8)
-           {    var sqlselectinvtycatattr = "SELECT * FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES WHERE RowNumber_InvtyCatAttr = ?";
+           {    var sqlselectinvtycatattr = "SELECT * FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES WHERE RowNumber_InvtyCatAttr=?";
                  tx8.executeSql(sqlselectinvtycatattr,[RowNumber_InvtyCatAttrARR[invtycatattrRC]],rendercheckExistsInvtyCatAttr,errorCB);
-            },errorCB,function(){ /*  alert('now at tx7 callback'); */ invtycatattrRC +=1; checkExistsInvtyCatAttr(invtycatattrtxparam );});
+            },errorCB,function(){  alert('now at tx8 callback'); invtycatattrRC +=1; checkExistsInvtyCatAttr(invtycatattrtxparam);});
         }
         else
 		{
@@ -1343,8 +1352,29 @@ function checkExistsInvtyCatAttr(tx)
 
 
 function rendercheckExistsInvtyCatAttr(tx8,results)
-{
-    alert('now in render');
+{       alert('render ' + RowNumber_InvtyCatAttrARR[invtycatattrRC]+','+SysFk_InvtyCat_InvtyCatAttrARR[invtycatattrRC]+','+colorARR[invtycatattrRC]+','+patternARR[invtycatattrRC]+','+one_sizeARR[invtycatattrRC]+','+xsARR[invtycatattrRC]+','+sARR[invtycatattrRC]+','+mARR[invtycatattrRC]+','+lARR[invtycatattrRC]+','+xlARR[invtycatattrRC]);
+       
+        
+     if(results.rows.length <= 0)
+    {
+        alert(results.rows.length);
+
+    
+            var sqlinsertinvtycatattr = "INSERT INTO INVENTORY_MASTER_CATALOGUE_ATTRIBUTES(RowNumber_InvtyCatAttr) Values(?)";
+            
+                tx8.executeSql(sqlinsertinvtycatattr,[RowNumber_InvtyCatAttrARR[invtycatattrRC]],function(){ alert(RowNumber_InvtyCatAttrARR[invtycatattrRC] + ' inserted');},errorCB);
+         
+    }
+    else
+    {
+    
+        alert(RowNumber_InvtyCatAttrARR[invtycatattrRC] +' already exists. Updating info.');
+  
+       // var sqlupdateinvtycatattr = "UPDATE INVENTORY_MASTER_CATALOGUE_ATTRIBUTES SET SysFk_InvtyCat_InvtyCatAttr = ? WHERE RowNumber_InvtyCatAttr = ?";
+       // tx8.executeSql(sqlupdateinvtycatattr,[SysFk_InvtyCat_InvtyCatAttrARR[invtycatattrRC],results.rows.item(0).RowNumber_InvtyCatAttr],function(){alert(results.rows.item(0).RowNumber_InvtyCatAttr  + ' updated'); } ,errorCB);
+        
+       
+    }
 }
 
 
@@ -1575,7 +1605,8 @@ function queryForSearch(tx)
 	//alert('barcode length: ' + enteredBarcodelength);
 	if(enteredBarcodelength > 0)
 	{
-	  var barcodeWhereString  = ' IMCIMCCatgy.Barcode_InvtyCat = "' + enteredBarcode +'"';
+	  //var barcodeWhereString  = ' IMCIMCCatgy.Barcode_InvtyCat = "' + enteredBarcode +'"';
+	  var barcodeWhereString  = ' CATGYMCMIMCIMCCatgy.Barcode_InvtyCat = "' + enteredBarcode +'"';
 	}
 	else
 	{
@@ -1588,7 +1619,8 @@ function queryForSearch(tx)
 	if(enteredPromonamelength > 0)
 	{
 		replaceQuotes(enteredPromoname);
-	  var promonameWhereString  = ' AND  IMCIMCCatgy.PromoName_InvtyCat LIKE  "%' + returnedReplaceQuote  +'%"';
+	  //var promonameWhereString  = ' AND  IMCIMCCatgy.PromoName_InvtyCat LIKE  "%' + returnedReplaceQuote  +'%"';
+	  var promonameWhereString  = ' AND  CATGYMCMIMCIMCCatgy.PromoName_InvtyCat LIKE  "%' + returnedReplaceQuote  +'%"';
 
 	}
 	else
@@ -1601,7 +1633,8 @@ function queryForSearch(tx)
 	if(enteredfulldescriptionlength > 0)
 	{
 		replaceQuotes(enteredfulldescription);
-	  var fulldescriptionWhereString  = ' AND  IMCIMCCatgy.FullDescription_InvtyCat LIKE  "%' + returnedReplaceQuote +'%"';
+	 // var fulldescriptionWhereString  = ' AND  IMCIMCCatgy.FullDescription_InvtyCat LIKE  "%' + returnedReplaceQuote +'%"';
+	  var fulldescriptionWhereString  = ' AND  CATGYMCMIMCIMCCatgy.FullDescription_InvtyCat LIKE  "%' + returnedReplaceQuote +'%"';
 	}
 	else
 	{
@@ -1613,7 +1646,8 @@ function queryForSearch(tx)
 	//alert('brand length: ' + enteredBrandlength);
 	if(enteredBrandlength > 0)
 	{
-	  var brandWhereString  = ' AND  IMCIMCCatgy.Brand_InvtyCat LIKE  "%' + enteredBrand +'%"';
+	  //var brandWhereString  = ' AND  IMCIMCCatgy.Brand_InvtyCat LIKE  "%' + enteredBrand +'%"';
+	  var brandWhereString  = ' AND  CATGYMCMIMCIMCCatgy.Brand_InvtyCat LIKE  "%' + enteredBrand +'%"';
 	}
 	else
 	{
@@ -1625,7 +1659,8 @@ function queryForSearch(tx)
 
 	if(enteredCataloguelength > 0)
 	{
-	  var CatalogueWhereString  = ' AND  CM.SysPk_CatMstr =  "' + enteredCatalogue +'"';
+	  //var CatalogueWhereString  = ' AND  CM.SysPk_CatMstr =  "' + enteredCatalogue +'"';
+	  var CatalogueWhereString  = ' AND  CATGYMCMIMCIMCCatgy.SysPk_CatMstr =  "' + enteredCatalogue +'"';
 	}
 	else
 	{
@@ -1636,7 +1671,8 @@ function queryForSearch(tx)
 	//alert('Category length: ' + enteredCategorylength);
 	if(enteredCategorylength > 0)
 	{
-	  var CategoryWhereString  = ' AND  IMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy =  "' + enteredCategory +'"';
+	  //var CategoryWhereString  = ' AND  IMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy =  "' + enteredCategory +'"';
+	  var CategoryWhereString  = ' AND  CATGYMCMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy =  "' + enteredCategory +'"';
 	}
 	else
 	{
@@ -1651,8 +1687,10 @@ function queryForSearch(tx)
     //works//var finalqueryString = 'SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CategoryWhereString +' GROUP BY IMC.SysPk_InvtyCat)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr ';
     //WORKS - without category master table// var finalqueryString = 'SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat';
     //works- but needs to be left join//var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM CATEGORY_MASTER AS CatgyM INNER JOIN(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
-    var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
-
+   
+    
+    //var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
+    var finalqueryString = 'SELECT IMCATTR.* , CATGYMCMIMCIMCCatgy.* FROM ( SELECT CatgyM.*, CMIMCIMCCatgy.* FROM ( SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM INNER JOIN ( SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy ) AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr GROUP BY IMCIMCCatgy.SysPk_InvtyCat ) AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy )AS CATGYMCMIMCIMCCatgy LEFT JOIN INVENTORY_MASTER_CATALOGUE_ATTRIBUTES AS IMCATTR ON SysFk_InvtyCat_InvtyCatAttr = CATGYMCMIMCIMCCatgy.SysPk_InvtyCat  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +'GROUP BY CATGYMCMIMCIMCCatgy.SysPk_InvtyCat';
 
 
 	
@@ -2011,17 +2049,13 @@ function queryItemDetails(tx,idForSinglePage)
 
 //tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE IMC.RowNumber_InvtyCat=' + idForSinglePage , [], renderSinglePage, errorCB);  
 
-tx.executeSql('SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy   WHERE CMIMCIMCCatgy.SysPk_InvtyCat= ?' , [idForSinglePage], renderSinglePage, errorCB);  
+//tx.executeSql('SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy   WHERE CMIMCIMCCatgy.SysPk_InvtyCat= ?' , [idForSinglePage], renderSinglePage, errorCB);  
 
 	
-/* THIS IS THE NEW QUERY BUT I STILL HAVE TO COPY IMCATTR TO LOCAL FROM API
-var sqlSinglePage = 'SELECT IMCATTR.* , CATGYMCMIMCIMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES AS IMCATTR LEFT JOIN(SELECT CatgyM . * , CMIMCIMCCatgy . * FROM(SELECT IMCIMCCatgy . * , CM . * FROM CATALOGUE_MASTER AS CM INNER JOIN ( SELECT IMC . * , IMCCatgy . * FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat = IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy) AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy)AS CATGYMCMIMCIMCCatgy ON SysFk_InvtyCat_InvtyCatAttr = CATGYMCMIMCIMCCatgy.SysPk_InvtyCat WHERE CATGYMCMIMCIMCCatgy.SysPk_InvtyCat = ?';
 
-		
-				
-            
- tx.executeSql(sqlSinglePage, [idForSinglePage], renderSinglePage, errorCB);  
-*/
+var sqlSinglePage = ' SELECT IMCATTR.* , CATGYMCMIMCIMCCatgy.* FROM ( SELECT CatgyM . * , CMIMCIMCCatgy . * FROM ( SELECT IMCIMCCatgy . * , CM . * FROM CATALOGUE_MASTER AS CM INNER JOIN ( SELECT IMC . * , IMCCatgy . * FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat = IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy ) AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr ) AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy )AS CATGYMCMIMCIMCCatgy LEFT JOIN INVENTORY_MASTER_CATALOGUE_ATTRIBUTES AS IMCATTR ON SysFk_InvtyCat_InvtyCatAttr = CATGYMCMIMCIMCCatgy.SysPk_InvtyCat WHERE CATGYMCMIMCIMCCatgy.SysPk_InvtyCat = ? ';
+tx.executeSql(sqlSinglePage, [idForSinglePage], renderSinglePage, errorCB);  
+
     
     
     
