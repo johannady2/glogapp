@@ -1367,8 +1367,8 @@ function rendercheckExistsInvtyCatAttr(tx8,results)
     
         alert(RowNumber_InvtyCatAttrARR[invtycatattrRC] +' already exists. Updating info.');
   
-       // var sqlupdateinvtycatattr = "UPDATE INVENTORY_MASTER_CATALOGUE_ATTRIBUTES SET SysFk_InvtyCat_InvtyCatAttr = ? WHERE RowNumber_InvtyCatAttr = ?";
-       // tx8.executeSql(sqlupdateinvtycatattr,[SysFk_InvtyCat_InvtyCatAttrARR[invtycatattrRC],results.rows.item(0).RowNumber_InvtyCatAttr],function(){alert(results.rows.item(0).RowNumber_InvtyCatAttr  + ' updated'); } ,errorCB);
+        var sqlupdateinvtycatattr = "UPDATE INVENTORY_MASTER_CATALOGUE_ATTRIBUTES SET SysFk_InvtyCat_InvtyCatAttr = ?,color = ?,pattern = ?,one_size = ?,xs = ?,s = ?,m = ?,l = ?,xl = ? WHERE RowNumber_InvtyCatAttr = ?";
+        tx8.executeSql(sqlupdateinvtycatattr,[SysFk_InvtyCat_InvtyCatAttrARR[invtycatattrRC],colorARR[invtycatattrRC],patternARR[invtycatattrRC],one_sizeARR[invtycatattrRC],xsARR[invtycatattrRC],sARR[invtycatattrRC],mARR[invtycatattrRC],lARR[invtycatattrRC],+xlARR[invtycatattrRC],results.rows.item(0).RowNumber_InvtyCatAttr],function(){alert(results.rows.item(0).RowNumber_InvtyCatAttr  + ' updated'); } ,errorCB);
         
        
     }
