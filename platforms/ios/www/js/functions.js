@@ -165,7 +165,7 @@ if(localStorage.BarcodeInvtyCat == null)
 
 function isjsonready()//i'm thinking of checking them all at once instead of by table because I can check the CATALOGUE_MASTER table first.. and batch delete multiple items from inventory_master_catalogue,and other tables. If i check only one table at a time, it'll take longger. I think.
 {//APPENDED STUFF IS FOR getjsontest page.
-
+    alert('device online');
     if((networkstatus != 'connected' || networkstatus == ''))
     {networkstatus = 'connected';//networkstatus is set back to '' when checkig inorder to see results so SysPk_CatgyMstrARR.length <= 0 is added to  prevent from pushing to array twice
      
@@ -589,7 +589,7 @@ function onDeviceOffline()
 
 function createTBinventorymastercatalogue(tx)
 {
-   
+   alert('createTBinventorymastercatalogue');
 
   
     //alert('creating INVENTORY_MASTER_CATALOGUE if not exists');
@@ -616,7 +616,7 @@ function createTBinventorymastercatalogue(tx)
 }
 
 function createTBcataloguemaster(tx)
-{  // alert('creating CATALOGUE_MASTER if not exists');
+{   alert('creating CATALOGUE_MASTER if not exists');
  
        // tx.executeSql("DROP TABLE IF EXISTS CATALOGUE_MASTER");
         var query2 = "";
@@ -643,7 +643,7 @@ function createTBcataloguemaster(tx)
 function createTBsettings(tx)
 {
     
-  //  alert('creating SETTINGS if not exists');
+    alert('creating SETTINGS if not exists');
     ////tx.executeSql("DROP TABLE IF EXISTS SETTINGS");
     var query4 ="";
     query4 +="CREATE TABLE IF NOT EXISTS SETTINGS(MinimumPrice_Settings)";
@@ -655,7 +655,7 @@ function createTBsettings(tx)
 function createTBcategorymaster(tx)
 {
     
-  //  alert('creating CATEGORY_MASTER if not exists');
+    alert('creating CATEGORY_MASTER if not exists');
     //tx.executeSql("DROP TABLE IF EXISTS CATEGORY_MASTER");
     var query5= "";
     query5 += "CREATE TABLE IF NOT EXISTS CATEGORY_MASTER ";
@@ -668,7 +668,7 @@ function createTBcategorymaster(tx)
 
 function createTBinventorymastercataloguecategory(tx)
 {
-  //  alert('creating INVENTORY_MASTER_CATALOGUE_CATEGORY if not exists');
+   alert('creating INVENTORY_MASTER_CATALOGUE_CATEGORY if not exists');
     //tx.executeSql("DROP TABLE IF EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY");
     var query6 ="";
     query6 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_CATEGORY";
@@ -698,24 +698,26 @@ function createTBInventoryMasterCatalogueAttributes(tx)
 function deleteLocalInvtyCat(tx)//delete in local what's deleted in server
 {
     
-
+    alert*deleteLocalInvtyCat);
     if ( isOffline )
     {
 
             var sqldeletedeleted = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
+           tx.executeSql(sqldeletedeleted,[],checkExistsInventoryMasterCatalogue,errorCB);
     }
     else
     {
            
 
             var sqldeletedeleted = 'DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysPk_InvtyCat NOT IN('+       SysPk_InvtyCatARR +')';
+         tx.executeSql(sqldeletedeleted,[],checkExistsInventoryMasterCatalogue,errorCB);
     }
 
 
     
 
 	  
-	   tx.executeSql(sqldeletedeleted,[],checkExistsInventoryMasterCatalogue,errorCB);
+	
  
     
 }
@@ -1689,7 +1691,10 @@ function queryForSearch(tx)
     //works- but needs to be left join//var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM CATEGORY_MASTER AS CatgyM INNER JOIN(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
    
     
-    //var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
+    
+    //works - without attributes//var finalqueryString = 'SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +' GROUP BY IMCIMCCatgy.SysPk_InvtyCat)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy';
+    
+    //works - with attributes
     var finalqueryString = 'SELECT IMCATTR.* , CATGYMCMIMCIMCCatgy.* FROM ( SELECT CatgyM.*, CMIMCIMCCatgy.* FROM ( SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM INNER JOIN ( SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy ) AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr GROUP BY IMCIMCCatgy.SysPk_InvtyCat ) AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy )AS CATGYMCMIMCIMCCatgy LEFT JOIN INVENTORY_MASTER_CATALOGUE_ATTRIBUTES AS IMCATTR ON SysFk_InvtyCat_InvtyCatAttr = CATGYMCMIMCIMCCatgy.SysPk_InvtyCat  WHERE'+ barcodeWhereString + promonameWhereString + fulldescriptionWhereString + brandWhereString + CatalogueWhereString + CategoryWhereString +'GROUP BY CATGYMCMIMCIMCCatgy.SysPk_InvtyCat';
 
 
@@ -1718,6 +1723,8 @@ function renderSearchResults(tx,results)
 	
     var htmlstring = "";
     var len = results.rows.length;
+    
+    alert(len);
     
   if(len > 0)
   {
