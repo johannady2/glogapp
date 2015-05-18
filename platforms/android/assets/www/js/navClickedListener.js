@@ -27,7 +27,7 @@ $(document).on('navClicked',function(event,filename)
     }
     else if(filename == "search.html")
     {	globalorderFromSwitch = 1;
-        alert('switch =='+ globalorderFromSwitch );
+       // alert('switch =='+ globalorderFromSwitch );
 	
            
 			db.transaction(queryCategoriesForSelectBox, errorCB);

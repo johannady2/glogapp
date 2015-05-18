@@ -139,6 +139,25 @@ if(localStorage.BarcodeInvtyCat == null)
                     //--//INVENTORY_MASTER_CATALOGUE_CATEGORY
 
 
+                    //--INVENTORY_MASTER_CATALOGUE_ATTRIBUTES
+                    var RowNumber_InvtyCatAttrARR = [];
+                    var SysFk_InvtyCat_InvtyCatAttrARR = [];
+                    var colorARR = [];
+                    var patternARR = [];
+                    var one_sizeARR = [];
+                    var xsARR = [];
+                    var sARR = [];
+                    var mARR = [];
+                    var lARR = [];
+                    var xlARR = [];
+
+                    var invtycatattrRC = 0;
+                    var invtycatattrtxparam;
+                //--//INVENTORY_MASTER_CATALOGUE_ATTRIBUTES
+
+
+
+
 	//------------//FOR API
 
 /*~~~~~~~~~~~~~~~~~~~~//GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -157,8 +176,9 @@ function isjsonready()//i'm thinking of checking them all at once instead of by 
                    $.getJSON('http://viveg.net/glogapitest/index.php?table=CATALOGUE_MASTER'),
                    $.getJSON('http://viveg.net/glogapitest/index.php?table=SETTINGS'),
                    $.getJSON('http://viveg.net/glogapitest/index.php?table=CATEGORY_MASTER'),
-                   $.getJSON('http://viveg.net/glogapitest/index.php?table=INVENTORY_MASTER_CATALOGUE_CATEGORY')
-                  ).done(function(invtycat, catmstr,settings,catgymstr,InvtyCatCatgy)
+                   $.getJSON('http://viveg.net/glogapitest/index.php?table=INVENTORY_MASTER_CATALOGUE_CATEGORY'),
+                   $.getJSON('http://viveg.net/glogapitest/index.php?table=INVENTORY_MASTER_CATALOGUE_ATTRIBUTES')
+                  ).done(function(invtycat, catmstr,settings,catgymstr,InvtyCatCatgy,InvtyCatAttr)
             {
 
                 //if(SysPk_CatgyMstrARR.length <= 0) {
@@ -428,6 +448,95 @@ function isjsonready()//i'm thinking of checking them all at once instead of by 
 
                 $('.getjsontest').append("<br><br>---//INVENTORY_MASTER_CATALOGUE_CATEGORY----<br><br>");
     
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                 $('.getjsontest').append("<br><br>--- INVENTORY_MASTER_CATALOGUE_ATTRIBUTES----<br><br>");
+
+                    $.each(InvtyCatAttr[0], function( index, value ) 
+                         {
+                            $.each(value, function(inde, valu)
+                                    {
+
+
+                                        $.each(valu, function(ind, val)
+                                        {
+                                            $.each( val, function( i, v )
+                                            {
+
+
+                                                    if(i == "RowNumber_InvtyCatAttr")
+                                                    {
+                                                        RowNumber_InvtyCatAttrARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array RowNumber_InvtyCatAttrARR<br>");
+                                                    }
+                                                    else if(i == "SysFk_InvtyCat_InvtyCatAttr")
+                                                    {
+                                                      SysFk_InvtyCat_InvtyCatAttrARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array SysFk_InvtyCat_InvtyCatAttrARR<br>");
+                                                    }
+                                                    else if(i == "color")
+                                                    {
+                                                       colorARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array colorARR<br>");
+                                                    }
+                                                    else if(i == "pattern")
+                                                    {
+                                                       patternARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array patternARR<br>");
+                                                    }
+                                                    else if(i == "one_size")
+                                                    {
+                                                        one_sizeARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array one_sizeARR<br>");
+                                                    }
+                                                    else if(i == "xs")
+                                                    {
+                                                        xsARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array xsARR<br>");
+                                                    }
+                                                    else if(i == "s")
+                                                    {
+                                                        sARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array sARR<br>");
+                                                    }
+                                                    else if(i == "m")
+                                                    {
+                                                        mARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array mARR<br>");
+                                                    }
+                                                    else if(i == "l")
+                                                    {
+                                                        lARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array lARR<br>");
+                                                    }
+                                                    else if(i == "xl")
+                                                    {
+                                                        xlARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array xlARR<br>");
+                                                    }
+
+
+                                            });	
+
+                                        });	
+
+                                    });
+                        });
+
+
+                $('.getjsontest').append("<br><br>---//INVENTORY_MASTER_CATALOGUE_ATTRIBUTES----<br><br>");
+                
+                
+                
+                
+                
                     
                     
               //  }//if(SysPk_CatgyMstrARR.length <= 0)
@@ -568,7 +677,15 @@ function createTBinventorymastercataloguecategory(tx)
     tx.executeSql(query6,[],deleteLocalInvtyCatCatgy,errorCB);
     
 }
-     
+    
+
+function createTBInventoryMasterCatalogueAttributes(tx)
+{
+    var query7 ="";
+    query7 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_ATTRIBUTES";
+    query7 += "(RowNumber_InvtyCatAttr,SysFk_InvtyCat_InvtyCatAttr,color,pattern,one_size,xs,s,m,l,xl)";
+    tx.executeSql(query7,[],deleteLocalInvtyCatAttr,errorCB);
+}
 
 
 
@@ -1069,7 +1186,7 @@ function deleteLocalInvtyCatCatgy(tx)
 
 function checkExistsInvtyCatCatgy(tx)//populateInvtyCatCatgy(tx)
 {
-alert('in checkexists');
+
 
          var RecordBeingProcessesd =  invtycatcatgyRC + 1;
         invtycatcatgytxparam = tx;
@@ -1094,9 +1211,9 @@ alert('in checkexists');
            // alert('no more array data - catgymstr');
 			invtycatcatgyRC = 0;
 
-            db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
+            //db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
             //create table here
-            
+            db.transaction(createTBInventoryMasterCatalogueAttributes,errorCB);
             
      
 		}
@@ -1106,8 +1223,9 @@ alert('in checkexists');
     {
        //alert('this is the last table created. proceed to deleting expired stuff. - catgymstr');
 
-        db.transaction(queryForExpired,errorCB);//move to else of last created table
+       // db.transaction(queryForExpired,errorCB);//move to else of last created table
         //create table here
+        db.transaction(createTBInventoryMasterCatalogueAttributes,errorCB);
         
         
     }
@@ -1141,6 +1259,100 @@ function rendercheckExistsInvtyCatCatgy(tx7,results)
        
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function deleteLocalInvtyCatAttr(tx)
+{
+ alert('now in deleteLocal');
+
+    if ( isOffline )
+    {
+
+            var sqldeletedeletedInvtyCatAttr = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
+    }
+    else
+    {
+           
+alert(RowNumber_InvtyCatAttrARR);
+         var sqldeletedeletedInvtyCatAttr = 'DELETE FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES WHERE RowNumber_InvtyCatAttr NOT IN(?)';
+    
+
+    }
+
+
+    
+     
+	  tx.executeSql(sqldeletedeletedInvtyCatAttr,[RowNumber_InvtyCatAttrARR],checkExistsInvtyCatAttr,errorCB);
+}
+
+
+function checkExistsInvtyCatAttr(tx)
+{
+    alert('now in check exists');
+       var RecordBeingProcessesd =  invtycatattrRC + 1;
+        invtycatattrtxparam = tx;
+    
+     if(RowNumber_InvtyCatAttrARR.length > 0)
+    {
+        if(RecordBeingProcessesd <= RowNumber_InvtyCatAttrARR.length)
+		{
+           // alert('Processing '+ RecordBeingProcessesd +' of ' + RowNumber_InvtyCatAttrARR.length );
+            db.transaction(function(tx8)
+           {    var sqlselectinvtycatattr = "SELECT * FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES WHERE RowNumber_InvtyCatAttr = ?";
+                 tx8.executeSql(sqlselectinvtycatattr,[RowNumber_InvtyCatAttrARR[invtycatattrRC]],rendercheckExistsInvtyCatAttr,errorCB);
+            },errorCB,function(){ /*  alert('now at tx7 callback'); */ invtycatattrRC +=1; checkExistsInvtyCatAttr(invtycatattrtxparam );});
+        }
+        else
+		{
+           // alert('no more array data - catgymstr');
+			invtycatattrRC = 0;
+
+            db.transaction(queryForExpired,errorCB);//comment out and move to next table if there's still another table to create.
+            //create table here
+        
+     
+		}
+        
+    }
+    else
+    {
+       //alert('this is the last table created. proceed to deleting expired stuff. - catgymstr');
+
+       db.transaction(queryForExpired,errorCB);//move to else of last created table
+        //create table here
+       
+        
+        
+    }
+    
+
+}
+
+
+
+function rendercheckExistsInvtyCatAttr(tx8,results)
+{
+    alert('now in render');
+}
+
+
+
+
+
+
+
 
 
 
@@ -1798,8 +2010,21 @@ function queryItemDetails(tx,idForSinglePage)
 {
 
 //tx.executeSql('SELECT IMC.*,CM.* FROM INVENTORY_MASTER_CATALOGUE AS IMC INNER JOIN CATALOGUE_MASTER AS CM ON IMC.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr  WHERE IMC.RowNumber_InvtyCat=' + idForSinglePage , [], renderSinglePage, errorCB);  
+
 tx.executeSql('SELECT CatgyM.*, CMIMCIMCCatgy.* FROM(SELECT IMCIMCCatgy.*,CM.* FROM CATALOGUE_MASTER AS CM  INNER JOIN(SELECT IMC.* , IMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat=IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy)AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy   WHERE CMIMCIMCCatgy.SysPk_InvtyCat= ?' , [idForSinglePage], renderSinglePage, errorCB);  
 
+	
+/* THIS IS THE NEW QUERY BUT I STILL HAVE TO COPY IMCATTR TO LOCAL FROM API
+var sqlSinglePage = 'SELECT IMCATTR.* , CATGYMCMIMCIMCCatgy.* FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES AS IMCATTR LEFT JOIN(SELECT CatgyM . * , CMIMCIMCCatgy . * FROM(SELECT IMCIMCCatgy . * , CM . * FROM CATALOGUE_MASTER AS CM INNER JOIN ( SELECT IMC . * , IMCCatgy . * FROM INVENTORY_MASTER_CATALOGUE AS IMC LEFT JOIN INVENTORY_MASTER_CATALOGUE_CATEGORY AS IMCCatgy ON IMC.SysPk_InvtyCat = IMCCatgy.SysFk_InvtyCat_InvtyCatCatgy) AS IMCIMCCatgy ON IMCIMCCatgy.SysFk_CatMstr_InvtyCat = CM.SysPk_CatMstr)AS CMIMCIMCCatgy LEFT JOIN CATEGORY_MASTER AS CatgyM ON CatgyM.SysPk_CatgyMstr = CMIMCIMCCatgy.SysFk_CatgyMstr_InvtyCatCatgy)AS CATGYMCMIMCIMCCatgy ON SysFk_InvtyCat_InvtyCatAttr = CATGYMCMIMCIMCCatgy.SysPk_InvtyCat WHERE CATGYMCMIMCIMCCatgy.SysPk_InvtyCat = ?';
+
+		
+				
+            
+ tx.executeSql(sqlSinglePage, [idForSinglePage], renderSinglePage, errorCB);  
+*/
+    
+    
+    
   //  alert('switch == ' + globalorderFromSwitch);
 	if(globalorderFromSwitch == 1)
 	{
