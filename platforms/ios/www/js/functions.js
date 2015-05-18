@@ -2075,8 +2075,11 @@ function renderSinglePage(tx,results)
          $('.singleitemsubtotal').append(results.rows.item(0).PromoPrice_InvtyCat);//temporary. value will change on quantity input
 			
             
+            
+            var usedsizes = [];
+            
         var checked = '';//check first item by default
-       for(var ind=0; ind < results.rows.length ; ind++ )
+       for(var ind=0; ind < results.rows.length ; ind++ )//for loop for displaying color selection and checking which sizes are applicable for the item
        {
            if(ind == 1)
            {
@@ -2097,8 +2100,68 @@ function renderSinglePage(tx,results)
                //preselected hidden raido button with value of one_texture
            }
            
+           
+           
+           
+           if(results.rows.item(ind).one_size == -1)// -1 means field is not applicable to product. if one_size is used then, item comes in one size only and the rest of the sizes are not used.
+           {
+               
+               if(results.rows.item(ind).xs >= 0)//0 means out of stock but it will still be displayed.
+               {
+                    usedsizes.push('xs');
+               }
+               
+               if(results.rows.item(ind).s >= 0)
+               {
+                   usedsizes.push('s');
+               }  
+               
+               if(results.rows.item(ind).m >= 0)
+               {
+                   usedsizes.push('m');
+               }
+               
+               if(results.rows.item(ind).l >= 0)
+               {
+                   usedsizes.push('l');
+               }
+               
+               if(results.rows.item(ind).xl >= 0)
+               {
+                   usedsizes.push('xl');
+               }
+               
+               
+               
+           }
+           else
+           {
+              usedsizes.push('one_size');
+           }
+           
        }
             
+            
+            
+            
+      
+            
+        var uniqueusedsizes = $.unique(usedsizes);
+        var sizechecked ='';
+    
+    
+        for(var x=0;x < uniqueusedsizes.length;x++)
+        {
+            
+           if(x==1){sizechecked = 'checked';}else{sizechecked = '';} 
+      
+            alert(sizechecked);
+            if(uniqueusedsizes[x] != 'one_size')
+            {
+                $('.singleitemsizefieldscont').append('<input type="radio" name="singleitemsize" value="'+uniqueusedsizes[x]+'" id="size-'+uniqueusedsizes[x]+'" '+sizechecked+'/><label for="size-'+uniqueusedsizes[x]+'">'+uniqueusedsizes[x]+'</label> &nbsp; &nbsp;' );
+            }
+            
+        }
             
             
             
