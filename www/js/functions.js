@@ -142,8 +142,7 @@ if(localStorage.BarcodeInvtyCat == null)
                     //--INVENTORY_MASTER_CATALOGUE_ATTRIBUTES
                     var RowNumber_InvtyCatAttrARR = [];
                     var SysFk_InvtyCat_InvtyCatAttrARR = [];
-                    var colorARR = [];
-                    var patternARR = [];
+                    var textureARR = [];
                     var one_sizeARR = [];
                     var xsARR = [];
                     var sARR = [];
@@ -481,15 +480,10 @@ function isjsonready()//i'm thinking of checking them all at once instead of by 
                                                       SysFk_InvtyCat_InvtyCatAttrARR.push(val[i]);
                                                         $('.getjsontest').append(val[i] + " inserted to array SysFk_InvtyCat_InvtyCatAttrARR<br>");
                                                     }
-                                                    else if(i == "color")
+                                                    else if(i == "texture")
                                                     {
-                                                       colorARR.push(val[i]);
-                                                        $('.getjsontest').append(val[i] + " inserted to array colorARR<br>");
-                                                    }
-                                                    else if(i == "pattern")
-                                                    {
-                                                       patternARR.push(val[i]);
-                                                        $('.getjsontest').append(val[i] + " inserted to array patternARR<br>");
+                                                       textureARR.push(val[i]);
+                                                        $('.getjsontest').append(val[i] + " inserted to array textureARR<br>");
                                                     }
                                                     else if(i == "one_size")
                                                     {
@@ -683,7 +677,7 @@ function createTBInventoryMasterCatalogueAttributes(tx)
 {  // alert('creating invetory_master_catalogue_attributes');
     var q7 ="";
     q7 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_ATTRIBUTES";
-    q7 += "(RowNumber_InvtyCatAttr,SysFk_InvtyCat_InvtyCatAttr,color,pattern,one_size,xs,s,m,l,xl)";
+    q7 += "(RowNumber_InvtyCatAttr,SysFk_InvtyCat_InvtyCatAttr,texture,one_size,xs,s,m,l,xl)";
     tx.executeSql(q7,[],checkExistsInvtyCatAttr,errorCB);//skipping deleteLocal because it deletes everything for some reason.
 }
 
@@ -1340,17 +1334,17 @@ function checkExistsInvtyCatAttr(tx)
 
 
 function rendercheckExistsInvtyCatAttr(tx8,results)
-{      /* alert('render ' + RowNumber_InvtyCatAttrARR[invtycatattrRC]+','+SysFk_InvtyCat_InvtyCatAttrARR[invtycatattrRC]+','+colorARR[invtycatattrRC]+','+patternARR[invtycatattrRC]+','+one_sizeARR[invtycatattrRC]+','+xsARR[invtycatattrRC]+','+sARR[invtycatattrRC]+','+mARR[invtycatattrRC]+','+lARR[invtycatattrRC]+','+xlARR[invtycatattrRC]);*/
+{      /* alert('render ' + RowNumber_InvtyCatAttrARR[invtycatattrRC]+','+SysFk_InvtyCat_InvtyCatAttrARR[invtycatattrRC]+','+textureARR[invtycatattrRC]+','+one_sizeARR[invtycatattrRC]+','+xsARR[invtycatattrRC]+','+sARR[invtycatattrRC]+','+mARR[invtycatattrRC]+','+lARR[invtycatattrRC]+','+xlARR[invtycatattrRC]);*/
        
         
      if(results.rows.length <= 0)
     {
-        alert(results.rows.length);
+       
 
     
-            var sqlinsertinvtycatattr = "INSERT INTO INVENTORY_MASTER_CATALOGUE_ATTRIBUTES(RowNumber_InvtyCatAttr,SysFk_InvtyCat_InvtyCatAttr,color,pattern,one_size,xs,s,m,l,xl) Values(?,?,?,?,?,?,?,?,?,?)";
+            var sqlinsertinvtycatattr = "INSERT INTO INVENTORY_MASTER_CATALOGUE_ATTRIBUTES(RowNumber_InvtyCatAttr,SysFk_InvtyCat_InvtyCatAttr,texture,one_size,xs,s,m,l,xl) Values(?,?,?,?,?,?,?,?,?)";
             
-                tx8.executeSql(sqlinsertinvtycatattr,[RowNumber_InvtyCatAttrARR[invtycatattrRC],SysFk_InvtyCat_InvtyCatAttrARR[invtycatattrRC],colorARR[invtycatattrRC],patternARR[invtycatattrRC],one_sizeARR[invtycatattrRC],xsARR[invtycatattrRC],sARR[invtycatattrRC],mARR[invtycatattrRC],lARR[invtycatattrRC],+xlARR[invtycatattrRC]],function(){/* alert(RowNumber_InvtyCatAttrARR[invtycatattrRC] + ' inserted');*/},errorCB);
+                tx8.executeSql(sqlinsertinvtycatattr,[RowNumber_InvtyCatAttrARR[invtycatattrRC],SysFk_InvtyCat_InvtyCatAttrARR[invtycatattrRC],textureARR[invtycatattrRC],one_sizeARR[invtycatattrRC],xsARR[invtycatattrRC],sARR[invtycatattrRC],mARR[invtycatattrRC],lARR[invtycatattrRC],+xlARR[invtycatattrRC]],function(){/* alert(RowNumber_InvtyCatAttrARR[invtycatattrRC] + ' inserted');*/},errorCB);
          
     }
     else
@@ -1358,8 +1352,8 @@ function rendercheckExistsInvtyCatAttr(tx8,results)
     
        // alert(RowNumber_InvtyCatAttrARR[invtycatattrRC] +' already exists. Updating info.');
   
-        var sqlupdateinvtycatattr = "UPDATE INVENTORY_MASTER_CATALOGUE_ATTRIBUTES SET SysFk_InvtyCat_InvtyCatAttr = ?,color = ?,pattern = ?,one_size = ?,xs = ?,s = ?,m = ?,l = ?,xl = ? WHERE RowNumber_InvtyCatAttr = ?";
-        tx8.executeSql(sqlupdateinvtycatattr,[SysFk_InvtyCat_InvtyCatAttrARR[invtycatattrRC],colorARR[invtycatattrRC],patternARR[invtycatattrRC],one_sizeARR[invtycatattrRC],xsARR[invtycatattrRC],sARR[invtycatattrRC],mARR[invtycatattrRC],lARR[invtycatattrRC],+xlARR[invtycatattrRC],results.rows.item(0).RowNumber_InvtyCatAttr],function(){/*alert(results.rows.item(0).RowNumber_InvtyCatAttr  + ' updated');*/} ,errorCB);
+        var sqlupdateinvtycatattr = "UPDATE INVENTORY_MASTER_CATALOGUE_ATTRIBUTES SET SysFk_InvtyCat_InvtyCatAttr = ?,texture = ?,one_size = ?,xs = ?,s = ?,m = ?,l = ?,xl = ? WHERE RowNumber_InvtyCatAttr = ?";
+        tx8.executeSql(sqlupdateinvtycatattr,[SysFk_InvtyCat_InvtyCatAttrARR[invtycatattrRC],textureARR[invtycatattrRC],one_sizeARR[invtycatattrRC],xsARR[invtycatattrRC],sARR[invtycatattrRC],mARR[invtycatattrRC],lARR[invtycatattrRC],+xlARR[invtycatattrRC],results.rows.item(0).RowNumber_InvtyCatAttr],function(){/*alert(results.rows.item(0).RowNumber_InvtyCatAttr  + ' updated');*/} ,errorCB);
         
        
     }
@@ -2094,13 +2088,13 @@ function renderSinglePage(tx,results)
            }
            
            
-           if(results.rows.item(ind).color != 'one_color')
+           if(results.rows.item(ind).texture != 'one_texture')
            {
-               $('.singleitemcolorfieldscont').append('<input type="radio" name="singleitemcolor" value="'+results.rows.item(ind).color+'" class="img-radio" id="color-'+ind+'" '+checked+'/><label for="color-'+ind+'"><div style="background-color:'+results.rows.item(ind).color+'; display:block; width:50px; height:50px; border-radius: 5px; margin-left: 20px;"></div></label>' );
+               $('.singleitemtexturefieldscont').append('<input type="radio" name="singleitemtexture" value="'+results.rows.item(ind).texture+'" class="img-radio" id="texture-'+ind+'" '+checked+'/><label for="texture-'+ind+'"><div style="background-image:url(\''+results.rows.item(ind).texture+'\'); display:block; width:50px; height:50px; border-radius: 5px; margin-left: 20px;"></div></label>' );
            }
            else
            {
-               //preselected hidden raido button with value of one_color
+               //preselected hidden raido button with value of one_texture
            }
            
        }
@@ -2453,11 +2447,11 @@ function checkForWhereAnd(str)//replace all WHERE AND with WHERE
 
 function replaceQuotes(str)
 {
-	alert('before replace: '+str);
+	//alert('before replace: '+str);
 	if(str.indexOf('"') != -1)
 	{
 		str=str.replace('"','%');
-		alert('after replace: ' + str);
+	//	alert('after replace: ' + str);
 		replaceQuotes(str);
 	}
 	else
