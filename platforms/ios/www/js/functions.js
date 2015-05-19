@@ -3,12 +3,16 @@
 /*------------------------------------------------------------------*/
 var networkstatus = '';
 //var isOffline = 'onLine' in navigator && !navigator.onLine;
-
+var ref;
 function onBodyLoad()
 {
   
     document.addEventListener("offline", onDeviceOffline, false);
     document.addEventListener("online", isjsonready, false);
+     ref.addEventListener('loadstart', function(event) { alert('start: ' + event.url); });
+     ref.addEventListener('loadstop', function(event) { alert('stop: ' + event.url); });
+     ref.addEventListener('loaderror', function(event) { alert('error: ' + event.message); });
+     ref.addEventListener('exit', function(event) { alert(event.type); });
 
     //ref.addEventListener(eventname, callback);
 }
@@ -94,7 +98,7 @@ if(localStorage.BarcodeInvtyCat == null)
 
 
 }
-
+var numberOfItemsRemovedSofar = 0;//for remove items from cart function
 
 	//-------------FOR API
 					//--INVENTORY_MASTER_CATALOGUE
@@ -1846,6 +1850,8 @@ function queryCartSettings(tx)
 function renderCartList(tx,results)
 {
 	/*initialization of variables for valid items. Only  data  from valid variables will be passed to order all button*/
+    var varlidORDERIDS = [];
+    
 	var validSKUArr = [];
 	var validpicturefilenameArr = [];
 	var validbarcodeArr = [];
@@ -1954,6 +1960,7 @@ function renderCartList(tx,results)
 
 
 				
+                varlidORDERIDS.push(ind);
 
 				validSKUArr.push(cartSKUArr[ind]);
 				validpicturefilenameArr.push(cartpicturefilenameArr[ind]);
@@ -2055,14 +2062,173 @@ function renderCartList(tx,results)
     //     alert('TOTAL:' + orderAllTotal);
         
         
-      
-       
-        var ref = window.open('http://viveg.net/dummyprestashop/index.php?sku='+$(this).attr('data-sku')+'&barcode='+$(this).attr('data-barcode')+'&promoprice='+$(this).attr('data-promoPrice')+'&quantity='+$(this).attr('data-quantity')+'&orderedfrom='+$(this).attr('data-orderedfrom')+'&texture='+$(this).attr('data-texture')+'&size='+$(this).attr('data-size'), '_blank', 'location=yes');
-        ref.addEventListener('loadstart', function() {/*alert(event.url);*/ });
+     
+        ref = window.open('http://viveg.net/dummyprestashop/index.php?sku='+$(this).attr('data-sku')+'&barcode='+$(this).attr('data-barcode')+'&promoprice='+$(this).attr('data-promoPrice')+'&quantity='+$(this).attr('data-quantity')+'&orderedfrom='+$(this).attr('data-orderedfrom')+'&texture='+$(this).attr('data-texture')+'&size='+$(this).attr('data-size'), '_blank', 'location=yes');
+    
+
+        
+        for(var xx=0; xx < varlidORDERIDS.length; xx++)
+        { 
+            alert('removing ' + varlidORDERIDS[xx]);
+           removeitems(varlidORDERIDS[xx],varlidORDERIDS.length);
+            
+            if(xx == varlidORDERIDS.length)//refresh on last remove
+            {
+              $('.navbar-nav > li > a[href="cart.html"]').click();
+            }
+        }
     });
 	
+
+    
 }
 
+
+function removeitems(itemindex,numberOfItemsThatNeedsToBeRemoved)
+{
+     alert('before splice number#'+numberOfItemsRemovedSofar+'----'+ cartpromonameArr);
+  
+                    cartSKUArr[itemindex] = null;//change values to null first to not mess up the orderids.
+					cartpicturefilenameArr[itemindex] = null;
+					cartbarcodeArr[itemindex] = null;
+					cartbrandArr[itemindex] = null;
+					cartfulldescriptionArr[itemindex] = null;
+					cartcataloguetitleArr[itemindex] = null;
+                    cartpromonameArr[itemindex] = null;
+                    cartpromoPriceArr[itemindex] = null;
+					cartpromoEndDateArr[itemindex] = null;
+					cartpromoStartDateArr[itemindex] = null;
+                    cartQuantityArr[itemindex] = null;
+                    cartsubtotalArr[itemindex] = null;
+                    cartorderedFromArr[itemindex] = null;
+                    carttextureFromArr[itemindex] = null;
+                    cartsizeFromArr[itemindex] = null;
+                    carttexturechoicesArr[itemindex] = null;
+                    cartsizechoicesArr[itemindex] = null;
+                    
+
+
+        numberOfItemsRemovedSofar+= 1;
+      alert(numberOfItemsRemovedSofar + ' of ' + numberOfItemsThatNeedsToBeRemoved + ' removed');
+    alert('before splice number#'+numberOfItemsRemovedSofar+'----'+ cartpromonameArr);
+    
+    
+
+
+    if(numberOfItemsRemovedSofar == numberOfItemsThatNeedsToBeRemoved )
+    {
+            updatelocalStorageAfterSplicing();
+
+        
+        numberOfItemsRemovedSofar = 0;//set back to zero because remove completed.
+          alert('removed all items that needed to be removed.');
+    }
+                    
+              
+}
+
+
+function updatelocalStorageAfterSplicing()
+{
+   
+    
+    
+        cartSKUArr= jQuery.grep(cartSKUArr, function(n, i){return (n !== "" && n != null); });
+        cartpicturefilenameArr= jQuery.grep(cartpicturefilenameArr, function(n, i){return (n !== "" && n != null); });
+        cartbarcodeArr= jQuery.grep(cartbarcodeArr, function(n, i){return (n !== "" && n != null); });
+        cartbrandArr= jQuery.grep(cartbrandArr, function(n, i){return (n !== "" && n != null); });
+        cartfulldescriptionArr= jQuery.grep(cartfulldescriptionArr, function(n, i){return (n !== "" && n != null); });
+        cartcataloguetitleArr= jQuery.grep(cartcataloguetitleArr, function(n, i){return (n !== "" && n != null); });
+        cartpromonameArr= jQuery.grep(cartpromonameArr, function(n, i){return (n !== "" && n != null); });
+        cartpromoPriceArr= jQuery.grep(cartpromoPriceArr, function(n, i){return (n !== "" && n != null); });
+        cartpromoEndDateArr= jQuery.grep(cartpromoEndDateArr, function(n, i){return (n !== "" && n != null); });
+        cartpromoStartDateArr= jQuery.grep(cartpromoStartDateArr, function(n, i){return (n !== "" && n != null); });
+        cartQuantityArr= jQuery.grep(cartQuantityArr, function(n, i){return (n !== "" && n != null); });
+        cartsubtotalArr= jQuery.grep(cartsubtotalArr, function(n, i){return (n !== "" && n != null); });
+        cartorderedFromArr= jQuery.grep(cartorderedFromArr, function(n, i){return (n !== "" && n != null); });
+        carttextureFromArr= jQuery.grep(carttextureFromArr, function(n, i){return (n !== "" && n != null); });
+        cartsizeFromArr= jQuery.grep(cartsizeFromArr, function(n, i){return (n !== "" && n != null); });
+        carttexturechoicesArr= jQuery.grep(carttexturechoicesArr, function(n, i){return (n !== "" && n != null); });
+        cartsizechoicesArr= jQuery.grep(cartsizechoicesArr, function(n, i){return (n !== "" && n != null); });
+
+    
+    
+        alert('after grep '  + cartpromonameArr);
+    
+                    if(cartbarcodeArr.length > 0)
+                    {
+                        
+                        alert(cartbarcodeArr.length + '> 0');
+						var newarrstring_sku = cartSKUArr.toString()+",";
+						var newarrstring_picturefilename = cartpicturefilenameArr.toString()+",";
+						var newarrstring_cartbarcode = cartbarcodeArr.toString()+",";
+						var newarrstring_cartbrand = cartbrandArr.toString()+",";
+						var newarrstring_fulldescription = cartfulldescriptionArr.toString()+",";
+						var newarrstring_cataloguetitle = cartcataloguetitleArr.toString()+",";
+                        var newarrstring_promoname = cartpromonameArr.toString()+",";
+                        var newarrstring_promoPrice = cartpromoPriceArr.toString()+",";
+						var newarrstring_promoEndDate = cartpromoEndDateArr.toString()+",";
+						var newarrstring_promoStartDate = cartpromoStartDateArr.toString()+",";
+                        var newarrstring_cartQuantity = cartQuantityArr.toString()+",";
+                        var newarrstring_cartsubtotal = cartsubtotalArr.toString()+",";
+                        var newarrstring_cartorderedFrom = cartorderedFromArr.toString()+",";
+                        var newarrstirng_carttexture = carttextureFromArr.toString()+",";     
+                        var newarrstirng_cartsize = cartsizeFromArr.toString()+",";
+                        var newarrstirng_carttexturechoices =  carttexturechoicesArr+",";
+                        var newarrstirng_cartsizechoices = cartsizechoicesArr+",";
+                        
+                       
+
+                        
+                        
+                    } 
+                    else//if last item, do not put comma at the end.
+                    {
+                        
+                         alert(cartbarcodeArr.length + '> 0');
+                        
+                        var newarrstring_sku = '';
+                        var newarrstring_picturefilename = '';
+                        var newarrstring_cartbarcode = '';
+                        var newarrstring_cartbrand = '';
+						var newarrstring_fulldescription = '';
+						var newarrstring_cataloguetitle = '';
+						var newarrstring_promoname = '';
+                        var newarrstring_promoPrice ='';
+						var newarrstring_promoEndDate = '';
+						var newarrstring_promoStartDate = '';
+                        var newarrstring_cartQuantity = '';
+                        var newarrstring_cartsubtotal = '';
+                        var newarrstring_cartorderedFrom = '';
+                        var newarrstirng_carttexture = '';
+                        var newarrstirng_cartsize = '';
+                        var newarrstirng_carttexturechoices =  '';
+                        var newarrstirng_cartsizechoices = '';
+                    }
+               
+    
+    
+    
+    
+    
+                    localStorage.sku = newarrstring_sku;
+                    localStorage.picturefilename = newarrstring_picturefilename;
+					localStorage.BarcodeInvtyCat = newarrstring_cartbarcode;
+					localStorage.BrandInvtyCat = newarrstring_cartbrand;
+                    localStorage.fulldescription = newarrstring_fulldescription;
+                    localStorage.cataloguetitle = newarrstring_cataloguetitle;
+					localStorage.promoname = newarrstring_promoname;
+                    localStorage.promoPrice = newarrstring_promoPrice;
+					localStorage.promoenddate = newarrstring_promoEndDate;
+					localStorage.promostartdate = newarrstring_promoStartDate;
+                    localStorage.quantity = newarrstring_cartQuantity;
+                    localStorage.subtotal = newarrstring_cartsubtotal;
+                    localStorage.orderedfrom = newarrstring_cartorderedFrom;
+                    localStorage.texture  = newarrstirng_carttexture;
+                    localStorage.size = newarrstirng_cartsize;
+                    localStorage.texturechoicesFOREDITPAGE = newarrstirng_carttexturechoices;
+                    localStorage.sizechoicesFOREDITPAGE =newarrstirng_cartsizechoices;
+}
 /*----------------------------------------------------------------------*/
 /*-------------------//navClickedListener.js-------------------------------*/
 /*----------------------------------------------------------------------*/

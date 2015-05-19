@@ -138,6 +138,11 @@ alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
                 /*remove from cart*/
                 $('.content-cont').off('click', '.removeFromCart').on('click', '.removeFromCart',function()
                 {
+                    
+                    //NOTE: there's removeitems function but let's just stick with this for now because that was designed for batch remove and it'll take some time to figure out how to utilize that function here. 
+                    
+                    //NOTE: probably just removeitems(orderidtoedit,1) but i'll try that some other time.
+                    
                     cartSKUArr.splice(orderidtoedit,1);//remove index of array
 					cartpicturefilenameArr.splice(orderidtoedit,1);
 					cartbarcodeArr.splice(orderidtoedit,1);
