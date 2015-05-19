@@ -55,6 +55,8 @@ if(localStorage.BarcodeInvtyCat == null)
     var cartQuantityArr;
     var cartsubtotalArr;
 	var cartorderedFromArr;//to know whether item was ordered from scan or catalogue or search
+    var carttextureFromArr;
+    var cartsizeFromArr;
 
     
     /*initialized on placeOrder click*/
@@ -73,9 +75,13 @@ if(localStorage.BarcodeInvtyCat == null)
     localStorage.quantity = '';
     localStorage.subtotal = '';
     localStorage.orderedfrom ='';
-	
+	localStorage.texture  = '';
+    localStorage.size = '';
+    
     /*initialized on renderCart*/
     localStorage.orderid='';
+
+
 }
 
 
@@ -1828,7 +1834,7 @@ function queryCartSettings(tx)
 
 function renderCartList(tx,results)
 {
-	/*valid items  data that wil be passed to order all button*/
+	/*initialization of variables for valid items. Only  data  from valid variables will be passed to order all button*/
 	var validSKUArr = [];
 	var validpicturefilenameArr = [];
 	var validbarcodeArr = [];
@@ -1842,8 +1848,11 @@ function renderCartList(tx,results)
 	var validQuantityArr = [];
 	var validsubtotalArr = [];
 	var validorderedFromArr = [];
+    var validtextureArr = [];
+    var validsizeArr = [];
 	
 	
+    //removing last comma from end of locaStorage.
     var orderAllTotal = 0;
     var SKUForArr = localStorage.sku.replace(/,\s*$/,'');
 	var picturefilenameForArr = localStorage.picturefilename.replace(/,\s*$/,'');
@@ -1858,10 +1867,12 @@ function renderCartList(tx,results)
 	var quantityForArr = localStorage.quantity.replace(/,\s*$/,'');
 	var subtotalForArr = localStorage.subtotal.replace(/,\s*$/,'');
 	var orderedFromArr = localStorage.orderedfrom.replace(/,\s*$/,'');
+    var textureFromArr = localStorage.texture.replace(/,\s*$/,'');
+    var sizeFromArr = localStorage.size.replace(/,\s*$/,'');
 	
     
 	
-	
+	/*turn strings seperated by commas into array*/
     cartSKUArr = SKUForArr.split(',');
 	cartpicturefilenameArr =  picturefilenameForArr.split(',');
 	cartbarcodeArr =  BarcodeInvtyCatForArr.split(',');
@@ -1875,6 +1886,8 @@ function renderCartList(tx,results)
 	cartQuantityArr =  quantityForArr.split(',');
 	cartsubtotalArr = subtotalForArr.split(',');
 	cartorderedFromArr = orderedFromArr.split(',');
+    carttextureFromArr = textureFromArr.split(',');
+    cartsizeFromArr = sizeFromArr.split(',');
 	
 	
 		
@@ -1897,7 +1910,7 @@ function renderCartList(tx,results)
 		 orderid += ind.toString() + ',';
 
 
-			if((getDateTimeNow() >= cartpromoStartDateArr[ind]) && (getDateTimeNow()<= cartpromoEndDateArr[ind]))
+			if((getDateTimeNow() >= cartpromoStartDateArr[ind]) && (getDateTimeNow()<= cartpromoEndDateArr[ind]))//if valid date
 			{
 				orderAllTotal += parseFloat(cartsubtotalArr[ind]);//only valid items are totaled
 				
@@ -1917,6 +1930,8 @@ function renderCartList(tx,results)
 				
 				toNormalString(cartcataloguetitleArr[ind]);
 				htmlstringcart +='<b>Catalogue :</b><span>'+returnedNormal+'</span></p>';
+                
+                //no need to display texture,size here.
 				
 				htmlstringcart += '</div><div class="col-md-1 col-sm-1 col-xs-1"><a href="#" class="edit-order" data-orderid="'+ ind +'">edit</a></div></div></div><div class="col-md-12 col-sm-12 col-xs-12"><p class="pull-left">quantity: <span>'+cartQuantityArr[ind]+'</span></p><p class="pull-right">$<span>'+ cartsubtotalArr[ind] +'</span></p></div></div>' ;
 
@@ -1936,6 +1951,8 @@ function renderCartList(tx,results)
 				validQuantityArr.push(cartQuantityArr[ind]);
 				validsubtotalArr.push(cartsubtotalArr[ind]);
 				validorderedFromArr.push(cartorderedFromArr[ind]);
+                validtextureArr.push(carttextureFromArr[ind]);
+                validsizeArr.push(cartsizeFromArr[ind]);
 
 
 
@@ -1986,7 +2003,7 @@ function renderCartList(tx,results)
 		
 		$('.orderAll-cont').empty();
 		//change to validArrs later
-		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-brand="'+validbrandArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'"  data-cataloguetitle="'+ validcataloguetitleArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'" data-orderedfrom="'+validorderedFromArr.toString()+'">Order All</a>');
+		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-brand="'+validbrandArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'"  data-cataloguetitle="'+ validcataloguetitleArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'" data-orderedfrom="'+validorderedFromArr.toString()+'" data-texture="'+validtextureArr.toString()+'" data-size="'+validsizeArr.toString()+'">Order All</a>');
    
 		
 	
@@ -2015,6 +2032,8 @@ function renderCartList(tx,results)
         alert($(this).attr('data-quantity'));
         alert($(this).attr('data-subtotal'));
         alert('ordered from: ' + $(this).attr('data-orderedfrom'));
+        alert($(this).attr('data-texture'));
+        alert($(this).attr('data-size'));
 
         alert('TOTAL:' + orderAllTotal);
         
@@ -2345,8 +2364,8 @@ $(document).on('click','.placeOrder', function()
     var quantity = $(this).attr('data-quantity');
     var subtotal = $(this).attr('data-subtotal');
     var orderedFrom = $(this).attr('data-orderedfrom');
-    var texture = $('input[name="singleitemtexture"]:checked').val();
-    var size = $('input[name="singleitemsize"]:checked').val();
+    var texture = $('input[name="singleitemtexture"]:checked').val();//no need to toCustomString since you can't have , or " for filenames anyways.
+    var size = $('input[name="singleitemsize"]:checked').val();//There probably won't be a size with , or "
     
     
     alert(texture + ' ' + size);
@@ -2393,9 +2412,14 @@ $(document).on('click','.placeOrder', function()
     localStorage.subtotal += subtotal.toString()+',';
 	localStorage.orderedfrom += orderedFrom.toString()+',';
     
+    localStorage.texture += texture.toString() + ',';
+    localStorage.size += size.toString() + ',';
+    
+    
+    
     alert('item added to cart');
     
-    $('.forsingleonly a').click();
+    $('.forsingleonly a').click();//back
 });
 
 /*----------------//single-itme.html  to cart.html-------------------*/
