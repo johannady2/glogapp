@@ -2,8 +2,8 @@ $(document).on('editOrderClicked',function(event,orderidtoedit)
 {			
     
 
-		   
-
+alert(carttexturechoicesArr[orderidtoedit]);
+alert(cartsizechoicesArr[orderidtoedit]);
 
             //alert(orderidtoedit);
             $('.navbar-brand , .navbar-nav > li').not('.foreditorderonly').hide();

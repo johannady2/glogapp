@@ -57,11 +57,12 @@ if(localStorage.BarcodeInvtyCat == null)
 	var cartorderedFromArr;//to know whether item was ordered from scan or catalogue or search
     var carttextureFromArr;
     var cartsizeFromArr;
-
+    
+    var carttexturechoicesArr;
+    var cartsizechoicesArr;
     
 
-    var texturechoicesStr;
-    var sizechoicesStr;
+
     
     /*initialized on placeOrder click*/
     //NOTE: x,y,z,
@@ -1879,6 +1880,8 @@ function renderCartList(tx,results)
     var textureFromArr = localStorage.texture.replace(/,\s*$/,'');
     var sizeFromArr = localStorage.size.replace(/,\s*$/,'');
 	
+    var textureChoicesForArr = localStorage.texturechoicesFOREDITPAGE.replace();
+    var sizeChoicesForArr = localStorage.sizechoicesFOREDITPAGE.replace();
     
 	
 	/*turn strings seperated by commas into array*/
@@ -1897,6 +1900,10 @@ function renderCartList(tx,results)
 	cartorderedFromArr = orderedFromArr.split(',');
     carttextureFromArr = textureFromArr.split(',');
     cartsizeFromArr = sizeFromArr.split(',');
+    
+    carttexturechoicesArr = textureChoicesForArr.split(',');
+    cartsizechoicesArr = sizeChoicesForArr.split(',');
+    
 	
 	
 		
@@ -2185,7 +2192,8 @@ function renderSinglePage(tx,results)
             
             
         
-    
+        var texturechoicesStr;
+        var sizechoicesStr;
       
         var uniqueusedtextures = $.unique(usedtextures);
         var uniqueusedsizes = $.unique(usedsizes);
