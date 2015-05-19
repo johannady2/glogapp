@@ -10,7 +10,7 @@ function onBodyLoad()
     document.addEventListener("offline", onDeviceOffline, false);
     document.addEventListener("online", isjsonready, false);
 
-
+    //ref.addEventListener(eventname, callback);
 }
   //listen for changes
   
@@ -2036,25 +2036,29 @@ function renderCartList(tx,results)
     
     $('body').off('click','.orderAll').on('click','.orderAll' , function()
     {
-        alert($(this).attr('data-sku'));
-        alert($(this).attr('data-picturefilename'));
-        alert($(this).attr('data-barcode'));
-        alert($(this).attr('data-brand'));
-        alert($(this).attr('data-fulldescription'));
-        alert($(this).attr('data-cataloguetitle'));
-        alert($(this).attr('data-promoname'));
-        alert($(this).attr('data-promoPrice'));
-        alert($(this).attr('data-promoEndDate'));
-        alert($(this).attr('data-promoStartDate'));
-        alert($(this).attr('data-quantity'));
-        alert($(this).attr('data-subtotal'));
-        alert('ordered from: ' + $(this).attr('data-orderedfrom'));
-        alert($(this).attr('data-texture'));
-        alert($(this).attr('data-size'));
+    //  alert($(this).attr('data-sku'));
+    // alert($(this).attr('data-picturefilename'));
+    //     alert($(this).attr('data-barcode'));
+    //    alert($(this).attr('data-brand'));
+    //    alert($(this).attr('data-fulldescription'));
+    //     alert($(this).attr('data-cataloguetitle'));
+    //     alert($(this).attr('data-promoname'));
+    //      alert($(this).attr('data-promoPrice'));
+    //      alert($(this).attr('data-promoEndDate'));
+    //      alert($(this).attr('data-promoStartDate'));
+    //      alert($(this).attr('data-quantity'));
+    //      alert($(this).attr('data-subtotal'));
+    //      alert('ordered from: ' + $(this).attr('data-orderedfrom'));
+    //      alert($(this).attr('data-texture'));
+    //      alert($(this).attr('data-size'));
 
-        alert('TOTAL:' + orderAllTotal);
+    //     alert('TOTAL:' + orderAllTotal);
         
         
+      
+       
+        var ref = window.open('http://viveg.net/dummyprestashop/index.php?sku='+$(this).attr('data-sku')+'&barcode='+$(this).attr('data-barcode')+'&promoprice='+$(this).attr('data-promoPrice')+'&quantity='+$(this).attr('data-quantity')+'&orderedfrom='+$(this).attr('data-orderedfrom')+'&texture='+$(this).attr('data-texture')+'&size='+$(this).attr('data-size'), '_blank', 'location=yes');
+        ref.addEventListener('loadstart', function() {/*alert(event.url);*/ });
     });
 	
 }
