@@ -414,8 +414,8 @@ body
 .viewItem , .placeOrder , .saveChanges , .removeFromCart , .SearchBtn
 {
     width:100%;
-    min-height:60px;
-    font-size:30px;
+    min-height:50px;
+    font-size:25px;
 }
 
 .orderAll 
