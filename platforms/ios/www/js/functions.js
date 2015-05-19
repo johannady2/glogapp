@@ -2097,7 +2097,7 @@ function renderSinglePage(tx,results)
                
                if(displayonetextureonce == 0)
                {
-                   $('.singleitemtexturefieldscont').append('<input type="radio" name="singleitemtexture" value="'+results.rows.item(ind).texture+'" id="texture-'+ind+'" checked/><label for="texture-'+ind+'">one_texture</label>' );
+                   $('.singleitemtexturefieldscont').append('<input type="radio" name="singleitemtexture" value="one_texture" id="texture-'+ind+'" checked/><label for="texture-'+ind+'">one_texture</label>' );
                }
                
                 $('.singleitemtexturetr').hide();
@@ -2345,6 +2345,11 @@ $(document).on('click','.placeOrder', function()
     var quantity = $(this).attr('data-quantity');
     var subtotal = $(this).attr('data-subtotal');
     var orderedFrom = $(this).attr('data-orderedfrom');
+    var texture = $('input[name="singleitemtexture"]:checked').val();
+    var size = $('input[name="singleitemsize"]:checked').val();
+    
+    
+    alert(texture + ' ' + size);
 	
     //this prevents commas from promonames from being interpreted as , when localstorage string is turned into an array
 		//SKU = toCustomString(SKU.toString());
