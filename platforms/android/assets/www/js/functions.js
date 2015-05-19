@@ -2072,10 +2072,6 @@ function renderCartList(tx,results)
             alert('removing ' + varlidORDERIDS[xx]);
            removeitems(varlidORDERIDS[xx],varlidORDERIDS.length);
             
-            if(xx == varlidORDERIDS.length)//refresh on last remove
-            {
-              $('.navbar-nav > li > a[href="cart.html"]').click();
-            }
         }
     });
 	
