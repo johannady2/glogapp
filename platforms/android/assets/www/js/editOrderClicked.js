@@ -1,9 +1,10 @@
 $(document).on('editOrderClicked',function(event,orderidtoedit)
 {			
     
-
-alert(carttexturechoicesArr[orderidtoedit]);
-alert(cartsizechoicesArr[orderidtoedit]);
+alert('chosesn texture: ' + carttextureFromArr[orderidtoedit]);
+alert('textures to choose from: ' + carttexturechoicesArr[orderidtoedit]);
+alert('chosen size: ' + cartsizeFromArr[orderidtoedit]);
+alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
 
             //alert(orderidtoedit);
             $('.navbar-brand , .navbar-nav > li').not('.foreditorderonly').hide();

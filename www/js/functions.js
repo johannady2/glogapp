@@ -62,7 +62,8 @@ if(localStorage.BarcodeInvtyCat == null)
     var cartsizechoicesArr;
     
 
-
+    var texturechoicesStr;
+    var sizechoicesStr;
     
     /*initialized on placeOrder click*/
     //NOTE: x,y,z,
@@ -1880,8 +1881,8 @@ function renderCartList(tx,results)
     var textureFromArr = localStorage.texture.replace(/,\s*$/,'');
     var sizeFromArr = localStorage.size.replace(/,\s*$/,'');
 	
-    var textureChoicesForArr = localStorage.texturechoicesFOREDITPAGE.replace();
-    var sizeChoicesForArr = localStorage.sizechoicesFOREDITPAGE.replace();
+    var textureChoicesForArr = localStorage.texturechoicesFOREDITPAGE.replace(/,\s*$/,'');
+    var sizeChoicesForArr = localStorage.sizechoicesFOREDITPAGE.replace(/,\s*$/,'');
     
 	
 	/*turn strings seperated by commas into array*/
@@ -2192,8 +2193,7 @@ function renderSinglePage(tx,results)
             
             
         
-        var texturechoicesStr;
-        var sizechoicesStr;
+     
       
         var uniqueusedtextures = $.unique(usedtextures);
         var uniqueusedsizes = $.unique(usedsizes);
@@ -2417,6 +2417,7 @@ $(document).on('click','.placeOrder', function()
 
     
     alert(texture + ' ' + size);
+    alert(texturechoicesStr + ' ' + sizechoicesStr);
 	
     //this prevents commas from promonames from being interpreted as , when localstorage string is turned into an array
 		//SKU = toCustomString(SKU.toString());
