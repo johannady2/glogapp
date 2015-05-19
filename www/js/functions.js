@@ -59,6 +59,10 @@ if(localStorage.BarcodeInvtyCat == null)
     var cartsizeFromArr;
 
     
+
+    var texturechoicesStr;
+    var sizechoicesStr;
+    
     /*initialized on placeOrder click*/
     //NOTE: x,y,z,
     //always add "," at the end of array when storing as localStorage
@@ -80,6 +84,11 @@ if(localStorage.BarcodeInvtyCat == null)
     
     /*initialized on renderCart*/
     localStorage.orderid='';
+    
+    
+    /*for edit order page color selection*/
+    localStorage.texturechoicesFOREDITPAGE = '';
+    localStorage.sizechoicesFOREDITPAGE ='';
 
 
 }
@@ -2096,7 +2105,8 @@ function renderSinglePage(tx,results)
          $('.singleitemsubtotal').append(results.rows.item(0).PromoPrice_InvtyCat);//temporary. value will change on quantity input
 			
             
-            
+
+            var usedtextures = [];
             var usedsizes = [];
             var displayonetextureonce = 0;
         var texturechecked = '';//check first item by default
@@ -2108,10 +2118,16 @@ function renderSinglePage(tx,results)
            if(results.rows.item(ind).texture != 'one_texture' && results.rows.item(ind).texture != null)
            {
                $('.singleitemtexturefieldscont').append('<input type="radio" name="singleitemtexture" value="'+results.rows.item(ind).texture+'" class="img-radio" id="texture-'+ind+'" '+texturechecked+'/><label for="texture-'+ind+'"><div style="background-image:url(\''+results.rows.item(ind).texture+'\'); background-size: 60px 60px; display:block; width:50px; height:50px; border-radius: 5px; margin-left: 20px;"></div></label>' );
+               
+              usedtextures.push(results.rows.item(ind).texture);
+               
            }
            else
            {//when item is assigned one_texture or is not in attributes table, it will send given one_texture for name="singleitmetexture" by default.
-             
+               
+                usedtextures = [];
+                usedtextures.push('one_texture');
+               
                 $('.singleitemtexturefieldscont').empty();//remove the rest of the radio buttons. just incase.
                
                if(displayonetextureonce == 0)
@@ -2168,13 +2184,34 @@ function renderSinglePage(tx,results)
             
             
             
-            
+        
+    
       
-            
+        var uniqueusedtextures = $.unique(usedtextures);
         var uniqueusedsizes = $.unique(usedsizes);
+            
         var sizechecked ='';
     
-    
+        
+       alert('unique used textures: ' + uniqueusedtextures);    
+       alert('unique used sizes: ' + uniqueusedsizes);   
+               
+        toCustomString(uniqueusedtextures.toString());
+        texturechoicesStr = returnedCustom;
+            
+        toCustomString(uniqueusedsizes.toString());
+        sizechoicesStr = returnedCustom;
+            
+        
+            
+            alert('to custom string uniqueusedtextures ' + texturechoicesStr);
+            alert('to custom string uniqueusedsizes ' +  sizechoicesStr);
+            
+            
+            
+            
+            
+            
         for(var x=0;x < uniqueusedsizes.length;x++)
         {
             
@@ -2193,6 +2230,7 @@ function renderSinglePage(tx,results)
             }
             
         }
+ 
             
             
             
@@ -2368,6 +2406,8 @@ $(document).on('click','.placeOrder', function()
     var size = $('input[name="singleitemsize"]:checked').val();//There probably won't be a size with , or "
     
     
+
+    
     alert(texture + ' ' + size);
 	
     //this prevents commas from promonames from being interpreted as , when localstorage string is turned into an array
@@ -2415,6 +2455,14 @@ $(document).on('click','.placeOrder', function()
     localStorage.texture += texture.toString() + ',';
     localStorage.size += size.toString() + ',';
     
+    
+    
+    localStorage.texturechoicesFOREDITPAGE += texturechoicesStr.toString() + ',';
+    localStorage.sizechoicesFOREDITPAGE += sizechoicesStr.toString() + ',';
+    
+    
+    alert(localStorage.texturechoicesFOREDITPAGE);
+    alert(localStorage.sizechoicesFOREDITPAGE);
     
     
     alert('item added to cart');
