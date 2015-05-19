@@ -2077,33 +2077,37 @@ function renderSinglePage(tx,results)
             
             
             var usedsizes = [];
-            
-        var checked = '';//check first item by default
+            var displayonetextureonce = 0;
+        var texturechecked = '';//check first item by default
        for(var ind=0; ind < results.rows.length ; ind++ )//for loop for displaying color selection and checking which sizes are applicable for the item
        {
-           if(ind == 1)
+           if(ind == 0) {texturechecked = 'checked'; }else {texturechecked =''; }
+           
+          
+           if(results.rows.item(ind).texture != 'one_texture' && results.rows.item(ind).texture != null)
            {
-               checked = 'checked';
+               $('.singleitemtexturefieldscont').append('<input type="radio" name="singleitemtexture" value="'+results.rows.item(ind).texture+'" class="img-radio" id="texture-'+ind+'" '+texturechecked+'/><label for="texture-'+ind+'"><div style="background-image:url(\''+results.rows.item(ind).texture+'\'); background-size: 60px 60px; display:block; width:50px; height:50px; border-radius: 5px; margin-left: 20px;"></div></label>' );
            }
            else
-           {
-               checked ='';
+           {//when item is assigned one_texture or is not in attributes table, it will send given one_texture for name="singleitmetexture" by default.
+             
+                $('.singleitemtexturefieldscont').empty();//remove the rest of the radio buttons. just incase.
+               
+               if(displayonetextureonce == 0)
+               {
+                   $('.singleitemtexturefieldscont').append('<input type="radio" name="singleitemtexture" value="'+results.rows.item(ind).texture+'" id="texture-'+ind+'" checked/><label for="texture-'+ind+'">one_texture</label>' );
+               }
+               
+                $('.singleitemtexturetr').hide();
+               
+               displayonetextureonce ++;
+               
            }
            
            
-           if(results.rows.item(ind).texture != 'one_texture')
-           {
-               $('.singleitemtexturefieldscont').append('<input type="radio" name="singleitemtexture" value="'+results.rows.item(ind).texture+'" class="img-radio" id="texture-'+ind+'" '+checked+'/><label for="texture-'+ind+'"><div style="background-image:url(\''+results.rows.item(ind).texture+'\'); display:block; width:50px; height:50px; border-radius: 5px; margin-left: 20px;"></div></label>' );
-           }
-           else
-           {
-               //preselected hidden raido button with value of one_texture
-           }
            
            
-           
-           
-           if(results.rows.item(ind).one_size == -1)// -1 means field is not applicable to product. if one_size is used then, item comes in one size only and the rest of the sizes are not used.
+           if(results.rows.item(ind).one_size == -1 && results.rows.item(ind).one_size != null)// -1 means field is not applicable to product. if one_size is used then, item comes in one size only and the rest of the sizes are not used.//null means it is not in the table. because the default value in the table is one_size
            {
                
                if(results.rows.item(ind).xs >= 0)//0 means out of stock but it will still be displayed.
@@ -2153,12 +2157,18 @@ function renderSinglePage(tx,results)
         for(var x=0;x < uniqueusedsizes.length;x++)
         {
             
-           if(x==1){sizechecked = 'checked';}else{sizechecked = '';} 
+           if(x==0){sizechecked = 'checked';}else{sizechecked = '';} 
       
-            alert(sizechecked);
+
             if(uniqueusedsizes[x] != 'one_size')
             {
                 $('.singleitemsizefieldscont').append('<input type="radio" name="singleitemsize" value="'+uniqueusedsizes[x]+'" id="size-'+uniqueusedsizes[x]+'" '+sizechecked+'/><label for="size-'+uniqueusedsizes[x]+'">'+uniqueusedsizes[x]+'</label> &nbsp; &nbsp;' );
+            }
+            else
+            {
+                $('.singleitemsizefieldscont').empty();
+                 $('.singleitemsizefieldscont').append('<input type="radio" name="singleitemsize" value="'+uniqueusedsizes[x]+'" id="size-'+uniqueusedsizes[x]+'" checked/><label for="size-'+uniqueusedsizes[x]+'">'+uniqueusedsizes[x]+'</label> &nbsp; &nbsp;' );
+                $('.singleitemsizetr').hide();
             }
             
         }
