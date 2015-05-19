@@ -6,6 +6,7 @@ alert('textures to choose from: ' + carttexturechoicesArr[orderidtoedit]);
 alert('chosen size: ' + cartsizeFromArr[orderidtoedit]);
 alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
 
+    
             //alert(orderidtoedit);
             $('.navbar-brand , .navbar-nav > li').not('.foreditorderonly').hide();
             $('.foreditorderonly').show();
@@ -90,10 +91,15 @@ alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
 					cartpromoStartDateArr.splice(orderidtoedit,1);
                     cartQuantityArr.splice(orderidtoedit,1);
                     cartsubtotalArr.splice(orderidtoedit,1);
+                    cartorderedFromArr.splice(orderidtoedit,1);
+                    carttextureFromArr.splice(orderidtoedit,1);
+                    cartsizeFromArr.splice(orderidtoedit,1);
+                    carttexturechoicesArr.splice(orderidtoedit,1);
+                    cartsizechoicesArr.splice(orderidtoedit,1);
                     
                     if(cartbarcodeArr.length > 0)
                     {
-						var newarrstring_sku = cartpicturefilenameArr.toString()+",";
+						var newarrstring_sku = cartSKUArr.toString()+",";
 						var newarrstring_picturefilename = cartpicturefilenameArr.toString()+",";
 						var newarrstring_cartbarcode = cartbarcodeArr.toString()+",";
 						var newarrstring_cartbrand = cartbrandArr.toString()+",";
@@ -105,6 +111,16 @@ alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
 						var newarrstring_promoStartDate = cartpromoStartDateArr.toString()+",";
                         var newarrstring_cartQuantity = cartQuantityArr.toString()+",";
                         var newarrstring_cartsubtotal = cartsubtotalArr.toString()+",";
+                        var newarrstring_cartorderedFrom = cartorderedFromArr.toString()+",";
+                        var newarrstirng_carttexture = carttextureFromArr.toString()+",";     
+                        var newarrstirng_cartsize = cartsizeFromArr.toString()+",";
+                        var newarrstirng_carttexturechoices =  carttexturechoicesArr+",";
+                        var newarrstirng_cartsizechoices = cartsizechoicesArr+",";
+                        
+                       
+
+                        
+                        
                     } 
                     else//if last item, do not put comma at the end.
                     {
@@ -120,6 +136,11 @@ alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
 						var newarrstring_promoStartDate = '';
                         var newarrstring_cartQuantity = '';
                         var newarrstring_cartsubtotal = '';
+                        var newarrstring_cartorderedFrom = '';
+                        var newarrstirng_carttexture = '';
+                        var newarrstirng_cartsize = '';
+                        var newarrstirng_carttexturechoices =  '';
+                        var newarrstirng_cartsizechoices = '';
                     }
                
                     localStorage.sku = newarrstring_sku;
@@ -134,6 +155,14 @@ alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
 					localStorage.promostartdate = newarrstring_promoStartDate;
                     localStorage.quantity = newarrstring_cartQuantity;
                     localStorage.subtotal = newarrstring_cartsubtotal;
+                    localStorage.orderedfrom = newarrstring_cartorderedFrom;
+                    localStorage.texture  = newarrstirng_carttexture;
+                    localStorage.size = newarrstirng_cartsize;
+                    localStorage.texturechoicesFOREDITPAGE = newarrstirng_carttexturechoices;
+                    localStorage.sizechoicesFOREDITPAGE =newarrstirng_cartsizechoices;
+
+                    
+               
                     
                     
                     alert('item removed');
