@@ -5,6 +5,12 @@ alert('chosesn texture: ' + carttextureFromArr[orderidtoedit]);
 alert('textures to choose from: ' + carttexturechoicesArr[orderidtoedit]);
 alert('chosen size: ' + cartsizeFromArr[orderidtoedit]);
 alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
+    
+
+    var arrOftexturechoices = carttexturechoicesArr[orderidtoedit].split('(xxxGLogCommaxxx)');
+    var arrOfsizechoices = cartsizechoicesArr[orderidtoedit].split('(xxxGLogCommaxxx)');
+    
+    alert('data for radio buttons: ' + arrOftexturechoices + '  -  ' + arrOfsizechoices);
 
     
             //alert(orderidtoedit);
