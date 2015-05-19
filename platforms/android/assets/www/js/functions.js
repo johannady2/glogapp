@@ -2,7 +2,7 @@
 /*------------------------Database-----------------------------------*/
 /*------------------------------------------------------------------*/
 var networkstatus = '';
-var isOffline = 'onLine' in navigator && !navigator.onLine;
+//var isOffline = 'onLine' in navigator && !navigator.onLine;
 
 function onBodyLoad()
 {
@@ -164,7 +164,7 @@ if(localStorage.BarcodeInvtyCat == null)
 
 function isjsonready()//i'm thinking of checking them all at once instead of by table because I can check the CATALOGUE_MASTER table first.. and batch delete multiple items from inventory_master_catalogue,and other tables. If i check only one table at a time, it'll take longger. I think.
 {//APPENDED STUFF IS FOR getjsontest page.
-
+ 
     if((networkstatus != 'connected' || networkstatus == ''))
     {networkstatus = 'connected';//networkstatus is set back to '' when checkig inorder to see results so SysPk_CatgyMstrARR.length <= 0 is added to  prevent from pushing to array twice
      
@@ -569,7 +569,7 @@ function successCB()
 
 
 function onDeviceOffline()
-{
+{   
     if(networkstatus != 'disconnected')
     { 
         networkstatus = 'disconnected';
@@ -678,7 +678,7 @@ function createTBInventoryMasterCatalogueAttributes(tx)
     var q7 ="";
     q7 +="CREATE TABLE IF NOT EXISTS INVENTORY_MASTER_CATALOGUE_ATTRIBUTES";
     q7 += "(RowNumber_InvtyCatAttr,SysFk_InvtyCat_InvtyCatAttr,texture,one_size,xs,s,m,l,xl)";
-    tx.executeSql(q7,[],checkExistsInvtyCatAttr,errorCB);//skipping deleteLocal because it deletes everything for some reason.
+    tx.executeSql(q7,[],deleteLocalInvtyCatAttr,errorCB);//skipping deleteLocal because it deletes everything for some reason.
 }
 
 
@@ -691,9 +691,8 @@ function createTBInventoryMasterCatalogueAttributes(tx)
 
 function deleteLocalInvtyCat(tx)//delete in local what's deleted in server
 {
-   // alert('deleteLocalInvtyCat' + SysPk_InvtyCatARR);
-
-    if ( isOffline )
+   
+    if (RowNumber_InvtyCatARR.length <= 0)//isOffline
     {
 
             var sqldeletedeleted = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
@@ -701,7 +700,7 @@ function deleteLocalInvtyCat(tx)//delete in local what's deleted in server
     }
     else
     {
-           
+           alert('online. delete not in json -invtycat');
 
             var sqldeletedeleted = 'DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysPk_InvtyCat NOT IN(?)';
         	   tx.executeSql(sqldeletedeleted,[SysPk_InvtyCatARR],checkExistsInventoryMasterCatalogue,errorCB);
@@ -807,14 +806,16 @@ function rendercheckExistsInventoryMasterCatalogue(tx3,results)
 
 function deleteLocalCatalogueMaster(tx)
 {
-    if ( isOffline )
+    if ( RowNumber_CatMstrARR.length <= 0 )//isOffline
     {
+        
+        alert('offline, not deleting anyuthing from cataloguemaster');
 
             var sqldeletedeleted = 'SELECT * FROM CATALOGUE_MASTER LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
     }
     else
     {
-           
+           alert('online, deleting not in json - cataloguemaster');
 
          var sqldeletedeleted = 'DELETE FROM CATALOGUE_MASTER WHERE SysPk_CatMstr NOT IN('+ SysPk_CatMstrARR +')';
     }
@@ -1042,16 +1043,17 @@ function rendercheckExistsSettingsTable(tx5,results)
 function deleteLocalCategoryMaster(tx)
 {
    // alert('deleteLocalCategoryMaster');
-    if ( isOffline )
+    if (RowNumber_CatgyMstrARR.length <= 0 )//isOffline
     {
 
+            alert('offline, not deleting anything from category master');
             var sqldeletedeleted = 'SELECT * FROM CATEGORY_MASTER LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
           tx.executeSql(sqldeletedeleted,[],checkExistsCategoryMaster,errorCB);
     }
     else
     {
            
-
+        alert('online. deleting what\'s not in json - category_master');
          var sqldeletedeleted = 'DELETE FROM CATEGORY_MASTER WHERE SysPk_CatgyMstr NOT IN(?)';
         	   tx.executeSql(sqldeletedeleted,[SysPk_CatgyMstrARR],checkExistsCategoryMaster,errorCB);
     }
@@ -1153,16 +1155,16 @@ function deleteLocalInvtyCatCatgy(tx)
 {
     
     // alert('deleteLocalCategoryMaster');
-    if ( isOffline )
+    if ( RowNumber_InvtyCatCatgyARR.length <= 0 )//isOffline
     {
-
+            alert('offline, not deleting anything from invtycatcatgy');
             var sqldeletedeleted = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE_CATEGORY LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
             tx.executeSql(sqldeletedeleted,[],checkExistsInvtyCatCatgy,errorCB);
     }
     else
     {
            
-
+        alert('online, deleting not in json - invtycatcatgy');
          var sqldeletedeleted = 'DELETE FROM INVENTORY_MASTER_CATALOGUE_CATEGORY WHERE 	RowNumber_InvtyCatCatgy NOT IN(?)';
          tx.executeSql(sqldeletedeleted,[RowNumber_InvtyCatCatgyARR],checkExistsInvtyCatCatgy,errorCB);
     }
@@ -1261,23 +1263,23 @@ function rendercheckExistsInvtyCatCatgy(tx7,results)
 
 
 
-/*THIS FUNCTION IS CURRENTLY SKIPPED
+
 
 
 function deleteLocalInvtyCatAttr(tx)
 {
-   alert('deleteLocalInvtyCatAttr');
+   
 
-    if ( isOffline )
+    if ( RowNumber_InvtyCatAttrARR.length <= 0 )//isOffline
     {
-
-            var sqldeletedeletedInvtyCatAttr = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
+        alert('offline. not delting from invtycatattr');
+            var sqldeletedeletedInvtyCatAttr = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql. OR maybe i can just write checkExistsCatAttr(tx)..  maybe...
    	        tx.executeSql(sqldeletedeletedInvtyCatAttr,[],checkExistsInvtyCatAttr,errorCB);
     }
     else
     {
            
-        
+        alert('online. deleting not in json. -invtycatattr');
        var sqldeletedeletedInvtyCatAttr = 'DELETE FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES WHERE RowNumber_InvtyCatAttr NOT IN(?)';
         tx.executeSql(sqldeletedeletedInvtyCatAttr,[RowNumber_InvtyCatAttrARR],checkExistsInvtyCatAttr,errorCB);
         
@@ -1286,7 +1288,7 @@ function deleteLocalInvtyCatAttr(tx)
     }
 
 	  
-}*/
+}
 
 
 function checkExistsInvtyCatAttr(tx)
