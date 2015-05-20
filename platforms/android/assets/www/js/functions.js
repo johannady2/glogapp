@@ -2065,10 +2065,16 @@ function renderCartList(tx,results)
     //      alert($(this).attr('data-size'));
 
     //     alert('TOTAL:' + orderAllTotal);
+
         
-        
-     
+     /*
         ref = window.open('http://viveg.net/dummyprestashop/index.php?orderid='+$(this).attr('data-orderid')+'&sku='+$(this).attr('data-sku')+'&barcode='+$(this).attr('data-barcode')+'&promoprice='+$(this).attr('data-promoPrice')+'&quantity='+$(this).attr('data-quantity')+'&orderedfrom='+$(this).attr('data-orderedfrom')+'&texture='+$(this).attr('data-texture')+'&size='+$(this).attr('data-size')+'&mobiletime='+getDateTimeNow(), '_blank', 'location=yes');
+    */
+        
+      //  http://viveg.net/index.php?orderid=1%2C2&sku=123%2C321&barcode=4434244%2C43331&promoprice=88.00%2C99.75&quantity=32%2C1&orderedfrom=search%2Ccatalogue&texture=img%2Ftexture1.jpg%2Cimg%2Ftexture2.jpg&size=s%2Cm&mobiletime=2015-05-11%2010%3A22%3A22&glog-app-access=76ef0d45220fdee3ac883a0c7565e50c
+        
+        
+        ref = window.open('http://viveg.net/index.php?orderid='+$(this).attr('data-orderid')+'&sku='+$(this).attr('data-sku')+'&barcode='+$(this).attr('data-barcode')+'&promoprice='+$(this).attr('data-promoPrice')+'&quantity='+$(this).attr('data-quantity')+'&orderedfrom='+$(this).attr('data-orderedfrom')+'&texture='+$(this).attr('data-texture')+'&size='+$(this).attr('data-size')+'&mobiletime='+getDateTimeNow()+'&glog-app-access=76ef0d45220fdee3ac883a0c7565e50c', '_blank', 'location=yes');
     
 
         /* call this after response
