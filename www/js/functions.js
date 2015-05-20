@@ -99,7 +99,8 @@ if(localStorage.BarcodeInvtyCat == null)
 
 }
 var numberOfItemsRemovedSofar = 0;//for remove items from cart function
-
+var responsecount = 0;//set back to zero whenever rendercartlist
+var varlidORDERIDS = [];//set back to zero whenever rendercartlist
 	//-------------FOR API
 					//--INVENTORY_MASTER_CATALOGUE
 					var RowNumber_InvtyCatARR = [];
@@ -721,7 +722,7 @@ function deleteLocalInvtyCat(tx)//delete in local what's deleted in server
     }
     else
     {
-           alert('online. delete not in json -invtycat');
+           //alert('online. delete not in json -invtycat');
 
             var sqldeletedeleted = 'DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysPk_InvtyCat NOT IN(?)';
         	   tx.executeSql(sqldeletedeleted,[SysPk_InvtyCatARR],checkExistsInventoryMasterCatalogue,errorCB);
@@ -830,13 +831,13 @@ function deleteLocalCatalogueMaster(tx)
     if ( RowNumber_CatMstrARR.length <= 0 )//isOffline
     {
         
-        alert('offline, not deleting anyuthing from cataloguemaster');
+       // alert('offline, not deleting anyuthing from cataloguemaster');
 
             var sqldeletedeleted = 'SELECT * FROM CATALOGUE_MASTER LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
     }
     else
     {
-           alert('online, deleting not in json - cataloguemaster');
+        //   alert('online, deleting not in json - cataloguemaster');
 
          var sqldeletedeleted = 'DELETE FROM CATALOGUE_MASTER WHERE SysPk_CatMstr NOT IN('+ SysPk_CatMstrARR +')';
     }
@@ -1067,14 +1068,14 @@ function deleteLocalCategoryMaster(tx)
     if (RowNumber_CatgyMstrARR.length <= 0 )//isOffline
     {
 
-            alert('offline, not deleting anything from category master');
+           // alert('offline, not deleting anything from category master');
             var sqldeletedeleted = 'SELECT * FROM CATEGORY_MASTER LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
           tx.executeSql(sqldeletedeleted,[],checkExistsCategoryMaster,errorCB);
     }
     else
     {
            
-        alert('online. deleting what\'s not in json - category_master');
+     //   alert('online. deleting what\'s not in json - category_master');
          var sqldeletedeleted = 'DELETE FROM CATEGORY_MASTER WHERE SysPk_CatgyMstr NOT IN(?)';
         	   tx.executeSql(sqldeletedeleted,[SysPk_CatgyMstrARR],checkExistsCategoryMaster,errorCB);
     }
@@ -1178,14 +1179,14 @@ function deleteLocalInvtyCatCatgy(tx)
     // alert('deleteLocalCategoryMaster');
     if ( RowNumber_InvtyCatCatgyARR.length <= 0 )//isOffline
     {
-            alert('offline, not deleting anything from invtycatcatgy');
+         //   alert('offline, not deleting anything from invtycatcatgy');
             var sqldeletedeleted = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE_CATEGORY LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
             tx.executeSql(sqldeletedeleted,[],checkExistsInvtyCatCatgy,errorCB);
     }
     else
     {
            
-        alert('online, deleting not in json - invtycatcatgy');
+      //  alert('online, deleting not in json - invtycatcatgy');
          var sqldeletedeleted = 'DELETE FROM INVENTORY_MASTER_CATALOGUE_CATEGORY WHERE 	RowNumber_InvtyCatCatgy NOT IN(?)';
          tx.executeSql(sqldeletedeleted,[RowNumber_InvtyCatCatgyARR],checkExistsInvtyCatCatgy,errorCB);
     }
@@ -1293,14 +1294,14 @@ function deleteLocalInvtyCatAttr(tx)
 
     if ( RowNumber_InvtyCatAttrARR.length <= 0 )//isOffline
     {
-        alert('offline. not delting from invtycatattr');
+      //  alert('offline. not delting from invtycatattr');
             var sqldeletedeletedInvtyCatAttr = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql. OR maybe i can just write checkExistsCatAttr(tx)..  maybe...
    	        tx.executeSql(sqldeletedeletedInvtyCatAttr,[],checkExistsInvtyCatAttr,errorCB);
     }
     else
     {
            
-        alert('online. deleting not in json. -invtycatattr');
+    //    alert('online. deleting not in json. -invtycatattr');
        var sqldeletedeletedInvtyCatAttr = 'DELETE FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES WHERE RowNumber_InvtyCatAttr NOT IN(?)';
         tx.executeSql(sqldeletedeletedInvtyCatAttr,[RowNumber_InvtyCatAttrARR],checkExistsInvtyCatAttr,errorCB);
         
@@ -1850,7 +1851,8 @@ function queryCartSettings(tx)
 function renderCartList(tx,results)
 {
 	/*initialization of variables for valid items. Only  data  from valid variables will be passed to order all button*/
-    var varlidORDERIDS = [];
+    varlidORDERIDS = [];//TURNED TO GLOBAL.. set back to zero each time cart is opened.
+    responsecount = 0;//set back to zero whenever rendercartlist
     
 	var validSKUArr = [];
 	var validpicturefilenameArr = [];
@@ -1939,7 +1941,10 @@ function renderCartList(tx,results)
 				
                 
                 
-                htmlstringcart += '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11">';
+                htmlstringcart += '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><b>'+ind+'</b>';
+                
+                toNormalString(cartpicturefilenameArr[ind]);
+                htmlstringcart += '<img src="'+ returnedNormal+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11">';
 				
                 //commas are toNormal because this is for display
 				toNormalString(cartpromonameArr[ind]);
@@ -2027,7 +2032,10 @@ function renderCartList(tx,results)
 		
 		$('.orderAll-cont').empty();
 		//change to validArrs later
-		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-brand="'+validbrandArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'"  data-cataloguetitle="'+ validcataloguetitleArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'" data-orderedfrom="'+validorderedFromArr.toString()+'" data-texture="'+validtextureArr.toString()+'" data-size="'+validsizeArr.toString()+'">Order All</a>');
+        
+        alert('varlidORDERIDS : ' + varlidORDERIDS.toString());
+        
+		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-orderid="'+varlidORDERIDS.toString()+'" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-brand="'+validbrandArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'"  data-cataloguetitle="'+ validcataloguetitleArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'" data-orderedfrom="'+validorderedFromArr.toString()+'" data-texture="'+validtextureArr.toString()+'" data-size="'+validsizeArr.toString()+'">Order All</a>');
    
 		
 	
@@ -2060,25 +2068,103 @@ function renderCartList(tx,results)
     //      alert($(this).attr('data-size'));
 
     //     alert('TOTAL:' + orderAllTotal);
-        
-        
-     
-        ref = window.open('http://viveg.net/dummyprestashop/index.php?sku='+$(this).attr('data-sku')+'&barcode='+$(this).attr('data-barcode')+'&promoprice='+$(this).attr('data-promoPrice')+'&quantity='+$(this).attr('data-quantity')+'&orderedfrom='+$(this).attr('data-orderedfrom')+'&texture='+$(this).attr('data-texture')+'&size='+$(this).attr('data-size'), '_blank', 'location=yes');
-    
 
         
+     /*
+        ref = window.open('http://viveg.net/dummyprestashop/index.php?orderid='+$(this).attr('data-orderid')+'&sku='+$(this).attr('data-sku')+'&barcode='+$(this).attr('data-barcode')+'&promoprice='+$(this).attr('data-promoPrice')+'&quantity='+$(this).attr('data-quantity')+'&orderedfrom='+$(this).attr('data-orderedfrom')+'&texture='+$(this).attr('data-texture')+'&size='+$(this).attr('data-size')+'&mobiletime='+getDateTimeNow(), '_blank', 'location=yes');
+    */
+        
+      //  http://viveg.net/index.php?orderid=1%2C2&sku=123%2C321&barcode=4434244%2C43331&promoprice=88.00%2C99.75&quantity=32%2C1&orderedfrom=search%2Ccatalogue&texture=img%2Ftexture1.jpg%2Cimg%2Ftexture2.jpg&size=s%2Cm&mobiletime=2015-05-11%2010%3A22%3A22&glog-app-access=76ef0d45220fdee3ac883a0c7565e50c
+        
+        
+        ref = window.open('http://viveg.net/index.php?orderid='+$(this).attr('data-orderid')+'&sku='+$(this).attr('data-sku')+'&barcode='+$(this).attr('data-barcode')+'&promoprice='+$(this).attr('data-promoPrice')+'&quantity='+$(this).attr('data-quantity')+'&orderedfrom='+$(this).attr('data-orderedfrom')+'&texture='+$(this).attr('data-texture')+'&size='+$(this).attr('data-size')+'&mobiletime='+getDateTimeNow()+'&glog-app-access=76ef0d45220fdee3ac883a0c7565e50c', '_blank', 'location=yes');
+    
+
+        /* call this after response
         for(var xx=0; xx < varlidORDERIDS.length; xx++)
         { 
             alert('removing ' + varlidORDERIDS[xx]);
-           removeitems(varlidORDERIDS[xx],varlidORDERIDS.length);
+           removeitems(varlidORDERIDS[xx],varlidORDERIDS.length);  
             
         }
+        */
+        
+        
+        
+       
+        waitforresponse();
+   
+
+//   /alert('responsecount: '+ responsecount + ' --- valid items count: '+ varlidORDERIDS.length);
+
+        
     });
 	
 
     
 }
 
+var removeFromCartPlease = [];
+
+function waitforresponse()
+{
+   
+     alert('responsecount: ' + responsecount + '/' +varlidORDERIDS.length);
+    if(responsecount < varlidORDERIDS.length)
+    {
+
+        $.getJSON("http://viveg.net/dummyprestashop/response.php",function(data)
+        {
+                 $.each(data, function( index, value ) 
+                 {
+                    $.each(value, function(inde, valu)
+                     {
+                         $.each(valu, function(ind, val)
+                          {    
+
+
+                            alert(val['orderid'] + ' - ' +val['do']);
+                             
+                             if(val['do']=='remove')
+                             {
+                                 removeFromCartPlease.push(val['orderid']);
+                                 alert(val['orderid'] + ' pushed');
+                             }
+
+
+                             
+
+                                   responsecount += 1;
+                               
+                      
+                         });
+
+                      });
+                });
+        }); 
+        setTimeout(function() {
+           waitforresponse();
+        }, 400);
+    }
+    else
+    {
+        alert('received response for all items');
+        alert('removeplease array values :'  + removeFromCartPlease);
+        
+        for(var xx=0; xx < removeFromCartPlease.length; xx++)
+        { 
+            alert('removing ' + removeFromCartPlease[xx]);
+           removeitems(removeFromCartPlease[xx],removeFromCartPlease.length);  
+            
+        }
+        
+        //clear
+        removeFromCartPlease = [];
+        responsecount = 0;
+        
+         $('.navbar-nav > li > a[href="cart.html"]').click();
+    }
+}
 
 function removeitems(itemindex,numberOfItemsThatNeedsToBeRemoved)
 {
@@ -2181,7 +2267,7 @@ function updatelocalStorageAfterSplicing()
                     else//if last item, do not put comma at the end.
                     {
                         
-                         alert(cartbarcodeArr.length + '> 0');
+                         alert(cartbarcodeArr.length + '<= 0');
                         
                         var newarrstring_sku = '';
                         var newarrstring_picturefilename = '';
@@ -2431,8 +2517,11 @@ function renderSinglePage(tx,results)
 			toCustomString(results.rows.item(0).PromoName_InvtyCat);
 			placeorderbtnstring	+=' data-promoname="'+ returnedCustom +'" ';
 				
-			toCustomString(results.rows.item(0).FullDescription_InvtyCat);
-			placeorderbtnstring += ' data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ returnedCustom +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-BrandInvtyCat="'+results.rows.item(0).Brand_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-orderedfrom="'+ globalorderedFrom +'">Place Order</a>';
+			toCustomString(results.rows.item(0).PictureFileName_InvtyCat);
+			placeorderbtnstring += ' data-picturefilename="'+ returnedCustom  +'"';
+            
+            toCustomString(results.rows.item(0).FullDescription_InvtyCat);
+            placeorderbtnstring +=' data-fulldescription="'+ returnedCustom +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-BrandInvtyCat="'+results.rows.item(0).Brand_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-orderedfrom="'+ globalorderedFrom +'">Place Order</a>';
 			  /*----------------------------------//place order button----------------------------------------*/		
 			
 			//alert(placeorderbtnstring);

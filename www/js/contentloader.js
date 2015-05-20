@@ -5,10 +5,26 @@
        var defaultContent = 'splash.html';     
          $(".content-cont").load(defaultContent,  null, function(event,filename)
          {
+			 $('.site-content').removeClass('container');
              $('body').css('background-image', 'url(' + '"img/splashbg.jpg"' + ')');
+			 $('.content-cont').css( 'marginTop','0px' );
+		 $('.content-cont').css('marginBottom', '0px' );
+			
+
+			 
+			 
              $(".slideToUnlock").on('click',function()
              {
+				 
+				$('.site-content').addClass('container');
                  $('body').css('background-image', 'none');
+				  $('.content-cont').css('marginTop','60px');
+				$('.content-cont').css('marginBottom','60px');
+
+			 
+			 
+				 
+				 
                  $('nav , footer').show();
                  $('.splashscreencont').remove();
                  $('.forsingleonly , .foreditorderonly').hide();

@@ -722,7 +722,7 @@ function deleteLocalInvtyCat(tx)//delete in local what's deleted in server
     }
     else
     {
-           alert('online. delete not in json -invtycat');
+           //alert('online. delete not in json -invtycat');
 
             var sqldeletedeleted = 'DELETE FROM INVENTORY_MASTER_CATALOGUE WHERE SysPk_InvtyCat NOT IN(?)';
         	   tx.executeSql(sqldeletedeleted,[SysPk_InvtyCatARR],checkExistsInventoryMasterCatalogue,errorCB);
@@ -831,13 +831,13 @@ function deleteLocalCatalogueMaster(tx)
     if ( RowNumber_CatMstrARR.length <= 0 )//isOffline
     {
         
-        alert('offline, not deleting anyuthing from cataloguemaster');
+       // alert('offline, not deleting anyuthing from cataloguemaster');
 
             var sqldeletedeleted = 'SELECT * FROM CATALOGUE_MASTER LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
     }
     else
     {
-           alert('online, deleting not in json - cataloguemaster');
+        //   alert('online, deleting not in json - cataloguemaster');
 
          var sqldeletedeleted = 'DELETE FROM CATALOGUE_MASTER WHERE SysPk_CatMstr NOT IN('+ SysPk_CatMstrARR +')';
     }
@@ -1068,14 +1068,14 @@ function deleteLocalCategoryMaster(tx)
     if (RowNumber_CatgyMstrARR.length <= 0 )//isOffline
     {
 
-            alert('offline, not deleting anything from category master');
+           // alert('offline, not deleting anything from category master');
             var sqldeletedeleted = 'SELECT * FROM CATEGORY_MASTER LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
           tx.executeSql(sqldeletedeleted,[],checkExistsCategoryMaster,errorCB);
     }
     else
     {
            
-        alert('online. deleting what\'s not in json - category_master');
+     //   alert('online. deleting what\'s not in json - category_master');
          var sqldeletedeleted = 'DELETE FROM CATEGORY_MASTER WHERE SysPk_CatgyMstr NOT IN(?)';
         	   tx.executeSql(sqldeletedeleted,[SysPk_CatgyMstrARR],checkExistsCategoryMaster,errorCB);
     }
@@ -1179,14 +1179,14 @@ function deleteLocalInvtyCatCatgy(tx)
     // alert('deleteLocalCategoryMaster');
     if ( RowNumber_InvtyCatCatgyARR.length <= 0 )//isOffline
     {
-            alert('offline, not deleting anything from invtycatcatgy');
+         //   alert('offline, not deleting anything from invtycatcatgy');
             var sqldeletedeleted = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE_CATEGORY LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql.
             tx.executeSql(sqldeletedeleted,[],checkExistsInvtyCatCatgy,errorCB);
     }
     else
     {
            
-        alert('online, deleting not in json - invtycatcatgy');
+      //  alert('online, deleting not in json - invtycatcatgy');
          var sqldeletedeleted = 'DELETE FROM INVENTORY_MASTER_CATALOGUE_CATEGORY WHERE 	RowNumber_InvtyCatCatgy NOT IN(?)';
          tx.executeSql(sqldeletedeleted,[RowNumber_InvtyCatCatgyARR],checkExistsInvtyCatCatgy,errorCB);
     }
@@ -1294,14 +1294,14 @@ function deleteLocalInvtyCatAttr(tx)
 
     if ( RowNumber_InvtyCatAttrARR.length <= 0 )//isOffline
     {
-        alert('offline. not delting from invtycatattr');
+      //  alert('offline. not delting from invtycatattr');
             var sqldeletedeletedInvtyCatAttr = 'SELECT * FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES LIMIT 1';//does not matter what statement is here. just to prevent error from executing null sql. OR maybe i can just write checkExistsCatAttr(tx)..  maybe...
    	        tx.executeSql(sqldeletedeletedInvtyCatAttr,[],checkExistsInvtyCatAttr,errorCB);
     }
     else
     {
            
-        alert('online. deleting not in json. -invtycatattr');
+    //    alert('online. deleting not in json. -invtycatattr');
        var sqldeletedeletedInvtyCatAttr = 'DELETE FROM INVENTORY_MASTER_CATALOGUE_ATTRIBUTES WHERE RowNumber_InvtyCatAttr NOT IN(?)';
         tx.executeSql(sqldeletedeletedInvtyCatAttr,[RowNumber_InvtyCatAttrARR],checkExistsInvtyCatAttr,errorCB);
         
