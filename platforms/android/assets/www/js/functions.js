@@ -1941,7 +1941,10 @@ function renderCartList(tx,results)
 				
                 
                 
-                htmlstringcart += '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><b>'+ind+'</b><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11">';
+                htmlstringcart += '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><b>'+ind+'</b>';
+                
+                toNormalString(cartpicturefilenameArr[ind]);
+                htmlstringcart += '<img src="'+ returnedNormal+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11">';
 				
                 //commas are toNormal because this is for display
 				toNormalString(cartpromonameArr[ind]);
@@ -2514,8 +2517,11 @@ function renderSinglePage(tx,results)
 			toCustomString(results.rows.item(0).PromoName_InvtyCat);
 			placeorderbtnstring	+=' data-promoname="'+ returnedCustom +'" ';
 				
-			toCustomString(results.rows.item(0).FullDescription_InvtyCat);
-			placeorderbtnstring += ' data-picturefilename="'+ results.rows.item(0).PictureFileName_InvtyCat +'" data-fulldescription="'+ returnedCustom +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-BrandInvtyCat="'+results.rows.item(0).Brand_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-orderedfrom="'+ globalorderedFrom +'">Place Order</a>';
+			toCustomString(results.rows.item(0).PictureFileName_InvtyCat);
+			placeorderbtnstring += ' data-picturefilename="'+ returnedCustom  +'"';
+            
+            toCustomString(results.rows.item(0).FullDescription_InvtyCat);
+            placeorderbtnstring +=' data-fulldescription="'+ returnedCustom +'" data-BarcodeInvtyCat="'+results.rows.item(0).Barcode_InvtyCat+'" data-BrandInvtyCat="'+results.rows.item(0).Brand_InvtyCat+'" data-quantity="1" data-subtotal="'+ results.rows.item(0).PromoPrice_InvtyCat +'" data-orderedfrom="'+ globalorderedFrom +'">Place Order</a>';
 			  /*----------------------------------//place order button----------------------------------------*/		
 			
 			//alert(placeorderbtnstring);

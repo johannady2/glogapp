@@ -22,7 +22,9 @@ alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
             {
                
                 /*INITIAL DISPLAY - BEFORE EDIT*/
-                $('.edit-order-PictureFileName').attr('src',cartpicturefilenameArr[orderidtoedit]);//<h1>promoname</h1>
+                
+                toNormalString(cartpicturefilenameArr[orderidtoedit]);
+                $('.edit-order-PictureFileName').attr('src',returnedNormal);//<h1>promoname</h1>
                
 				toNormalString(cartfulldescriptionArr[orderidtoedit]);
 				$('.edit-order-fulldescription').append(returnedNormal);//<p>fulldescription</p>
