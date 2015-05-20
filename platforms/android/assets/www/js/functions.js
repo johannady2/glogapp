@@ -99,7 +99,8 @@ if(localStorage.BarcodeInvtyCat == null)
 
 }
 var numberOfItemsRemovedSofar = 0;//for remove items from cart function
-
+var responsecount = 0;//set back to zero whenever rendercartlist
+var varlidORDERIDS = [];//set back to zero whenever rendercartlist
 	//-------------FOR API
 					//--INVENTORY_MASTER_CATALOGUE
 					var RowNumber_InvtyCatARR = [];
@@ -1850,7 +1851,8 @@ function queryCartSettings(tx)
 function renderCartList(tx,results)
 {
 	/*initialization of variables for valid items. Only  data  from valid variables will be passed to order all button*/
-    var varlidORDERIDS = [];
+    varlidORDERIDS = [];//TURNED TO GLOBAL.. set back to zero each time cart is opened.
+    responsecount = 0;//set back to zero whenever rendercartlist
     
 	var validSKUArr = [];
 	var validpicturefilenameArr = [];
@@ -1939,7 +1941,7 @@ function renderCartList(tx,results)
 				
                 
                 
-                htmlstringcart += '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11">';
+                htmlstringcart += '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><b>'+ind+'</b><img src="'+ cartpicturefilenameArr[ind]+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11">';
 				
                 //commas are toNormal because this is for display
 				toNormalString(cartpromonameArr[ind]);
@@ -2027,7 +2029,10 @@ function renderCartList(tx,results)
 		
 		$('.orderAll-cont').empty();
 		//change to validArrs later
-		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-brand="'+validbrandArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'"  data-cataloguetitle="'+ validcataloguetitleArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'" data-orderedfrom="'+validorderedFromArr.toString()+'" data-texture="'+validtextureArr.toString()+'" data-size="'+validsizeArr.toString()+'">Order All</a>');
+        
+        alert('varlidORDERIDS : ' + varlidORDERIDS.toString());
+        
+		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-orderid="'+varlidORDERIDS.toString()+'" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-brand="'+validbrandArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'"  data-cataloguetitle="'+ validcataloguetitleArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'" data-orderedfrom="'+validorderedFromArr.toString()+'" data-texture="'+validtextureArr.toString()+'" data-size="'+validsizeArr.toString()+'">Order All</a>');
    
 		
 	
@@ -2063,22 +2068,94 @@ function renderCartList(tx,results)
         
         
      
-        ref = window.open('http://viveg.net/dummyprestashop/index.php?sku='+$(this).attr('data-sku')+'&barcode='+$(this).attr('data-barcode')+'&promoprice='+$(this).attr('data-promoPrice')+'&quantity='+$(this).attr('data-quantity')+'&orderedfrom='+$(this).attr('data-orderedfrom')+'&texture='+$(this).attr('data-texture')+'&size='+$(this).attr('data-size'), '_blank', 'location=yes');
+        ref = window.open('http://viveg.net/dummyprestashop/index.php?orderid='+$(this).attr('data-orderid')+'&sku='+$(this).attr('data-sku')+'&barcode='+$(this).attr('data-barcode')+'&promoprice='+$(this).attr('data-promoPrice')+'&quantity='+$(this).attr('data-quantity')+'&orderedfrom='+$(this).attr('data-orderedfrom')+'&texture='+$(this).attr('data-texture')+'&size='+$(this).attr('data-size')+'&mobiletime='+getDateTimeNow(), '_blank', 'location=yes');
     
 
-        
+        /* call this after response
         for(var xx=0; xx < varlidORDERIDS.length; xx++)
         { 
             alert('removing ' + varlidORDERIDS[xx]);
-           removeitems(varlidORDERIDS[xx],varlidORDERIDS.length);
+           removeitems(varlidORDERIDS[xx],varlidORDERIDS.length);  
             
         }
+        */
+        
+        
+        
+       
+        waitforresponse();
+   
+
+//   /alert('responsecount: '+ responsecount + ' --- valid items count: '+ varlidORDERIDS.length);
+
+        
     });
 	
 
     
 }
 
+var removeFromCartPlease = [];
+
+function waitforresponse()
+{
+   
+     alert('responsecount: ' + responsecount + '/' +varlidORDERIDS.length);
+    if(responsecount < varlidORDERIDS.length)
+    {
+
+        $.getJSON("http://viveg.net/dummyprestashop/response.php",function(data)
+        {
+                 $.each(data, function( index, value ) 
+                 {
+                    $.each(value, function(inde, valu)
+                     {
+                         $.each(valu, function(ind, val)
+                          {    
+
+
+                            alert(val['orderid'] + ' - ' +val['do']);
+                             
+                             if(val['do']=='remove')
+                             {
+                                 removeFromCartPlease.push(val['orderid']);
+                                 alert(val['orderid'] + ' pushed');
+                             }
+
+
+                             
+
+                                   responsecount += 1;
+                               
+                      
+                         });
+
+                      });
+                });
+        }); 
+        setTimeout(function() {
+           waitforresponse();
+        }, 400);
+    }
+    else
+    {
+        alert('received response for all items');
+        alert('removeplease array values :'  + removeFromCartPlease);
+        
+        for(var xx=0; xx < removeFromCartPlease.length; xx++)
+        { 
+            alert('removing ' + removeFromCartPlease[xx]);
+           removeitems(removeFromCartPlease[xx],removeFromCartPlease.length);  
+            
+        }
+        
+        //clear
+        removeFromCartPlease = [];
+        responsecount = 0;
+        
+         $('.navbar-nav > li > a[href="cart.html"]').click();
+    }
+}
 
 function removeitems(itemindex,numberOfItemsThatNeedsToBeRemoved)
 {
@@ -2181,7 +2258,7 @@ function updatelocalStorageAfterSplicing()
                     else//if last item, do not put comma at the end.
                     {
                         
-                         alert(cartbarcodeArr.length + '> 0');
+                         alert(cartbarcodeArr.length + '<= 0');
                         
                         var newarrstring_sku = '';
                         var newarrstring_picturefilename = '';
