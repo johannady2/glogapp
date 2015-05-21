@@ -9,10 +9,10 @@ function onBodyLoad()
   
     document.addEventListener("offline", onDeviceOffline, false);
     document.addEventListener("online", isjsonready, false);
-     ref.addEventListener('loadstart', function(event) { alert('start: ' + event.url); });
-     ref.addEventListener('loadstop', function(event) { alert('stop: ' + event.url); });
-     ref.addEventListener('loaderror', function(event) { alert('error: ' + event.message); });
-     ref.addEventListener('exit', function(event) { alert(event.type); });
+     ref.addEventListener('loadstart', function(event) { /*alert('start: ' + event.url);*/ });
+     ref.addEventListener('loadstop', function(event) { /*alert('stop: ' + event.url);*/ });
+     ref.addEventListener('loaderror', function(event) { /*alert('error: ' + event.message);*/ });
+     ref.addEventListener('exit', function(event) { /*alert(event.type);*/});
 
     //ref.addEventListener(eventname, callback);
 }
@@ -1941,7 +1941,7 @@ function renderCartList(tx,results)
 				
                 
                 
-                htmlstringcart += '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12"><b>'+ind+'</b>';
+                htmlstringcart += '<div class="row cartItemCont"><div class="col-md-3 col-sm-3 col-xs-12">';
                 
                 toNormalString(cartpicturefilenameArr[ind]);
                 htmlstringcart += '<img src="'+ returnedNormal+'" class="responsiveImage" alt="no image available"></div><div class="col-md-9 col-sm-9 col-xs-12"><div class="row"><div class="col-md-11 col-sm-11 col-xs-11">';
@@ -2033,7 +2033,7 @@ function renderCartList(tx,results)
 		$('.orderAll-cont').empty();
 		//change to validArrs later
         
-        alert('varlidORDERIDS : ' + varlidORDERIDS.toString());
+        //alert('varlidORDERIDS : ' + varlidORDERIDS.toString());
         
 		$('.orderAll-cont').append('<a href="#" class="btn btn-success btn-large orderAll" data-orderid="'+varlidORDERIDS.toString()+'" data-sku="'+ validSKUArr.toString() +'" data-picturefilename="'+ validpicturefilenameArr.toString() +'" data-barcode="'+validbarcodeArr.toString()+'" data-brand="'+validbrandArr.toString()+'" data-fulldescription="'+ validfulldescriptionArr.toString() +'"  data-cataloguetitle="'+ validcataloguetitleArr.toString() +'" data-promoname="' + validpromonameArr.toString() +'"  data-promoPrice="'+ validpromoPriceArr.toString()+'" data-promoEndDate="'+validpromoEndDateArr.toString()+'" data-promoStartDate="'+validpromoStartDateArr.toString()+'"  data-quantity= "'+validQuantityArr.toString() +'"  data-subtotal="'+ validsubtotalArr.toString()+'" data-orderedfrom="'+validorderedFromArr.toString()+'" data-texture="'+validtextureArr.toString()+'" data-size="'+validsizeArr.toString()+'">Order All</a>');
    
@@ -2087,6 +2087,7 @@ function renderCartList(tx,results)
            removeitems(varlidORDERIDS[xx],varlidORDERIDS.length);  
             
         }
+        
         */
         
         
@@ -2109,7 +2110,7 @@ var removeFromCartPlease = [];
 function waitforresponse()
 {
    
-     alert('responsecount: ' + responsecount + '/' +varlidORDERIDS.length);
+     //alert('responsecount: ' + responsecount + '/' +varlidORDERIDS.length);
     if(responsecount < varlidORDERIDS.length)
     {
 
@@ -2123,12 +2124,12 @@ function waitforresponse()
                           {    
 
 
-                            alert(val['orderid'] + ' - ' +val['do']);
+                          //  alert(val['orderid'] + ' - ' +val['do']);
                              
                              if(val['do']=='remove')
                              {
                                  removeFromCartPlease.push(val['orderid']);
-                                 alert(val['orderid'] + ' pushed');
+                             //    alert(val['orderid'] + ' pushed');
                              }
 
 
@@ -2148,12 +2149,12 @@ function waitforresponse()
     }
     else
     {
-        alert('received response for all items');
-        alert('removeplease array values :'  + removeFromCartPlease);
+       // alert('received response for all items');
+       // alert('removeplease array values :'  + removeFromCartPlease);
         
         for(var xx=0; xx < removeFromCartPlease.length; xx++)
         { 
-            alert('removing ' + removeFromCartPlease[xx]);
+         //   alert('removing ' + removeFromCartPlease[xx]);
            removeitems(removeFromCartPlease[xx],removeFromCartPlease.length);  
             
         }
@@ -2168,7 +2169,7 @@ function waitforresponse()
 
 function removeitems(itemindex,numberOfItemsThatNeedsToBeRemoved)
 {
-     alert('before splice number#'+numberOfItemsRemovedSofar+'----'+ cartpromonameArr);
+    // alert('before splice number#'+numberOfItemsRemovedSofar+'----'+ cartpromonameArr);
   
                     cartSKUArr[itemindex] = null;//change values to null first to not mess up the orderids.
 					cartpicturefilenameArr[itemindex] = null;
@@ -2191,8 +2192,8 @@ function removeitems(itemindex,numberOfItemsThatNeedsToBeRemoved)
 
 
         numberOfItemsRemovedSofar+= 1;
-      alert(numberOfItemsRemovedSofar + ' of ' + numberOfItemsThatNeedsToBeRemoved + ' removed');
-    alert('before splice number#'+numberOfItemsRemovedSofar+'----'+ cartpromonameArr);
+     // alert(numberOfItemsRemovedSofar + ' of ' + numberOfItemsThatNeedsToBeRemoved + ' removed');
+ //   alert('before splice number#'+numberOfItemsRemovedSofar+'----'+ cartpromonameArr);
     
     
 
@@ -2203,7 +2204,7 @@ function removeitems(itemindex,numberOfItemsThatNeedsToBeRemoved)
 
         
         numberOfItemsRemovedSofar = 0;//set back to zero because remove completed.
-          alert('removed all items that needed to be removed.');
+     //     alert('removed all items that needed to be removed.');
     }
                     
               
@@ -2235,12 +2236,12 @@ function updatelocalStorageAfterSplicing()
 
     
     
-        alert('after grep '  + cartpromonameArr);
+  //      alert('after grep '  + cartpromonameArr);
     
                     if(cartbarcodeArr.length > 0)
                     {
                         
-                        alert(cartbarcodeArr.length + '> 0');
+                      //  alert(cartbarcodeArr.length + '> 0');
 						var newarrstring_sku = cartSKUArr.toString()+",";
 						var newarrstring_picturefilename = cartpicturefilenameArr.toString()+",";
 						var newarrstring_cartbarcode = cartbarcodeArr.toString()+",";
@@ -2267,7 +2268,7 @@ function updatelocalStorageAfterSplicing()
                     else//if last item, do not put comma at the end.
                     {
                         
-                         alert(cartbarcodeArr.length + '<= 0');
+                    //     alert(cartbarcodeArr.length + '<= 0');
                         
                         var newarrstring_sku = '';
                         var newarrstring_picturefilename = '';
@@ -2453,8 +2454,8 @@ function renderSinglePage(tx,results)
         var sizechecked ='';
     
         
-       alert('unique used textures: ' + uniqueusedtextures);    
-       alert('unique used sizes: ' + uniqueusedsizes);   
+//alert('unique used textures: ' + uniqueusedtextures);    
+    //   alert('unique used sizes: ' + uniqueusedsizes);   
                
         toCustomString(uniqueusedtextures.toString());
         texturechoicesStr = returnedCustom;
@@ -2464,8 +2465,8 @@ function renderSinglePage(tx,results)
             
         
             
-            alert('to custom string uniqueusedtextures ' + texturechoicesStr);
-            alert('to custom string uniqueusedsizes ' +  sizechoicesStr);
+//alert('to custom string uniqueusedtextures ' + texturechoicesStr);
+          //  alert('to custom string uniqueusedsizes ' +  sizechoicesStr);
             
             
             
@@ -2671,8 +2672,8 @@ $(document).on('click','.placeOrder', function()
     
 
     
-    alert(texture + ' ' + size);
-    alert(texturechoicesStr + ' ' + sizechoicesStr);
+//alert(texture + ' ' + size);
+  //  alert(texturechoicesStr + ' ' + sizechoicesStr);
 	
     //this prevents commas from promonames from being interpreted as , when localstorage string is turned into an array
 		//SKU = toCustomString(SKU.toString());
@@ -2725,8 +2726,8 @@ $(document).on('click','.placeOrder', function()
     localStorage.sizechoicesFOREDITPAGE += sizechoicesStr.toString() + ',';
     
     
-    alert(localStorage.texturechoicesFOREDITPAGE);
-    alert(localStorage.sizechoicesFOREDITPAGE);
+//    alert(localStorage.texturechoicesFOREDITPAGE);
+//    alert(localStorage.sizechoicesFOREDITPAGE);
     
     
     alert('item added to cart');
@@ -2872,7 +2873,7 @@ function replaceQuotes(str)
 	}
 	else
 	{
-		returnedReplaceQuote = str;alert('return: ' +str);
+		returnedReplaceQuote = str;//alert('return: ' +str);
 	
 	}
 }

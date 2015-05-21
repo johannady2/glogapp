@@ -1,16 +1,16 @@
 $(document).on('editOrderClicked',function(event,orderidtoedit)
 {			
     
-alert('chosesn texture: ' + carttextureFromArr[orderidtoedit]);
-alert('textures to choose from: ' + carttexturechoicesArr[orderidtoedit]);
-alert('chosen size: ' + cartsizeFromArr[orderidtoedit]);
-alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
+//alert('chosesn texture: ' + carttextureFromArr[orderidtoedit]);
+//alert('textures to choose from: ' + carttexturechoicesArr[orderidtoedit]);
+//alert('chosen size: ' + cartsizeFromArr[orderidtoedit]);
+//alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
     
 
     var arrOftexturechoices = carttexturechoicesArr[orderidtoedit].split('(xxxGLogCommaxxx)');
     var arrOfsizechoices = cartsizechoicesArr[orderidtoedit].split('(xxxGLogCommaxxx)');
     
-    alert('data for radio buttons: ' + arrOftexturechoices + '  -  ' + arrOfsizechoices);
+    //alert('data for radio buttons: ' + arrOftexturechoices + '  -  ' + arrOfsizechoices);
 
     
             //alert(orderidtoedit);
@@ -48,8 +48,8 @@ alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
                 var whichCheckedtexture = '';
                 for(var indx = 0 ; indx < arrOftexturechoices.length ; indx++)
                 {
-                    alert(arrOftexturechoices[indx] +'-'+ carttextureFromArr[orderidtoedit]);
-                    if(arrOftexturechoices[indx] == carttextureFromArr[orderidtoedit]){ whichCheckedtexture = 'checked'; alert(whichCheckedtexture); }else{whichCheckedtexture= '';}
+                    //alert(arrOftexturechoices[indx] +'-'+ carttextureFromArr[orderidtoedit]);
+                    if(arrOftexturechoices[indx] == carttextureFromArr[orderidtoedit]){ whichCheckedtexture = 'checked'; /*alert(whichCheckedtexture);*/ }else{whichCheckedtexture= '';}
                     
                     if(arrOftexturechoices[indx] != 'one_texture')
                     {
@@ -68,8 +68,8 @@ alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
                 var whichCheckedSize = '';
                 for(var ind = 0 ; ind < arrOfsizechoices.length ; ind++)
                 {
-                    alert(arrOfsizechoices[ind] +'-'+ cartsizeFromArr[orderidtoedit]);
-                    if(arrOfsizechoices[ind]==cartsizeFromArr[orderidtoedit]){whichCheckedSize = 'checked'; alert(whichCheckedSize);}else{whichCheckedSize = '';}
+                    //alert(arrOfsizechoices[ind] +'-'+ cartsizeFromArr[orderidtoedit]);
+                    if(arrOfsizechoices[ind]==cartsizeFromArr[orderidtoedit]){whichCheckedSize = 'checked'; /*alert(whichCheckedSize);*/}else{whichCheckedSize = '';}
                     
                     
                     if(arrOfsizechoices[ind] != 'one_size')
@@ -99,8 +99,8 @@ alert('sizes to choose from: ' + cartsizechoicesArr[orderidtoedit]);
                     var editOrderSize = $('input[name="singleitemsize"]:checked').val();
                     
                     
-                    alert(editOrderTexture);
-                    alert(editOrderSize);
+                   // alert(editOrderTexture);
+                   // alert(editOrderSize);
                     
                     
                     var newQuantitylength =  $.trim(editOrderNewQuantity).length;
